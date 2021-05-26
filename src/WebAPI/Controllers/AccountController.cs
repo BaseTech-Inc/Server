@@ -47,12 +47,5 @@ namespace WebAPI.Controllers
 
             return Ok(createUserResult);
         }
-
-        // POST: api/account/verify-email/
-        [HttpPost("verify-email")]
-        public async Task<ActionResult<string>> VerifyEmail()
-        {
-            return "VerifyEmail";
-        }
     }
 }

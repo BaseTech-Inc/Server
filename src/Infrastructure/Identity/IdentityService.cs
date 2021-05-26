@@ -69,10 +69,5 @@ namespace Infrastructure.Identity
 
             return new Response<string>(message: $"Error during registration.");
         }
-
-        public async Task<Response<string>> VerifyEmailAsync(string userId, string tokenEmail)
-        {
-            return new Response<string>(message: $"");
-        }
     }
 }
