@@ -8,7 +8,7 @@ namespace Domain.Entities
 {
     public class Localizacao
     {
-        public int IdLocal { get; set; }
+        public string Id { get; set; }
 
         public double Latitude { get; set; }
 

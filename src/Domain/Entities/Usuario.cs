@@ -8,7 +8,7 @@ namespace Domain.Entities
 {
     public class Usuario
     {
-        public int IdUsuario { get; set; }
+        public string Id { get; set; }
 
         #region TipoUsuario
         public int IdTipoUsuaurio { get; set; }

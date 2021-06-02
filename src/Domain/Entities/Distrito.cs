@@ -8,7 +8,7 @@ namespace Domain.Entities
 {
     public class Distrito
     {
-        public int IdDistrito { get; set; }
+        public string Id { get; set; }
 
         #region Localizacao
         public int IdLocal { get; set; }

@@ -25,7 +25,7 @@ namespace Infrastructure.Identity
             // verifica se o usuário existe, para não gerar futuros erros
             var user = await _userManager.FindByEmailAsync(email);
 
-            if (user == null)
+            if (!(user == null))
             {
                 // verifica se a senha passada é correta
                 var checkPassword = await _userManager.CheckPasswordAsync(user, password);
@@ -60,7 +60,13 @@ namespace Infrastructure.Identity
 
                 if (resultCreate.Succeeded)
                 {
-                    return new Response<string>(user.Id, message: $"User Registered");
+                    var tokenEmailConfirmation = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var resultConfirmEmail = await _userManager.ConfirmEmailAsync(user, tokenEmailConfirmation);
+
+                    if (resultConfirmEmail.Succeeded)
+                    {
+                        return new Response<string>(user.Id, message: $"User Registered");
+                    }                    
                 }
             } else
             {

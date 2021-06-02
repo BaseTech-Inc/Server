@@ -8,7 +8,7 @@ namespace Domain.Entities
 {
     public class HistoricoPrevisao
     {
-        public int IdHistoricoPrevisao { get; set; }
+        public string Id { get; set; }
 
         #region Distrito
         public int IdDistrito { get; set; }

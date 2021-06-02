@@ -9,7 +9,7 @@ namespace Domain.Entities
 {
     public class TipoUsuario
     {
-        public int IdTipoUsuario { get; set; }
+        public string Id { get; set; }
 
         public EnumTipoUsuario Nome { get; set; }
     }
