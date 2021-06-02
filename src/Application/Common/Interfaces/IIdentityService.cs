@@ -12,7 +12,5 @@ namespace Application.Common.Interfaces
         Task<Response<string>> AuthenticateAsync(string email, string password);
 
         Task<Response<string>> RegisterAsync(string username, string email, string password, int age, string phone);
-
-        Task<Response<string>> VerifyEmailAsync(string userId, string tokenEmail);
     }
 }
