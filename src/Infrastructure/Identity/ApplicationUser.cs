@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace Infrastructure.Identity
 {
     public class ApplicationUser : IdentityUser
     {
+        public virtual ICollection<Usuario> Usuario { get; set; }
     }
 }

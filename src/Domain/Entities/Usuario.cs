@@ -16,12 +16,6 @@ namespace Domain.Entities
         public TipoUsuario TipoUsuario { get; set; }
         #endregion
 
-        public string Nome { get; set; }
-
-        public string Email { get; set; }
-
-        public string Senha { get; set; }
-
         public string ContaBancaria { get; set; }
     }
 }

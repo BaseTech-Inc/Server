@@ -18,9 +18,9 @@ namespace WebAPI.Controllers
             IIdentityService identityService)
         {
             _identityService = identityService;
-        }        
+        }
 
-        // POST: api/account/login/
+        // POST: api/account/login/?email=email&password=password
         [HttpPost("login")]
         public async Task<ActionResult<Response<string>>> Login(string email, string password)
         {
@@ -34,11 +34,11 @@ namespace WebAPI.Controllers
             return Ok(authorizeResult);
         }
 
-        // POST: api/account/register/
+        // POST: api/account/register/?username=username&email=email&password=password
         [HttpPost("register")]
-        public async Task<ActionResult<Response<string>>> Register(string username, string email, string password, int age, string phone)
+        public async Task<ActionResult<Response<string>>> Register(string username, string email, string password)
         {
-            var createUserResult = await _identityService.RegisterAsync(username, email, password, age, phone);
+            var createUserResult = await _identityService.RegisterAsync(username, email, password);
 
             if (!createUserResult.Succeeded)
             {
@@ -46,6 +46,13 @@ namespace WebAPI.Controllers
             }
 
             return Ok(createUserResult);
+        }
+
+        // POST: api/account/verify-email/?userId=userId&tokenEmail=tokenEmail
+        [HttpPost("verify-email")]
+        public async Task<ActionResult<Response<string>>> VerifyEmail(string userId, string tokenEmail)
+        {
+            return BadRequest();
         }
     }
 }

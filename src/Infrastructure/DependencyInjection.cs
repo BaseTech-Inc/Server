@@ -17,18 +17,28 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            
+            if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseInMemoryDatabase("TupaDataBase"));
+            }
+            else
+            {
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
                         configuration.GetConnectionString("DefaultConnection"),
                         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            
+            }            
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            // Authentication
+
+            // Authorization
 
             services.AddTransient<IIdentityService, IdentityService>();
 

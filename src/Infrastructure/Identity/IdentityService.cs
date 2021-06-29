@@ -39,7 +39,7 @@ namespace Infrastructure.Identity
             return new Response<string>(message: $"An error occurred while authenticating user.");
         }
 
-        public async Task<Response<string>> RegisterAsync(string username, string email, string password, int age, string phone)
+        public async Task<Response<string>> RegisterAsync(string username, string email, string password)
         {
             var userExist = await _userManager.FindByNameAsync(username);
             var emailExist = await _userManager.FindByEmailAsync(email);
@@ -51,8 +51,7 @@ namespace Infrastructure.Identity
                 var user = new ApplicationUser
                 {
                     UserName = username,
-                    Email = email,
-                    PhoneNumber = phone
+                    Email = email
                 };
 
                 // cria o usuário no contexto
