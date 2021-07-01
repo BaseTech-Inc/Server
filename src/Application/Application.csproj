@@ -9,6 +9,10 @@
     <Folder Include="HistoricoPrevisao\" />
     <Folder Include="HistoricoUsuario\" />
     <Folder Include="Marcadores\" />
+    <Folder Include="Estado\" />
+    <Folder Include="Cidade\" />
+    <Folder Include="Distrito\" />
+    <Folder Include="Pais\" />
   </ItemGroup>
 
 </Project>
