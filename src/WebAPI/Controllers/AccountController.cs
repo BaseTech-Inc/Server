@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.Common.Security;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,16 +14,19 @@ namespace WebAPI.Controllers
     public class AccountController : ControllerBase
     {
         public readonly IIdentityService _identityService;
+        private readonly ITokenService _tokenService;
 
         public AccountController(
-            IIdentityService identityService)
+            IIdentityService identityService,
+            ITokenService tokenService)
         {
             _identityService = identityService;
+            _tokenService = tokenService;
         }
 
         // POST: api/account/login/?email=email&password=password
         [HttpPost("login")]
-        public async Task<ActionResult<Response<string>>> Login(string email, string password)
+        public async Task<ActionResult<Response<LoginResponse>>> Login(string email, string password)
         {
             var authorizeResult = await _identityService.AuthenticateAsync(email, password);
 
@@ -52,7 +56,14 @@ namespace WebAPI.Controllers
         [HttpPost("verify-email")]
         public async Task<ActionResult<Response<string>>> VerifyEmail(string userId, string tokenEmail)
         {
-            return BadRequest();
+            var verifyEmailResult = await _identityService.VerifyEmailAsync(userId, tokenEmail);
+
+            if (!verifyEmailResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(verifyEmailResult);
         }
     }
 }

@@ -7,20 +7,28 @@ using System.Threading.Tasks;
 
 using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.Common.Security;
+using Application.Common.Enumerations;
 
 namespace Infrastructure.Identity
 {
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITokenService _tokenService;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public IdentityService(
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            ITokenService tokenService,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
+            _roleManager = roleManager;
         }
 
-        public async Task<Response<string>> AuthenticateAsync(string email, string password)
+        public async Task<Response<LoginResponse>> AuthenticateAsync(string email, string password)
         {
             // verifica se o usuário existe, para não gerar futuros erros
             var user = await _userManager.FindByEmailAsync(email);
@@ -32,11 +40,33 @@ namespace Infrastructure.Identity
 
                 if (checkPassword)
                 {
-                    return new Response<string>("", message: $"Authenticated { user.UserName }");
+                    if (user.EmailConfirmed)
+                    {
+                        var authenticatedRole = new IdentityRole(Roles.Authenticated.ToString());
+
+                        if (_roleManager.Roles.All(r => r.Name != authenticatedRole.Name))
+                        {
+                            await _roleManager.CreateAsync(authenticatedRole);
+                        }
+
+                        await _userManager.AddToRolesAsync(user, new[] { authenticatedRole.Name });
+
+                        var token = await _tokenService.GenerateTokenJWT(user.Id);
+
+                        var response = new LoginResponse()
+                        {
+                            uid = user.Id,
+                            access_token = token.tokenString,
+                            token_type = "bearer",
+                            expiration = token.validTo
+                        };
+
+                        return new Response<LoginResponse>(response, message: $"Authenticated { user.UserName }");
+                    }
                 }
             }
 
-            return new Response<string>(message: $"An error occurred while authenticating user.");
+            return new Response<LoginResponse>(message: $"An error occurred while authenticating user.");
         }
 
         public async Task<Response<string>> RegisterAsync(string username, string email, string password)
@@ -47,25 +77,19 @@ namespace Infrastructure.Identity
             // verifica se não existe nenhum usuário cadastrado com esse username e email
             if ((userExist == null) && (emailExist == null))
             {
-                // cria o objeto do usuário
                 var user = new ApplicationUser
                 {
                     UserName = username,
                     Email = email
                 };
 
-                // cria o usuário no contexto
                 var resultCreate = await _userManager.CreateAsync(user, password);
 
                 if (resultCreate.Succeeded)
                 {
-                    var tokenEmailConfirmation = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var resultConfirmEmail = await _userManager.ConfirmEmailAsync(user, tokenEmailConfirmation);
+                    var tokenEmail = await _tokenService.GenerateTokenEmail(user.Id);
 
-                    if (resultConfirmEmail.Succeeded)
-                    {
-                        return new Response<string>(user.Id, message: $"User Registered");
-                    }                    
+                    return new Response<string>(user.Id, message: $"User Registered. Please confirm your account by visiting this URL { tokenEmail }");
                 }
             } else
             {
@@ -73,6 +97,23 @@ namespace Infrastructure.Identity
             }
 
             return new Response<string>(message: $"Error during registration.");
+        }
+
+        public async Task<Response<string>> VerifyEmailAsync(string userId, string tokenEmail)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                var resultConfirmEmail = await _userManager.ConfirmEmailAsync(user, tokenEmail);
+
+                if (resultConfirmEmail.Succeeded)
+                {
+                    return new Response<string>(user.Id, message: $"Email confirmed successfully.");
+                }
+            }
+
+            return new Response<string>(message: $"Failed to verify email.");
         }
     }
 }
