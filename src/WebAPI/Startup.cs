@@ -28,6 +28,7 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration);
+            // services.AddApplication();
 
             services.AddControllers();
         }

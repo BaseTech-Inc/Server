@@ -1,5 +1,8 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Enumerations;
+using Domain.Entities;
 using Infrastructure.AdministrativeDivision;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +13,38 @@ namespace Infrastructure.Persistence
 {
     public static class ApplicationDbContextSeed
     {
+        public static async Task SeedDefaultUserAsync(
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
+        {
+            var managerRole = new IdentityRole(Roles.Manager.ToString());
+
+            if (roleManager.Roles.All(r => r.Name != managerRole.Name))
+            {
+                await roleManager.CreateAsync(managerRole);
+            }
+
+            var employeeRole = new IdentityRole(Roles.Employee.ToString());
+
+            if (roleManager.Roles.All(r => r.Name != employeeRole.Name))
+            {
+                await roleManager.CreateAsync(employeeRole);
+            }
+
+            var manager = new ApplicationUser { UserName = "manager@localhost", Email = "manager@localhost" };
+
+            if (
+                userManager.Users.All(u => u.UserName != manager.UserName) &&
+                userManager.Users.All(u => u.Email != manager.Email))
+            {
+                await userManager.CreateAsync(manager, "P@assw0rd");
+                await userManager.AddToRolesAsync(manager, new[] { managerRole.Name });
+
+                var token = await userManager.GenerateEmailConfirmationTokenAsync(manager);
+                await userManager.ConfirmEmailAsync(manager, token);
+            }
+        }
+
         public static async Task SeedAdministrativeDivisionAsync(ApplicationDbContext context)
         {
             var administrativeDivisionService = new AdministrativeDivisionService();

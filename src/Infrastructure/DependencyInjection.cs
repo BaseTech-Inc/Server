@@ -48,7 +48,7 @@ namespace Infrastructure
             })
                 .AddJwtBearer(config =>
                 {
-                    var secretBytes = Encoding.UTF8.GetBytes("p3s6v9yBEHMbQeThWmZq4t7wzC");
+                    var secretBytes = Encoding.UTF8.GetBytes(configuration["JWT:SecretKeyy"]);
                     var key = new SymmetricSecurityKey(secretBytes);
 
                     config.SaveToken = true;

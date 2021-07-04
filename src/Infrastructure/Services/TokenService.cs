@@ -41,7 +41,7 @@ namespace Infrastructure.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var secretBytes = Encoding.UTF8.GetBytes("p3s6v9yBEHMbQeThWmZq4t7wzC");
+            var secretBytes = Encoding.UTF8.GetBytes(_configuration["JWT:SecretKeyy"]);
             var key = new SymmetricSecurityKey(secretBytes);
             var algorithm = SecurityAlgorithms.HmacSha256;
 
