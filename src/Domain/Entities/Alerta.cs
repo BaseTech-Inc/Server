@@ -11,14 +11,10 @@ namespace Domain.Entities
         public string Id { get; set; }
 
         #region Localizacao
-        public int IdLocal { get; set; }
-
         public Localizacao Localizacao { get; set; }
         #endregion
 
         #region Distrito
-        public int IdDistrito { get; set; }
-
         public Distrito Distrito { get; set; }
         #endregion
 

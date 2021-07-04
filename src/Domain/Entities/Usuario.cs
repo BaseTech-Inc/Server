@@ -11,8 +11,6 @@ namespace Domain.Entities
         public string Id { get; set; }
 
         #region TipoUsuario
-        public int IdTipoUsuaurio { get; set; }
-
         public TipoUsuario TipoUsuario { get; set; }
         #endregion
 

@@ -11,8 +11,6 @@ namespace Domain.Entities
         public string Id { get; set; }
 
         #region Distrito
-        public int IdDistrito { get; set; }
-
         public Distrito Distrito { get; set; }
         #endregion
 

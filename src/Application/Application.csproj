@@ -4,15 +4,4 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Alerta\" />
-    <Folder Include="HistoricoPrevisao\" />
-    <Folder Include="HistoricoUsuario\" />
-    <Folder Include="Marcadores\" />
-    <Folder Include="Estado\" />
-    <Folder Include="Cidade\" />
-    <Folder Include="Distrito\" />
-    <Folder Include="Pais\" />
-  </ItemGroup>
-
 </Project>

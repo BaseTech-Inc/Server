@@ -4,14 +4,16 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210704042909_UpdatePK2")]
+    partial class UpdatePK2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +35,12 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<string>("DistritoId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("IdDistrito")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdLocal")
+                        .HasColumnType("int");
 
                     b.Property<string>("LocalizacaoId")
                         .HasColumnType("nvarchar(450)");
@@ -61,6 +69,12 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("EstadoId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("IdEstado")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdLocal")
+                        .HasColumnType("int");
+
                     b.Property<string>("LocalizacaoId")
                         .HasColumnType("nvarchar(450)");
 
@@ -85,6 +99,12 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("CidadeId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("IdCidade")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdLocal")
+                        .HasColumnType("int");
+
                     b.Property<string>("LocalizacaoId")
                         .HasColumnType("nvarchar(450)");
 
@@ -106,6 +126,9 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("IdLocal")
+                        .HasColumnType("int");
+
                     b.Property<string>("LocalizacaoId")
                         .HasColumnType("nvarchar(450)");
 
@@ -114,9 +137,6 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<string>("PaisId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Siglas")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -138,6 +158,9 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<string>("DistritoId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("IdDistrito")
+                        .HasColumnType("int");
 
                     b.Property<double>("SensibilidadeTermica")
                         .HasColumnType("float");
@@ -172,6 +195,15 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<DateTime>("Duracao")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("IdLocalizacaoChegada")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdLocalizacaoPartida")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
 
                     b.Property<string>("LocalizacaoChegadaId")
                         .HasColumnType("nvarchar(450)");
@@ -219,6 +251,12 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("IdLocal")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
                     b.Property<string>("LocalizacaoId")
                         .HasColumnType("nvarchar(450)");
 
@@ -242,6 +280,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("IdLocal")
+                        .HasColumnType("int");
 
                     b.Property<string>("LocalizacaoId")
                         .HasColumnType("nvarchar(450)");
@@ -281,6 +322,9 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<string>("ContaBancaria")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdTipoUsuaurio")
+                        .HasColumnType("int");
 
                     b.Property<string>("TipoUsuarioId")
                         .HasColumnType("nvarchar(450)");
