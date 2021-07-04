@@ -70,6 +70,8 @@ namespace Infrastructure.Persistence
                 // Pais
                 var country = context.Pais.Where(x => x.Nome == "Brasil").FirstOrDefault();
 
+                var listEntity = new List<Estado>();
+
                 foreach (var state in states)
                 {
                     var entity = new Estado
@@ -79,17 +81,21 @@ namespace Infrastructure.Persistence
                         Siglas = state.Initials
                     };
 
-                    context.Estado.Add(entity);
-
-                    await context.SaveChangesAsync();
+                    listEntity.Add(entity);
                 };
+
+                context.Estado.AddRange(listEntity);
+
+                await context.SaveChangesAsync();
             }
 
             // Cidade
             if (!context.Cidade.Any())
             {               
                 var counties = await administrativeDivisionService.ProcessDivisions<DivisionCounty>("/municipios");
-                
+
+                var listEntity = new List<Cidade>();
+
                 foreach (var county in counties)
                 {
                     // Estado 
@@ -101,16 +107,20 @@ namespace Infrastructure.Persistence
                         Nome = county.Name
                     };
 
-                    context.Cidade.Add(entity);
-
-                    await context.SaveChangesAsync();
+                    listEntity.Add(entity);
                 };
+
+                context.Cidade.AddRange(listEntity);
+
+                await context.SaveChangesAsync();
             }
 
             // Distrito
             if (!context.Distrito.Any())
             {
                 var districts = await administrativeDivisionService.ProcessDivisions<DivisionDistrict>("/distritos");
+
+                var listEntity = new List<Distrito>();
 
                 foreach (var district in districts)
                 {
@@ -123,10 +133,12 @@ namespace Infrastructure.Persistence
                         Nome = district.Name
                     };
 
-                    context.Distrito.Add(entity);
-
-                    await context.SaveChangesAsync();
+                    listEntity.Add(entity);
                 };
+
+                context.Distrito.AddRange(listEntity);
+
+                await context.SaveChangesAsync();
             }
         }
     }
