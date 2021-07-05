@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Infrastructure.AdministrativeDivision.Division;
 
 namespace Infrastructure.Persistence
 {
@@ -54,7 +55,8 @@ namespace Infrastructure.Persistence
             {
                 var entity = new Pais
                 {
-                    Nome = "Brasil"
+                    Nome = "Brasil",
+                    Sigla = "BR"
                 };
 
                 context.Pais.Add(entity);
@@ -78,7 +80,7 @@ namespace Infrastructure.Persistence
                     {
                         Pais = country,
                         Nome = state.Name,
-                        Siglas = state.Initials
+                        Sigla = state.Initials
                     };
 
                     listEntity.Add(entity);

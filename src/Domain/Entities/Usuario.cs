@@ -10,9 +10,7 @@ namespace Domain.Entities
     {
         public string Id { get; set; }
 
-        #region TipoUsuario
         public TipoUsuario TipoUsuario { get; set; }
-        #endregion
 
         public string ContaBancaria { get; set; }
     }

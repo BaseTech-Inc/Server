@@ -19,7 +19,7 @@ namespace Infrastructure.Persistence
         {
         }
 
-        public DbSet<Localizacao> Localizacao { get; set; }
+        public DbSet<Ponto> Localizacao { get; set; }
         public DbSet<Pais> Pais { get; set; }
         public DbSet<Estado> Estado { get; set; }
         public DbSet<Cidade> Cidade { get; set; }

@@ -10,10 +10,8 @@ namespace Domain.Entities
     {
         public string Id { get; set; }
 
-        #region Localizacao
-        public Localizacao Localizacao { get; set; }
-        #endregion
-
         public string Nome { get; set; }
+
+        public string Sigla { get; set; }
     }
 }

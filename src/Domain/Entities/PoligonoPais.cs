@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Localizacao
+    public class PoligonoPais
     {
         public string Id { get; set; }
 
-        public double Latitude { get; set; }
+        public Ponto Ponto { get; set; }
 
-        public double Longitude { get; set; }
+        public Pais Pais { get; set; }
     }
 }

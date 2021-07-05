@@ -4,14 +4,16 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210705035730_UpdateDatabase")]
+    partial class UpdateDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("DistritoId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("PontoId")
+                    b.Property<string>("LocalizacaoId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Tempo")
@@ -47,7 +49,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("DistritoId");
 
-                    b.HasIndex("PontoId");
+                    b.HasIndex("LocalizacaoId");
 
                     b.ToTable("Alerta");
                 });
@@ -64,9 +66,14 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PontoId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EstadoId");
+
+                    b.HasIndex("PontoId");
 
                     b.ToTable("Cidade");
                 });
@@ -83,9 +90,14 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PontoId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CidadeId");
+
+                    b.HasIndex("PontoId");
 
                     b.ToTable("Distrito");
                 });
@@ -102,12 +114,17 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("PaisId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("PontoId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Sigla")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PaisId");
+
+                    b.HasIndex("PontoId");
 
                     b.ToTable("Estado");
                 });
@@ -214,10 +231,15 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PontoId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Sigla")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PontoId");
 
                     b.ToTable("Pais");
                 });
@@ -488,13 +510,13 @@ namespace Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("DistritoId");
 
-                    b.HasOne("Domain.Entities.Ponto", "Ponto")
+                    b.HasOne("Domain.Entities.Ponto", "Localizacao")
                         .WithMany()
-                        .HasForeignKey("PontoId");
+                        .HasForeignKey("LocalizacaoId");
 
                     b.Navigation("Distrito");
 
-                    b.Navigation("Ponto");
+                    b.Navigation("Localizacao");
                 });
 
             modelBuilder.Entity("Domain.Entities.Cidade", b =>
@@ -503,7 +525,13 @@ namespace Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("EstadoId");
 
+                    b.HasOne("Domain.Entities.Ponto", "Ponto")
+                        .WithMany()
+                        .HasForeignKey("PontoId");
+
                     b.Navigation("Estado");
+
+                    b.Navigation("Ponto");
                 });
 
             modelBuilder.Entity("Domain.Entities.Distrito", b =>
@@ -512,7 +540,13 @@ namespace Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("CidadeId");
 
+                    b.HasOne("Domain.Entities.Ponto", "Ponto")
+                        .WithMany()
+                        .HasForeignKey("PontoId");
+
                     b.Navigation("Cidade");
+
+                    b.Navigation("Ponto");
                 });
 
             modelBuilder.Entity("Domain.Entities.Estado", b =>
@@ -521,7 +555,13 @@ namespace Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("PaisId");
 
+                    b.HasOne("Domain.Entities.Ponto", "Ponto")
+                        .WithMany()
+                        .HasForeignKey("PontoId");
+
                     b.Navigation("Pais");
+
+                    b.Navigation("Ponto");
                 });
 
             modelBuilder.Entity("Domain.Entities.HistoricoPrevisao", b =>
@@ -567,6 +607,15 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Ponto");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Pais", b =>
+                {
+                    b.HasOne("Domain.Entities.Ponto", "Ponto")
+                        .WithMany()
+                        .HasForeignKey("PontoId");
+
+                    b.Navigation("Ponto");
                 });
 
             modelBuilder.Entity("Domain.Entities.Usuario", b =>

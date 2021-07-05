@@ -11,6 +11,6 @@ namespace Domain.Entities
     {
         public string Id { get; set; }
 
-        public EnumTipoUsuario Nome { get; set; }
+        public EnumTipoUsuario Descricao { get; set; }
     }
 }

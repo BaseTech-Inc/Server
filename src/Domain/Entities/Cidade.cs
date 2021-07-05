@@ -10,13 +10,7 @@ namespace Domain.Entities
     {
         public string Id { get; set; }
 
-        #region Localizacao
-        public Localizacao Localizacao { get; set; }
-        #endregion
-
-        #region Estado
         public Estado Estado { get; set; }
-        #endregion
 
         public string Nome { get; set; }
     }
