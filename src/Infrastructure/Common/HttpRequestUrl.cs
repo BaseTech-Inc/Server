@@ -48,14 +48,14 @@ namespace Infrastructure.Common
         // HttpClient
         private static readonly HttpClient client = new HttpClient();
 
-        public static async Task<List<T>> ProcessHttpClient<T>(string url, JsonSerializerOptions options = null)
+        public static async Task<T> ProcessHttpClient<T>(string url, JsonSerializerOptions options = null)
         {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
             var streamTask = client.GetStreamAsync(url);
-            var objectResult = await JsonSerializer.DeserializeAsync<List<T>>(await streamTask);
+            var objectResult = await JsonSerializer.DeserializeAsync<T>(await streamTask);
 
             return objectResult;
         }

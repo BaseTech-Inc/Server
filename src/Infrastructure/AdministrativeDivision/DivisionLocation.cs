@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.AdministrativeDivision
 {
-    public class Division
+    public class DivisionLocation
     {
         public class DivisionBase
         {

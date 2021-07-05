@@ -10,7 +10,7 @@ namespace Domain.Entities
     {
         public string Id { get; set; }
 
-        public Ponto Ponto { get; set; }
+        public Poligono Poligono { get; set; }
 
         public Distrito Distrito { get; set; }
     }

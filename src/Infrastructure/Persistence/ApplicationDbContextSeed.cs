@@ -3,12 +3,15 @@ using Domain.Entities;
 using Infrastructure.AdministrativeDivision;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using static Infrastructure.AdministrativeDivision.Division;
+using static Infrastructure.AdministrativeDivision.DivisionLocation;
 
 namespace Infrastructure.Persistence
 {
@@ -46,7 +49,9 @@ namespace Infrastructure.Persistence
             }
         }
 
-        public static async Task SeedAdministrativeDivisionAsync(ApplicationDbContext context)
+        public static async Task SeedAdministrativeDivisionAsync(
+            ApplicationDbContext context,
+            ILogger logger)
         {
             var administrativeDivisionService = new AdministrativeDivisionService();
 
@@ -67,7 +72,7 @@ namespace Infrastructure.Persistence
             // Estado
             if (!context.Estado.Any())
             {
-                var states = await administrativeDivisionService.ProcessDivisions<DivisionState>("/estados");
+                var states = await administrativeDivisionService.ProcessDivisionsLocations<DivisionState>("/estados");
 
                 // Pais
                 var country = context.Pais.Where(x => x.Nome == "Brasil").FirstOrDefault();
@@ -94,7 +99,7 @@ namespace Infrastructure.Persistence
             // Cidade
             if (!context.Cidade.Any())
             {               
-                var counties = await administrativeDivisionService.ProcessDivisions<DivisionCounty>("/municipios");
+                var counties = await administrativeDivisionService.ProcessDivisionsLocations<DivisionCounty>("/municipios");
 
                 var listEntity = new List<Cidade>();
 
@@ -120,7 +125,7 @@ namespace Infrastructure.Persistence
             // Distrito
             if (!context.Distrito.Any())
             {
-                var districts = await administrativeDivisionService.ProcessDivisions<DivisionDistrict>("/distritos");
+                var districts = await administrativeDivisionService.ProcessDivisionsLocations<DivisionDistrict>("/distritos");
 
                 var listEntity = new List<Distrito>();
 

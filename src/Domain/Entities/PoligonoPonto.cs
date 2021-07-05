@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class PoligonoPais
+    public class PoligonoPonto
     {
         public string Id { get; set; }
 
         public Poligono Poligono { get; set; }
 
-        public Pais Pais { get; set; }
+        public Ponto Ponto { get; set; }
     }
 }

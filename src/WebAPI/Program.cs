@@ -26,6 +26,7 @@ namespace WebAPI
 
                 try
                 {
+                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                     var context = services.GetRequiredService<ApplicationDbContext>();
 
                     if (context.Database.IsSqlServer())
@@ -37,7 +38,7 @@ namespace WebAPI
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
                     await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
-                    await ApplicationDbContextSeed.SeedAdministrativeDivisionAsync(context);
+                    await ApplicationDbContextSeed.SeedAdministrativeDivisionAsync(context, logger);
                 }
                 catch (Exception ex)
                 {
