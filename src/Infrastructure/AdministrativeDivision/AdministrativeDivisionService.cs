@@ -1,4 +1,7 @@
 ﻿using Infrastructure.Common;
+using Infrastructure.GeoJson.Features;
+using Infrastructure.GeoJson.Geometry;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +18,7 @@ namespace Infrastructure.AdministrativeDivision
         const string baseUrlLocations = "https://servicodados.ibge.gov.br/api/v1/localidades";
         const string baseUrlMeshes = "https://servicodados.ibge.gov.br/api/v3/malhas";
 
-        public async Task<List<T>> ProcessDivisionsLocations<T>(string path)
+        public static async Task<List<T>> ProcessDivisionsLocations<T>(string path)
         {
             string url = baseUrlLocations
                 .AddPath(path);
@@ -25,7 +28,8 @@ namespace Infrastructure.AdministrativeDivision
             return division;
         }
 
-        public async Task<T> ProcessDivisionsMeshes<T>(string path, string identifier)
+        public static async Task<Feature<TGeometry>> ProcessDivisionsMeshes<TGeometry>(string path, string identifier)
+            where TGeometry : IGeometryObject
         {
             HttpClient client = new HttpClient();
 
@@ -34,14 +38,24 @@ namespace Infrastructure.AdministrativeDivision
                 .AddPath(identifier)
                 .SetQueryParams(new
                 {
-                    qualidade = "intermediaria",
+                    qualidade = "minima",
                     formato = "application/vnd.geo+json"
                 });
 
-            var division = await HttpRequestUrl.ProcessHttpClient<T>(url);
-            
+            var json = await HttpRequestUrl.ProcessHttpClient(url);
 
-            return division;
+            var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json);
+
+            var feature = JsonConvert.DeserializeObject<Feature<TGeometry>>(JsonConvert.SerializeObject(featureCollection.Features[0]));
+
+            return feature;
+        }
+
+        public static async Task<Feature<IGeometryObject>> ProcessDivisionsMeshes(string path, string identifier)
+        {
+            var feature = await ProcessDivisionsMeshes<IGeometryObject>(path, identifier);
+
+            return feature;
         }
     }
 }

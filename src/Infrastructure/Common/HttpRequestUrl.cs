@@ -59,5 +59,16 @@ namespace Infrastructure.Common
 
             return objectResult;
         }
+
+        public static async Task<String> ProcessHttpClient(string url)
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var streamTask = client.GetStringAsync(url);
+
+            return await streamTask;
+        }
     }
 }
