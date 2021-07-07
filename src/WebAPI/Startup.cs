@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using Infrastructure;
 using Application;
+using NSwag;
 
 namespace WebAPI
 {
@@ -32,7 +33,29 @@ namespace WebAPI
 
             services.AddControllers();
 
-            services.AddSwaggerDocument();
+            services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Version = "v1.0.0";
+                    document.Info.Title = "Documentação - Tupã Server";
+                    document.Info.Description = "Documentação para o uso da API.";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "BaseTech Inc.",
+                        Email = "basetechincorporations@gmail.com",
+                        Url = "https://github.com/BaseTech-Inc"
+                    };
+                };
+
+                config.AddSecurity("Bearer", new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Autorização",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Description = "Fornecer autenticação"
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
