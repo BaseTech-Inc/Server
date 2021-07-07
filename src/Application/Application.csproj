@@ -16,7 +16,6 @@
     <Folder Include="Common\Behaviours\" />
     <Folder Include="Distritos\Queries\GetMeshesDistritosById\" />
     <Folder Include="Estados\Queries\GetMeshesEstadosById\" />
-    <Folder Include="Previsao\" />
     <Folder Include="Paises\Queries\GetMeshesPaisesById\" />
   </ItemGroup>
 

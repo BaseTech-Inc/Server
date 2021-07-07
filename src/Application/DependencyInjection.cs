@@ -5,6 +5,7 @@ using Application.Distritos.Queries.GetDistritosByName;
 using Application.Estados.Queries.GetAllEstados;
 using Application.Estados.Queries.GetEstadosByName;
 using Application.Estados.Queries.GetPaisesByName;
+using Application.Localidades.Queries.GetLocalidadesByNames;
 using Application.Marcador.Commands.CreateMarcadores;
 using Application.Marcador.Commands.DeleteMarcadores;
 using Application.Marcador.Commands.UpdateMarcadores;
@@ -58,6 +59,13 @@ namespace Application
             services
                 .AddTransient<IGetAllDistritosQueryHandler, GetAllDistritosQueryHandler>()
                 .AddTransient<IGetDistritosByNameQueryHandler, GetDistritosByNameQueryHandler>();
+
+            #endregion
+
+            #region
+
+            services
+                .AddTransient<IGetLocalidadeByNameQueryHandler, GetLocalidadeByNameQueryHandler>();
 
             #endregion
 

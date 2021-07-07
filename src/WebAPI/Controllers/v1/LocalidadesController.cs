@@ -1,0 +1,40 @@
+﻿using Application.Common.Models;
+using Application.Localidades.Queries.GetLocalidadesByNames;
+using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+
+namespace WebAPI.Controllers.v1
+{
+    [Authorize]
+    public class LocalidadesController : ApiControllerBase
+    {
+        public LocalidadesController()
+        { }
+
+        // GET: api/localidades/?namePais=namePais&nameEstado=nameEstado&nameCidade=nameCidade&nameDistrito=nameDistrito
+        [HttpGet]
+        public async Task<ActionResult<Response<IList<Distrito>>>> Create(
+            [FromServices] IGetLocalidadeByNameQueryHandler handler,
+            [FromQuery] GetLocalidadesByNameQuery command
+        )
+        {
+            var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound();
+            }
+
+            return Created(
+                HttpRequestHeader.Referer.ToString(),
+                response
+                );
+        }
+    }
+}
