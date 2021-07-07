@@ -1,3 +1,4 @@
+using Application.Common.Interfaces;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
@@ -36,9 +37,11 @@ namespace WebAPI
 
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    var placesService = services.GetRequiredService<IPlacesService>();
+                    var meshesService = services.GetRequiredService<IMeshesService>();
 
                     await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
-                    await ApplicationDbContextSeed.SeedAdministrativeDivisionAsync(context, logger);
+                    await ApplicationDbContextSeed.SeedDefaultPlacesAsync(context, placesService, meshesService, logger);
                 }
                 catch (Exception ex)
                 {

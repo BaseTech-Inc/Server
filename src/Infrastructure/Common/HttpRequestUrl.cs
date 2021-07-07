@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Application.Common.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -12,7 +11,6 @@ namespace Infrastructure.Common
 {
     public static class HttpRequestUrl
     {
-        // UrlConfiguration
         public static string SetBaseAdress(this string url, string baseadress)
         {
             return baseadress;
@@ -45,7 +43,6 @@ namespace Infrastructure.Common
             return url;
         }
 
-        // HttpClient
         private static readonly HttpClient client = new HttpClient();
 
         public static async Task<T> ProcessHttpClient<T>(string url, JsonSerializerOptions options = null)

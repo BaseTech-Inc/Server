@@ -1,7 +1,9 @@
 ﻿using Application.Common.Enumerations;
 using Application.Common.Interfaces;
+using Infrastructure.AdministrativeDivision;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
+using Infrastructure.Places;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -86,6 +88,8 @@ namespace Infrastructure
 
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IPlacesService, PlacesService>();
+            services.AddTransient<IMeshesService, MeshesService>();
 
             return services;
         }

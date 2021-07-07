@@ -28,9 +28,11 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructure(Configuration);
-            // services.AddApplication();
+            services.AddApplication();
 
             services.AddControllers();
+
+            services.AddSwaggerDocument();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -51,6 +53,9 @@ namespace WebAPI
             {
                 endpoints.MapControllers();
             });
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
         }
     }
 }

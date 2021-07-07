@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.GeoJson
+namespace Application.Common.Interfaces
 {
-    public interface IGeoJSONObject
+    public interface IPlacesService
     {
-        GeoJSONObjectType Type { get; }
+        Task<List<T>> ProcessPlaces<T>(string path);
     }
 }

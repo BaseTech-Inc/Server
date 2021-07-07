@@ -1,13 +1,8 @@
-﻿using Infrastructure.GeoJson.Converters;
-using Infrastructure.GeoJson.Geometry;
+﻿using Application.GeoJson.Converters;
+using Application.GeoJson.Geometry;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Infrastructure.GeoJson.Features
+namespace Application.GeoJson.Features
 {
     public class Feature<TGeometry> : GeoJSONObject
        where TGeometry : IGeometryObject

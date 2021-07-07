@@ -1,11 +1,8 @@
-﻿using Infrastructure.GeoJson.Geometry;
+﻿using Application.GeoJson.Geometry;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Infrastructure.GeoJson
+namespace Application.GeoJson
 {
     internal static class PositionExtensions
     {

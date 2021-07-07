@@ -1,14 +1,12 @@
-﻿using Infrastructure.GeoJson.Features;
-using Infrastructure.GeoJson.Geometry;
+﻿using Application.GeoJson.Features;
+using Application.GeoJson.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Infrastructure.GeoJson.Converters
+namespace Application.GeoJson.Converters
 {
 	public class GeoJsonConverter : JsonConverter
 	{

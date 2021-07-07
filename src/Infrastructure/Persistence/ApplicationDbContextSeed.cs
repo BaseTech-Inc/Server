@@ -1,8 +1,9 @@
 ﻿using Application.Common.Enumerations;
+using Application.Common.Interfaces;
+using Application.GeoJson;
+using Application.GeoJson.Features;
+using Application.GeoJson.Geometry;
 using Domain.Entities;
-using Infrastructure.AdministrativeDivision;
-using Infrastructure.GeoJson;
-using Infrastructure.GeoJson.Geometry;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -51,11 +52,12 @@ namespace Infrastructure.Persistence
             }
         }        
 
-        public static async Task SeedAdministrativeDivisionAsync(
+        public static async Task SeedDefaultPlacesAsync(
             ApplicationDbContext context,
+            IPlacesService placesService,
+            IMeshesService meshesService,
             ILogger logger)
         {
-
             // Pais
             if (!context.Pais.Any())
             {
@@ -68,76 +70,19 @@ namespace Infrastructure.Persistence
                 };
 
                 context.Pais.Add(entity);
-
                 await context.SaveChangesAsync();
 
-                var geoJson = await AdministrativeDivisionService.ProcessDivisionsMeshes("/paises", "/" + entity.Sigla);
+                var polygons = await SeedDefaultMeshesAsync(context, meshesService, logger, "/paises", "BR");
 
-                var geoJsonType = geoJson.Geometry.Type;
-
-                if (geoJsonType == GeoJSONObjectType.Polygon)
+                foreach (var polygon in polygons)
                 {
-                    var geoJsonPolygon = await AdministrativeDivisionService.ProcessDivisionsMeshes<Polygon>("/paises", "/" + entity.Sigla);
-                }
-                else if (geoJsonType == GeoJSONObjectType.MultiPolygon)
-                {
-                    var geoJsonPolygons = await AdministrativeDivisionService.ProcessDivisionsMeshes<MultiPolygon>("/paises", "/" + entity.Sigla);
-
-                    var listEntityPonto = new List<Ponto>();
-                    var listEntityPoligono = new List<Poligono>();
-                    var listEntityPoligonoPonto = new List<PoligonoPonto>();
-                    var listEntityPoligonoPais = new List<PoligonoPais>();
-
-                    foreach (var geoJsonMultiPolygon in geoJsonPolygons.Geometry.Coordinates)
+                    var poligonoPaisEntity = new PoligonoPais()
                     {
-                        foreach (var geoJsonPolygon in geoJsonMultiPolygon.Coordinates)
-                        {
-                            var poligono = new Poligono()
-                            { };
+                        Pais = entity,
+                        Poligono = polygon
+                    };
 
-                            listEntityPoligono.Add(poligono);
-
-                            foreach (var geoJsonLineString in geoJsonPolygon.Coordinates)
-                            {
-                                foreach (var geoJsonPoint in geoJsonPolygon.Coordinates)
-                                {
-                                    var ponto = new Ponto()
-                                    {
-                                        Latitude = geoJsonPoint.Latitude,
-                                        Longitude = geoJsonPoint.Longitude,
-                                    };
-
-                                    var poligonoPonto = new PoligonoPonto()
-                                    {
-                                        Poligono = poligono,
-                                        Ponto = ponto
-                                    };
-
-                                    listEntityPonto.Add(ponto);
-                                    listEntityPoligonoPonto.Add(poligonoPonto);                                    
-                                }
-                            }
-
-                            var poligonoPais = new PoligonoPais()
-                            {
-                                Pais = entity,
-                                Poligono = poligono
-                            };
-
-                            listEntityPoligonoPais.Add(poligonoPais);                            
-                        }
-                    }
-
-                    context.Ponto.AddRange(listEntityPonto);
-                    await context.SaveChangesAsync();
-
-                    context.Poligono.AddRange(listEntityPoligono);
-                    await context.SaveChangesAsync();
-
-                    context.PoligonoPonto.AddRange(listEntityPoligonoPonto);
-                    await context.SaveChangesAsync();
-
-                    context.PoligonoPais.AddRange(listEntityPoligonoPais);
+                    context.PoligonoPais.Add(poligonoPaisEntity);
                     await context.SaveChangesAsync();
                 }
             }
@@ -147,12 +92,14 @@ namespace Infrastructure.Persistence
             {
                 logger.LogInformation("Estado Seed");
 
-                var states = await AdministrativeDivisionService.ProcessDivisionsLocations<DivisionState>("/estados");
+                var states = await placesService.ProcessPlaces<DivisionState>("/estados");                
 
                 // Pais
                 var country = context.Pais.Where(x => x.Nome == "Brasil").FirstOrDefault();
 
                 var listEntity = new List<Estado>();
+
+                var listPoligonoEstado = new List<PoligonoEstado>();
 
                 foreach (var state in states)
                 {
@@ -163,11 +110,25 @@ namespace Infrastructure.Persistence
                         Sigla = state.Initials
                     };
 
-                    listEntity.Add(entity);
+                    listEntity.Add(entity);                    
+
+                    var polygons = await SeedDefaultMeshesAsync(context, meshesService, logger, "/estados", state.Id.ToString());
+
+                    foreach (var polygon in polygons)
+                    {                      
+                        var poligonoEstadoEntity = new PoligonoEstado()
+                        {
+                            Estado = entity,
+                            Poligono = polygon
+                        };
+
+                        listPoligonoEstado.Add(poligonoEstadoEntity);
+
+                        
+                    }
                 };
 
-                context.Estado.AddRange(listEntity);
-
+                context.PoligonoEstado.AddRange(listPoligonoEstado);
                 await context.SaveChangesAsync();
             }
 
@@ -176,9 +137,10 @@ namespace Infrastructure.Persistence
             {
                 logger.LogInformation("Cidade Seed");
 
-                var counties = await AdministrativeDivisionService.ProcessDivisionsLocations<DivisionCounty>("/municipios");
+                var counties = await placesService.ProcessPlaces<DivisionCounty>("/municipios");
 
                 var listEntity = new List<Cidade>();
+                var listPoligonoCidadeEntity = new List<PoligonoCidade>();
 
                 foreach (var county in counties)
                 {
@@ -192,10 +154,28 @@ namespace Infrastructure.Persistence
                     };
 
                     listEntity.Add(entity);
+
+                    if (county.Name == "São Paulo")
+                    {
+                        var polygons = await SeedDefaultMeshesAsync(context, meshesService, logger, "/municipios", county.Id.ToString());
+
+                        foreach (var polygon in polygons)
+                        {
+                            var poligonoCidadeEntity = new PoligonoCidade()
+                            {
+                                Cidade = entity,
+                                Poligono = polygon
+                            };
+
+                            listPoligonoCidadeEntity.Add(poligonoCidadeEntity);
+                        }
+                    }                    
                 };
 
                 context.Cidade.AddRange(listEntity);
+                await context.SaveChangesAsync();
 
+                context.PoligonoCidade.AddRange(listPoligonoCidadeEntity);
                 await context.SaveChangesAsync();
             }
 
@@ -204,7 +184,7 @@ namespace Infrastructure.Persistence
             {
                 logger.LogInformation("Distrito Seed");
 
-                var districts = await AdministrativeDivisionService.ProcessDivisionsLocations<DivisionDistrict>("/distritos");
+                var districts = await placesService.ProcessPlaces<DivisionDistrict>("/distritos");
 
                 var listEntity = new List<Distrito>();
 
@@ -223,14 +203,90 @@ namespace Infrastructure.Persistence
                 };
 
                 context.Distrito.AddRange(listEntity);
-
                 await context.SaveChangesAsync();
             }
         }
 
-        private static async Task SeedAdministrativeDivisionMeshesAsync<T>()
+        private static async Task<List<Poligono>> SeedDefaultMeshesAsync(
+            ApplicationDbContext context,
+            IMeshesService meshesService,
+            ILogger logger,
+            string path, 
+            string identifier)
         {
+            var geoJson = await meshesService.ProcessMeshes(path, "/" + identifier);
 
+            var geoJsonType = geoJson.Geometry.Type;
+
+            List<Feature<Polygon>> geoJsonListPolygons = null;
+
+            var listPolygons = new List<Poligono>();
+
+            switch (geoJsonType)
+            {
+                case GeoJSONObjectType.Polygon:
+                    if (geoJsonListPolygons == null)
+                    {
+                        geoJsonListPolygons = new List<Feature<Polygon>>();
+
+                        geoJsonListPolygons.Add(await meshesService.ProcessMeshes<Polygon>(path, "/" + identifier));
+                    }                        
+
+                    foreach (var geoJsonPolygon in geoJsonListPolygons)
+                    {
+                        // Polygon
+                        var poligonoEntity = new Poligono();
+
+                        listPolygons.Add(poligonoEntity);
+
+                        // Point
+                        var pontoListEntity = new List<Ponto>();
+                        var poligonoPontoListEntity = new List<PoligonoPonto>();
+
+                        foreach (var geoJsonLineString in geoJsonPolygon.Geometry.Coordinates)
+                        {
+                            foreach (var geoJsonPoint in geoJsonLineString.Coordinates)
+                            {
+                                var ponto = new Ponto()
+                                {
+                                    Latitude = geoJsonPoint.Latitude,
+                                    Longitude = geoJsonPoint.Longitude
+                                };
+
+                                var poligonoPonto = new PoligonoPonto()
+                                {
+                                    Poligono = poligonoEntity,
+                                    Ponto = ponto
+                                };
+
+                                pontoListEntity.Add(ponto);
+                                poligonoPontoListEntity.Add(poligonoPonto);
+                            }
+                        }
+
+                        context.PoligonoPonto.AddRange(poligonoPontoListEntity);
+                        await context.SaveChangesAsync();
+                    }     
+
+                    break;
+                case GeoJSONObjectType.MultiPolygon:
+                    geoJsonListPolygons = new List<Feature<Polygon>>();
+
+                    var geoJsonMultiPolygons = await meshesService.ProcessMeshes<MultiPolygon>(path, "/" + identifier);
+
+                    foreach (var geoJsonPolygon in geoJsonMultiPolygons.Geometry.Coordinates)
+                    {
+                        var featurePolygon = new Feature<Polygon>(geoJsonPolygon);
+
+                        geoJsonListPolygons.Add(featurePolygon);                            
+                    }
+
+                    goto case GeoJSONObjectType.Polygon;
+                default:
+                    throw new InvalidOperationException("unknown item type");
+            }
+
+            return listPolygons;
         }
     }
 }

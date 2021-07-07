@@ -1,12 +1,8 @@
-﻿using Infrastructure.GeoJson.Geometry;
+﻿using Application.GeoJson.Geometry;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Infrastructure.GeoJson.Converters
+namespace Application.GeoJson.Converters
 {
     public class PositionConverter : JsonConverter
     {
