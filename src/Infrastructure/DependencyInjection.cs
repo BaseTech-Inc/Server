@@ -84,19 +84,26 @@ namespace Infrastructure
                                 return Task.CompletedTask;
                             }
 
-                            var part = context.Token.Split(".")[1];
-                            var bytes = Convert.FromBase64String(part);
-                            var stringsBytes = Encoding.UTF8.GetString(bytes).Replace("\"", "").Split(",");
-
-                            foreach (var stringBytes in stringsBytes)
+                            try
                             {
-                                if (stringBytes.Contains("uid"))
-                                {
-                                    var uid = stringBytes.Split(":")[1];
+                                var part = context.Token.Split(".")[1];
+                                var bytes = Convert.FromBase64String(part);
+                                var stringsBytes = Encoding.UTF8.GetString(bytes).Replace("\"", "").Split(",");
 
-                                    context.Request.QueryString = context.Request.QueryString.Add("UserId", uid);
+                                foreach (var stringBytes in stringsBytes)
+                                {
+                                    if (stringBytes.Contains("uid"))
+                                    {
+                                        var uid = stringBytes.Split(":")[1];
+
+                                        context.Request.QueryString = context.Request.QueryString.Add("UserId", uid);
+                                    }
                                 }
-                            }                            
+                            }
+                            catch
+                            {
+
+                            }
 
                             return Task.CompletedTask;
                         }

@@ -12,7 +12,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Cidades\Queries\GetMeshesCidadeById\" />
+    <Folder Include="Cidades\Queries\GetCidadesByName\" />
     <Folder Include="Common\Behaviours\" />
+    <Folder Include="Distritos\Queries\GetDistritosByName\" />
+    <Folder Include="Distritos\Queries\GetMeshesDistritosById\" />
+    <Folder Include="Estados\Queries\GetMeshesEstadosById\" />
+    <Folder Include="Estados\Queries\GetPaisesByName\" />
+    <Folder Include="Paises\Queries\GetPaisesByName\" />
+    <Folder Include="Paises\Queries\GetMeshesPaisesById\" />
   </ItemGroup>
 
   <ItemGroup>
