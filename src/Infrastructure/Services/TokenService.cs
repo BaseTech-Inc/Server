@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Domain.Entities;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -17,24 +18,28 @@ namespace Infrastructure.Services
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IApplicationDbContext _context;
 
         public TokenService(
             IConfiguration configuration,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IApplicationDbContext context)
         {
             _configuration = configuration;
             _userManager = userManager;
+            _context = context;
         }
 
-        public async Task<(string tokenString, DateTime validTo)> GenerateTokenJWT(string userId)
+        public async Task<(string tokenString, DateTime validTo)> GenerateTokenJWT(string userId, string usuarioId)
         {
             var user = await _userManager.FindByIdAsync(userId);
+
             var claims = new List<Claim>();
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.UserName));
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
-            claims.Add(new Claim("uid", user.Id.ToString()));
+            claims.Add(new Claim("uid", usuarioId));
 
             foreach (var role in await _userManager.GetRolesAsync(user))
             {

@@ -6,6 +6,11 @@ using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Common.Security;
 using Application.Common.Enumerations;
+using Domain.Entities;
+using Domain.Enumerations;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System;
 
 namespace Infrastructure.Identity
 {
@@ -14,15 +19,18 @@ namespace Infrastructure.Identity
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IApplicationDbContext _context;
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
             ITokenService tokenService,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IApplicationDbContext context)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _roleManager = roleManager;
+            _context = context;
         }
 
         public async Task<Response<LoginResponse>> AuthenticateAsync(string email, string password)
@@ -48,11 +56,13 @@ namespace Infrastructure.Identity
 
                         await _userManager.AddToRolesAsync(user, new[] { authenticatedRole.Name });
 
-                        var token = await _tokenService.GenerateTokenJWT(user.Id);
+                        var usuario = _context.Usuario.Where(x => x.ApplicationUserID == user.Id).FirstOrDefault();
+
+                        var token = await _tokenService.GenerateTokenJWT(user.Id, usuario.Id);
 
                         var response = new LoginResponse()
                         {
-                            uid = user.Id,
+                            uid = usuario.Id,
                             access_token = token.tokenString,
                             token_type = "bearer",
                             expiration = token.validTo
@@ -74,21 +84,35 @@ namespace Infrastructure.Identity
             // verifica se não existe nenhum usuário cadastrado com esse username e email
             if ((userExist == null) && (emailExist == null))
             {
-                var user = new ApplicationUser
-                {
-                    UserName = username,
-                    Email = email
+                var listUsuario = new List<Usuario>();
+
+                var usuario = new Usuario
+                { 
+                    TipoUsuario = new TipoUsuario
+                    {
+                        Descricao = EnumTipoUsuario.Comum
+                    }
                 };
 
-                var resultCreate = await _userManager.CreateAsync(user, password);
+                listUsuario.Add(usuario);                
 
-                if (resultCreate.Succeeded)
+                var appUser = new ApplicationUser
                 {
-                    var tokenEmail = await _tokenService.GenerateTokenEmail(user.Id);
+                    UserName = username,
+                    Email = email,
+                    Usuario = listUsuario
+                };
 
-                    return new Response<string>(user.Id, message: $"User Registered. Please confirm your account by visiting this URL { tokenEmail }");
+                var resultCreateAppUser = await _userManager.CreateAsync(appUser, password);
+
+                if (resultCreateAppUser.Succeeded)
+                {
+                    var tokenEmail = await _tokenService.GenerateTokenEmail(appUser.Id);
+
+                    return new Response<string>(usuario.Id, message: $"User Registered. Please confirm your account by visiting this URL { tokenEmail }");
                 }
-            } else
+            } 
+            else
             {
                 return new Response<string>(message: $"You already have a registered user with this credential.");
             }
@@ -98,7 +122,9 @@ namespace Infrastructure.Identity
 
         public async Task<Response<string>> VerifyEmailAsync(string userId, string tokenEmail)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var usuario = _context.Usuario.Where(x => x.Id == userId).FirstOrDefault();
+
+            var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
 
             if (user != null)
             {
@@ -106,7 +132,7 @@ namespace Infrastructure.Identity
 
                 if (resultConfirmEmail.Succeeded)
                 {
-                    return new Response<string>(user.Id, message: $"Email confirmed successfully.");
+                    return new Response<string>(usuario.Id, message: $"Email confirmed successfully.");
                 }
             }
 

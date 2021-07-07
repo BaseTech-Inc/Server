@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\v1\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NSwag.AspNetCore" Version="13.11.3" />
   </ItemGroup>
 

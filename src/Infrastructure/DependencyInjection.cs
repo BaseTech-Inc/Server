@@ -65,6 +65,39 @@ namespace Infrastructure
                                 context.Token = context.Request.Query["access_token"];
                             }
 
+                            string authorization = context.Request.Headers["Authorization"];
+
+                            if (string.IsNullOrEmpty(authorization))
+                            {
+                                context.NoResult();
+                                return Task.CompletedTask;
+                            }
+
+                            if (authorization.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                            {
+                                context.Token = authorization.Substring("Bearer ".Length).Trim();
+                            }
+
+                            if (string.IsNullOrEmpty(context.Token))
+                            {
+                                context.NoResult();
+                                return Task.CompletedTask;
+                            }
+
+                            var part = context.Token.Split(".")[1];
+                            var bytes = Convert.FromBase64String(part);
+                            var stringsBytes = Encoding.UTF8.GetString(bytes).Replace("\"", "").Split(",");
+
+                            foreach (var stringBytes in stringsBytes)
+                            {
+                                if (stringBytes.Contains("uid"))
+                                {
+                                    var uid = stringBytes.Split(":")[1];
+
+                                    context.Request.QueryString = context.Request.QueryString.Add("UserId", uid);
+                                }
+                            }                            
+
                             return Task.CompletedTask;
                         }
                     };

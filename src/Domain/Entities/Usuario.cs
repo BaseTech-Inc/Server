@@ -7,5 +7,7 @@
         public TipoUsuario TipoUsuario { get; set; }
 
         public string ContaBancaria { get; set; }
+
+        public string ApplicationUserID { get; set; }
     }
 }
