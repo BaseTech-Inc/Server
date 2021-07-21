@@ -13,7 +13,8 @@ using System.Threading.Tasks;
 
 using Infrastructure;
 using Application;
-using NSwag;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebAPI
 {
@@ -33,27 +34,52 @@ namespace WebAPI
 
             services.AddControllers();
 
-            services.AddSwaggerDocument(config =>
+            /*services.AddSwaggerDocument(config =>
             {
-                config.PostProcess = document =>
+                config.AddSecurity("Bearer", new OpenApiSecurityScheme
                 {
-                    document.Info.Version = "v1.0.0";
-                    document.Info.Title = "Documentação - Tupã Server";
-                    document.Info.Description = "Documentação para o uso da API.";
-                    document.Info.Contact = new NSwag.OpenApiContact
+                    Name = "JWT Authentication",
+                    Description = "Enter JWT Bearer token **_only_**",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT"
+                });
+            });*/
+
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1.0.0",
+                    Title = "Documentação - Tupã Server",
+                    Description = "Documentação para o uso da API.",
+                    Contact = new OpenApiContact
                     {
                         Name = "BaseTech Inc.",
                         Email = "basetechincorporations@gmail.com",
-                        Url = "https://github.com/BaseTech-Inc"
-                    };
+                        Url = new Uri("https://github.com/BaseTech-Inc")
+                    },
+                });
+
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "JWT Authentication",
+                    Description = "Enter JWT Bearer token **_only_**",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer", // must be lower case
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
                 };
 
-                config.AddSecurity("Bearer", new OpenApiSecurityScheme
-                {
-                    Type = OpenApiSecuritySchemeType.ApiKey,
-                    Name = "Autorização",
-                    In = OpenApiSecurityApiKeyLocation.Header,
-                    Description = "Fornecer autenticação"
+                config.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+                config.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {securityScheme, new string[] { }}
                 });
             });
         }
@@ -67,6 +93,12 @@ namespace WebAPI
 
             app.UseHttpsRedirection();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -76,9 +108,6 @@ namespace WebAPI
             {
                 endpoints.MapControllers();
             });
-
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
         }
     }
 }

@@ -3,6 +3,8 @@ using Application.Common.Models;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
+
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +31,7 @@ namespace Application.Marcador.Queries.GetAllMarcadores
             {
                 var entityUsuario = _context.Usuario.Where(x => x.Id == request.UserId).FirstOrDefault();
 
-                var entity = _context.Marcadores.Where(x => x.Usuario == entityUsuario).ToList();
+                var entity = _context.Marcadores.Where(x => x.Usuario == entityUsuario).Include(e => e.Ponto).ToList();
 
                 return new Response<IList<Marcadores>>(data: entity);
             }

@@ -4,6 +4,7 @@ using Application.GeoJson;
 using Application.GeoJson.Features;
 using Application.GeoJson.Geometry;
 using Domain.Entities;
+using Domain.Enumerations;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -38,7 +39,23 @@ namespace Infrastructure.Persistence
                 await roleManager.CreateAsync(employeeRole);
             }
 
-            var manager = new ApplicationUser { UserName = "manager@localhost", Email = "manager@localhost" };
+            var listUsuario = new List<Usuario>();
+
+            var usuario = new Usuario
+            {
+                TipoUsuario = new TipoUsuario
+                {
+                    Descricao = EnumTipoUsuario.Premium
+                }
+            };
+
+            listUsuario.Add(usuario);
+
+            var manager = new ApplicationUser { 
+                UserName = "manager@localhost", 
+                Email = "manager@localhost",
+                Usuario = listUsuario
+            };
 
             if (
                 userManager.Users.All(u => u.UserName != manager.UserName) &&
