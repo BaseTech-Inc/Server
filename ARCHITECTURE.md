@@ -14,9 +14,9 @@
 Aqui contém todos os arquivos e projetos, onde a interação acontecerá.
 Esse projeto é desenvolvido seguindos os princípios da **Arquitetura Limpa (Clean Architecture)**.
 
-<img width="100%" src="./.github/DiagramaCleanArchitecture.png" />
+<img width="40%" src="./.github/DiagramaCleanArchitecture.png" align="right"  />
 
-O diagrama acima dá a visão geral das referências e interações de cada camada que dá forma a este software.
+O diagrama dá a visão geral das referências e interações de cada camada que dá forma a este software.
 
 ### Application - Lógica do aplicativo
 Esta camada contém toda a lógica do aplicativo. Esta camada define interfaces que são implementadas 
