@@ -34,19 +34,6 @@ namespace WebAPI
 
             services.AddControllers();
 
-            /*services.AddSwaggerDocument(config =>
-            {
-                config.AddSecurity("Bearer", new OpenApiSecurityScheme
-                {
-                    Name = "JWT Authentication",
-                    Description = "Enter JWT Bearer token **_only_**",
-                    In = OpenApiSecurityApiKeyLocation.Header,
-                    Type = OpenApiSecuritySchemeType.ApiKey,
-                    Scheme = "bearer",
-                    BearerFormat = "JWT"
-                });
-            });*/
-
             services.AddSwaggerGen(config =>
             {
                 config.SwaggerDoc("v1", new OpenApiInfo
@@ -68,7 +55,7 @@ namespace WebAPI
                     Description = "Enter JWT Bearer token **_only_**",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
-                    Scheme = "bearer", // must be lower case
+                    Scheme = "bearer",
                     BearerFormat = "JWT",
                     Reference = new OpenApiReference
                     {
