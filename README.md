@@ -1,7 +1,5 @@
 <center>
-
-:umbrella: Tupã Server - API usada para a comunicação entre os serviços e produtos da empresa Tupã - [Mobile](https://github.com/BaseTech-Inc/Tupa-Mobile), [Web](https://github.com/BaseTech-Inc/Tupa-Web) e [Desktop](https://github.com/BaseTech-Inc/Tupa-Desktop).
-
+:umbrella: Tupã Server - API usada para a comunicação entre os serviços e produtos da empresa Tupã - Mobile, Web e Desktop.
 </center>
 
 <img src="https://github.githubassets.com/images/mona-whisper.gif" align="right" />
