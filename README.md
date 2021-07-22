@@ -1,8 +1,12 @@
-<p align=center>
-:umbrella: Tupã Server - API usada para a comunicação entre os serviços e produtos da empresa Tupã - Mobile, Web e Desktop.
-</p>
+<center>
+<img width="24%" src="./.github/logo.png" />
+</center>
 
-<img src="https://github.githubassets.com/images/mona-whisper.gif" align="right" />
+<div align="center">
+<i>
+    API usada para a comunicação entre os serviços e produtos da empresa Tupã - Mobile, Web e Desktop.
+</i>
+</div>
 
 ## Começando
 
@@ -56,4 +60,6 @@ e executar o seguinte comando:
 ## Arquitetura
 
 Como esse software funciona internamente e como ele interage com dependências 
-externas - escritos em detalhes em [ARCHITECTURE.md](ARCHITECTURE.md).
+externas - escritos em detalhes em [`ARCHITECTURE.md`](ARCHITECTURE.md).
+
+<img src="https://github.githubassets.com/images/mona-whisper.gif" align="right" />
