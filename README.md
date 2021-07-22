@@ -5,7 +5,7 @@
 - [ASP.NET Core 5]( https://docs.microsoft.com/pt-br/dotnet/core/dotnet-five)
 - [Entity Framework Core 5](https://docs.microsoft.com/en-us/ef/core/)
 
-## Começando
+## Configuração
 
 ### User-secrets configuração
 
@@ -41,7 +41,7 @@ Para criar as migrações é nescessário navegar até **Infrastructure/**, abrir o t
 e executar o seguinte comando:
 
 ```bash
-    dotnet ef migrations add [MigrationName] -s ../WebAPI/ -o ./Persistence/Migrations/
+    dotnet ef migrations add "MigrationName" -s ../WebAPI/ -o ./Persistence/Migrations/
 ```
 
 Para aplicar as migrações no banco de dados é nescessário executar o seguinte comando:
@@ -49,3 +49,8 @@ Para aplicar as migrações no banco de dados é nescessário executar o seguinte co
 ```bash
     dotnet ef database update -s ../WebAPI/
 ```
+
+## Arquitetura
+
+Como esse software funciona internamente e como ele interage com dependências 
+externas - escritos em detalhes em [ARCHITECTURE.md](ARCHITECTURE.md).
