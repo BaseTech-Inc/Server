@@ -1,8 +1,6 @@
-<center>
-<img width="24%" src="./.github/logo.png" />
-</center>
-
 <div align="center">
+<img align="center" width="24%" src="./.github/logo.png" />
+<br>
 <i>
     API usada para a comunicação entre os serviços e produtos da empresa Tupã - Mobile, Web e Desktop.
 </i>
