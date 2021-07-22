@@ -1,6 +1,6 @@
-<center>
+<p align=center>
 :umbrella: Tupã Server - API usada para a comunicação entre os serviços e produtos da empresa Tupã - Mobile, Web e Desktop.
-</center>
+</p>
 
 <img src="https://github.githubassets.com/images/mona-whisper.gif" align="right" />
 
