@@ -1,54 +1,59 @@
+<center>
+
+:umbrella: Tupã Server - API usada para a comunicação entre os serviços e produtos da empresa Tupã - [Mobile](https://github.com/BaseTech-Inc/Tupa-Mobile), [Web](https://github.com/BaseTech-Inc/Tupa-Web) e [Desktop](https://github.com/BaseTech-Inc/Tupa-Desktop).
+
+</center>
+
 <img src="https://github.githubassets.com/images/mona-whisper.gif" align="right" />
 
-## Tecnologias
+## Começando
 
-- [ASP.NET Core 5]( https://docs.microsoft.com/pt-br/dotnet/core/dotnet-five)
-- [Entity Framework Core 5](https://docs.microsoft.com/en-us/ef/core/)
-
-## Configuração
-
-### User-secrets configuração
-
-Para inicializar os valores secretos é nescessário executar o seguinte comando em **WebAPI/**:
+### Instalando localmente projeto
 
 ```bash
-    dotnet user-secrets init
+# Clone o repositório em sua máquina
+$ git clone https://github.com/BaseTech-Inc/Tupa-Server.git
 ```
 
-E é nescessário  colocar os seguintes valores:
+### Configurando ambiente
 
-```bash
-    # A SecretKey é usada para gerar o token de acesso
-    dotnet user-secrets set "JWT:SecretKeyy" "valor_aleatório"
-```
+- Para inicializar os [valores secretos](https://docs.microsoft.com/pt-br/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=windows) 
+  é nescessário executar o seguinte comando em **`WebAPI/`**:
 
-Para gerar um valor aleatório pode-se usar esse [site](https://www.uuidgenerator.net/).
+    ```bash
+        $ dotnet user-secrets init
+    ```
 
-### Banco de dados configuração
+    É nescessário inserir os seguintes valores:
 
-Se desejar usar o SQL Server, precisará atualizar **WebAPI/appsettings.json** da seguinte maneira:
+    ```bash
+        # A SecretKey é usada para gerar o token de acesso
+        $ dotnet user-secrets set "JWT:SecretKeyy" "valor_aleatório"
+    ```
 
-```json
-  "UseInMemoryDatabase": false,
-```
+    Para gerar um valor aleatório pode-se usar esse [site](https://www.uuidgenerator.net/).
 
-Verifique se a string de conexão DefaultConnection em **WebAPI/appsettings.json** 
-aponta para uma instância válida do SQL Server.
+- Se desejar usar o SQL Server, precisará atualizar **`WebAPI/appsettings.json`** da seguinte maneira:
 
-### Banco de dados migrations
+    ```json
+      "UseInMemoryDatabase": false,
+    ```
 
-Para criar as migrações é nescessário navegar até **Infrastructure/**, abrir o terminal 
+    Verifique se a string de conexão DefaultConnection em **`WebAPI/appsettings.json`** 
+    aponta para uma instância válida do SQL Server.
+
+- Para criar as [migrações](https://docs.microsoft.com/pt-br/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli) é nescessário navegar até **`Infrastructure/`**, abrir o terminal 
 e executar o seguinte comando:
 
-```bash
-    dotnet ef migrations add "MigrationName" -s ../WebAPI/ -o ./Persistence/Migrations/
-```
+    ```bash
+        $ dotnet ef migrations add "MigrationName" -s ../WebAPI/ -o ./Persistence/Migrations/
+    ```
 
-Para aplicar as migrações no banco de dados é nescessário executar o seguinte comando:
+    Para aplicar as migrações no banco de dados é nescessário executar o seguinte comando:
 
-```bash
-    dotnet ef database update -s ../WebAPI/
-```
+    ```bash
+        $ dotnet ef database update -s ../WebAPI/
+    ```
 
 ## Arquitetura
 
