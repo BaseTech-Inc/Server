@@ -32,7 +32,7 @@ namespace Infrastructure
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
-                        configuration.GetConnectionString("MYSQLCONNSTR_localdb"),
+                        configuration.GetConnectionString("DefaultConnection"),
                         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             }            
 
