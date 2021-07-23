@@ -30,16 +30,10 @@ namespace Infrastructure
             }
             else
             {
-                if (configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Development")
-                    services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseSqlServer(
-                            configuration.GetConnectionString("DefaultConnection"),
-                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-                else
-                    services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseSqlServer(
-                            configuration.GetConnectionString("ProductionConnection"),
-                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(
+                        configuration.GetConnectionString("ProductionConnection"),
+                        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
                 services.BuildServiceProvider().GetService<ApplicationDbContext>().Database.Migrate();
             }
