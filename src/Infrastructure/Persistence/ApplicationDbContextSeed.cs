@@ -89,7 +89,7 @@ namespace Infrastructure.Persistence
                 context.Pais.Add(entity);
                 await context.SaveChangesAsync();
 
-                var polygons = await SeedDefaultMeshesAsync(context, meshesService, logger, "/paises", "BR");
+                var polygons = await SeedDefaultMeshesAsync(context, meshesService, "/paises", "BR");
 
                 foreach (var polygon in polygons)
                 {
@@ -129,7 +129,7 @@ namespace Infrastructure.Persistence
 
                     listEntity.Add(entity);                    
 
-                    var polygons = await SeedDefaultMeshesAsync(context, meshesService, logger, "/estados", state.Id.ToString());
+                    var polygons = await SeedDefaultMeshesAsync(context, meshesService, "/estados", state.Id.ToString());
 
                     foreach (var polygon in polygons)
                     {                      
@@ -174,7 +174,7 @@ namespace Infrastructure.Persistence
 
                     if (county.Name == "São Paulo")
                     {
-                        var polygons = await SeedDefaultMeshesAsync(context, meshesService, logger, "/municipios", county.Id.ToString());
+                        var polygons = await SeedDefaultMeshesAsync(context, meshesService, "/municipios", county.Id.ToString());
 
                         foreach (var polygon in polygons)
                         {
@@ -227,7 +227,6 @@ namespace Infrastructure.Persistence
         private static async Task<List<Poligono>> SeedDefaultMeshesAsync(
             ApplicationDbContext context,
             IMeshesService meshesService,
-            ILogger logger,
             string path, 
             string identifier)
         {
