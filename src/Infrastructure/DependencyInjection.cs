@@ -32,7 +32,7 @@ namespace Infrastructure
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
-                        configuration.GetConnectionString("ProductionConnection"),
+                        configuration.GetConnectionString("DefaultConnection"),
                         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
                 services.BuildServiceProvider().GetService<ApplicationDbContext>().Database.Migrate();
