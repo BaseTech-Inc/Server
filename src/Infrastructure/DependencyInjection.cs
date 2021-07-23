@@ -34,7 +34,9 @@ namespace Infrastructure
                     options.UseSqlServer(
                         configuration.GetConnectionString("DefaultConnection"),
                         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            }            
+
+                services.BuildServiceProvider().GetService<ApplicationDbContext>().Database.Migrate();
+            }
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
