@@ -38,7 +38,7 @@ namespace Infrastructure
                 else
                     services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseMySQL(
-                            configuration.GetConnectionString("MYSQLCONNSTR_localdb"),
+                            Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb"),
                             b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             }
 
