@@ -30,12 +30,16 @@ namespace Infrastructure
             }
             else
             {
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
-                        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-
-                // services.BuildServiceProvider().GetService<ApplicationDbContext>().Database.Migrate();
+                if (configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Development")
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlServer(
+                            configuration.GetConnectionString("DevelopmentConnection"),
+                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                else
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseMySql(
+                            configuration.GetConnectionString("ProductionConnection"),
+                            new MySqlServerVersion(new Version(1, 0, 0))));
             }
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
