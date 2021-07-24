@@ -30,7 +30,7 @@ namespace WebAPI
                     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                     var context = services.GetRequiredService<ApplicationDbContext>();
 
-                    if (context.Database.IsSqlServer() || context.Database.IsRelational())
+                    if (context.Database.IsSqlServer())
                     {
                         context.Database.Migrate();
                     }
@@ -40,7 +40,7 @@ namespace WebAPI
                     var placesService = services.GetRequiredService<IPlacesService>();
                     var meshesService = services.GetRequiredService<IMeshesService>();
 
-                    await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
+                    // await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
                     //await ApplicationDbContextSeed.SeedDefaultPlacesAsync(context, placesService, meshesService, logger);
                 }
                 catch (Exception ex)
