@@ -37,9 +37,9 @@ namespace Infrastructure
                             b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
                 else
                     services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseMySql(
+                        options.UseMySQL(
                             configuration.GetConnectionString("ProductionConnection"),
-                            new MySqlServerVersion(new Version(1, 0, 0))));
+                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             }
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
