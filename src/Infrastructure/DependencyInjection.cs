@@ -38,8 +38,7 @@ namespace Infrastructure
                 else
                     services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseMySQL(
-                            configuration.GetConnectionString("ProductionConnection"),
-                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                            configuration.GetConnectionString("ProductionConnection")));
             }
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
