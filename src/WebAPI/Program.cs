@@ -40,8 +40,8 @@ namespace WebAPI
                     var placesService = services.GetRequiredService<IPlacesService>();
                     var meshesService = services.GetRequiredService<IMeshesService>();
 
-                    // await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
-                    //await ApplicationDbContextSeed.SeedDefaultPlacesAsync(context, placesService, meshesService, logger);
+                    await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
+                    await ApplicationDbContextSeed.SeedDefaultPlacesAsync(context, placesService, meshesService, logger);
                 }
                 catch (Exception ex)
                 {
