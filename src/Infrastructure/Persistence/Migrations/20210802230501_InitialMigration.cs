@@ -1,10 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.EntityFrameworkCore.Metadata;
 
 namespace Infrastructure.Persistence.Migrations
 {
-    public partial class InitialMigrationMySQL : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,10 +11,10 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
-                    Name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,20 +25,20 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
-                    UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: true),
-                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -51,9 +50,9 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Pais",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    Nome = table.Column<string>(type: "text", nullable: true),
-                    Sigla = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sigla = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,7 +63,7 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Poligono",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,9 +74,9 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Ponto",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    Latitude = table.Column<double>(type: "double", nullable: false),
-                    Longitude = table.Column<double>(type: "double", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,7 +87,7 @@ namespace Infrastructure.Persistence.Migrations
                 name: "TipoUsuario",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Descricao = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -101,10 +100,10 @@ namespace Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", maxLength: 85, nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -122,10 +121,10 @@ namespace Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", maxLength: 85, nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -142,10 +141,10 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
-                    ProviderKey = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false)
+                    LoginProvider = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -162,8 +161,8 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
-                    RoleId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,10 +185,10 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
-                    LoginProvider = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
-                    Name = table.Column<string>(type: "varchar(85)", maxLength: 85, nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(85)", maxLength: 85, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -206,10 +205,10 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Estado",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    PaisId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    Nome = table.Column<string>(type: "text", nullable: true),
-                    Sigla = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PaisId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sigla = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -226,9 +225,9 @@ namespace Infrastructure.Persistence.Migrations
                 name: "PoligonoPais",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    PoligonoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    PaisId = table.Column<string>(type: "varchar(767)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PoligonoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PaisId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -251,9 +250,9 @@ namespace Infrastructure.Persistence.Migrations
                 name: "PoligonoPonto",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    PoligonoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    PontoId = table.Column<string>(type: "varchar(767)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PoligonoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PontoId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -276,10 +275,10 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Usuario",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    TipoUsuarioId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    ContaBancaria = table.Column<string>(type: "text", nullable: true),
-                    ApplicationUserID = table.Column<string>(type: "varchar(85)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TipoUsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ContaBancaria = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApplicationUserID = table.Column<string>(type: "nvarchar(85)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -302,9 +301,9 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Cidade",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    EstadoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    Nome = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EstadoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -321,9 +320,9 @@ namespace Infrastructure.Persistence.Migrations
                 name: "PoligonoEstado",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    PoligonoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    EstadoId = table.Column<string>(type: "varchar(767)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PoligonoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    EstadoId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -346,13 +345,13 @@ namespace Infrastructure.Persistence.Migrations
                 name: "HistoricoUsuario",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    UsuarioId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    PontoChegadaId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    PontoPartidaId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    DistanciaPercurso = table.Column<double>(type: "double", nullable: false),
-                    Duracao = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Rota = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PontoChegadaId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PontoPartidaId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DistanciaPercurso = table.Column<double>(type: "float", nullable: false),
+                    Duracao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Rota = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -381,10 +380,10 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Marcadores",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    PontoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    UsuarioId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    Nome = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PontoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -407,9 +406,9 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Distrito",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    CidadeId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    Nome = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CidadeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -426,9 +425,9 @@ namespace Infrastructure.Persistence.Migrations
                 name: "PoligonoCidade",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    PoligonoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    CidadeId = table.Column<string>(type: "varchar(767)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PoligonoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CidadeId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -451,13 +450,13 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Alerta",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    PontoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    DistritoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    Tempo = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Descricao = table.Column<string>(type: "text", nullable: true),
-                    Transitividade = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Atividade = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PontoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DistritoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Tempo = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Transitividade = table.Column<bool>(type: "bit", nullable: false),
+                    Atividade = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -480,14 +479,14 @@ namespace Infrastructure.Persistence.Migrations
                 name: "HistoricoPrevisao",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    DistritoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    Tempo = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Umidade = table.Column<double>(type: "double", nullable: false),
-                    Descricao = table.Column<string>(type: "text", nullable: true),
-                    TemperaturaMaxima = table.Column<double>(type: "double", nullable: false),
-                    TemperaturaMinima = table.Column<double>(type: "double", nullable: false),
-                    SensibilidadeTermica = table.Column<double>(type: "double", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DistritoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Tempo = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Umidade = table.Column<double>(type: "float", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TemperaturaMaxima = table.Column<double>(type: "float", nullable: false),
+                    TemperaturaMinima = table.Column<double>(type: "float", nullable: false),
+                    SensibilidadeTermica = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -504,9 +503,9 @@ namespace Infrastructure.Persistence.Migrations
                 name: "PoligonoDistrito",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    PoligonoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    DistritoId = table.Column<string>(type: "varchar(767)", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PoligonoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DistritoId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -544,7 +543,8 @@ namespace Infrastructure.Persistence.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -570,7 +570,8 @@ namespace Infrastructure.Persistence.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cidade_EstadoId",

@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Persistence.Migrations
@@ -14,32 +15,33 @@ namespace Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.8");
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.8")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Domain.Entities.Alerta", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Atividade")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DistritoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PontoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Tempo")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Transitividade")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -54,13 +56,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EstadoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -73,13 +75,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CidadeId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -92,16 +94,16 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaisId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Sigla")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -114,28 +116,28 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DistritoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("SensibilidadeTermica")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.Property<double>("TemperaturaMaxima")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.Property<double>("TemperaturaMinima")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("Tempo")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("Umidade")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -148,25 +150,25 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("DistanciaPercurso")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("Duracao")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PontoChegadaId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PontoPartidaId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Rota")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UsuarioId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -183,16 +185,16 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PontoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UsuarioId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -207,13 +209,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sigla")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -224,7 +226,7 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -235,13 +237,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CidadeId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PoligonoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -256,13 +258,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DistritoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PoligonoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -277,13 +279,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EstadoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PoligonoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -298,13 +300,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PaisId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PoligonoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -319,13 +321,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PoligonoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PontoId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -340,13 +342,13 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("Latitude")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.Property<double>("Longitude")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -357,7 +359,7 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Descricao")
                         .HasColumnType("int");
@@ -371,16 +373,16 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ApplicationUserID")
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("ContaBancaria")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TipoUsuarioId")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -396,54 +398,54 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -452,7 +454,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -462,25 +465,26 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -490,18 +494,19 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.HasKey("Id");
 
@@ -515,18 +520,19 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.HasKey("Id");
 
@@ -540,20 +546,20 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("LoginProvider")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("ProviderKey")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -567,12 +573,12 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("RoleId")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -586,20 +592,20 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("LoginProvider")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("Name")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85)");
+                        .HasColumnType("nvarchar(85)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
