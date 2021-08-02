@@ -30,7 +30,7 @@ namespace WebAPI
                     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                     var context = services.GetRequiredService<ApplicationDbContext>();
 
-                    if (context.Database.IsSqlServer())
+                    if (context.Database.IsSqlServer() || context.Database.IsRelational())
                     {
                         context.Database.Migrate();
                     }
