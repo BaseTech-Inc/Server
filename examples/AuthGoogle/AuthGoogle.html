@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>auth-google</title>
+
+        <!-- client id -->
+        <meta name="google-signin-client_id" content="924539222128-7j0fbelnj16fbg8evatu89pbkej1iio7.apps.googleusercontent.com">
+    </head>
+    <body>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+        <script>
+            // https://developers.google.com/identity/sign-in/web/backend-auth
+            // https://developers.google.com/identity/sign-in/web/build-button
+
+            function onSignIn(googleUser = null) {
+                if (googleUser) {
+                    // get auth response
+                    let authResponse = googleUser.getAuthResponse()
+
+                    // create jwt token in server
+                    fetch(`https://localhost:5001/api​/Account​/login-google?idToken=${authResponse.id_token}`, {
+                        method: 'POST',
+                    })
+                    .then((response) => { 
+                         return response.json() 
+                    })
+                    .then((json) => {
+                        // print jwt token
+                        console.log(json)
+                    })
+                    .catch((error) => { 
+                        console.log(error) 
+                    })
+                }
+            }
+        </script>
+    </body>
+</html>

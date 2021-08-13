@@ -29,6 +29,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "src\WebAPI\WebAPI
 		{B8C68F6C-AB80-4D09-9565-A0261A8D6C07} = {B8C68F6C-AB80-4D09-9565-A0261A8D6C07}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{56CC6A1A-7169-4359-8C8D-62F9F21AD649}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthGoogle", "AuthGoogle", "{8C9420D3-0EC9-42C9-8A16-6BEF6C099ACC}"
+	ProjectSection(SolutionItems) = preProject
+		examples\AuthGoogle\AuthGoogle.html = examples\AuthGoogle\AuthGoogle.html
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +67,7 @@ Global
 		{DA19FEF6-4683-4CEC-9DB3-7156D8A5B042} = {18AB10F9-85F5-412E-80FC-FDD844DCB505}
 		{B8C68F6C-AB80-4D09-9565-A0261A8D6C07} = {18AB10F9-85F5-412E-80FC-FDD844DCB505}
 		{EC40B057-145F-440B-B029-5CFF931B98A1} = {18AB10F9-85F5-412E-80FC-FDD844DCB505}
+		{8C9420D3-0EC9-42C9-8A16-6BEF6C099ACC} = {56CC6A1A-7169-4359-8C8D-62F9F21AD649}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D903BB34-38BA-400F-A2C8-C50D982A8798}
