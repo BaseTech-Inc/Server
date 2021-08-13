@@ -58,7 +58,7 @@ namespace Infrastructure.Identity
 
                         var usuario = _context.Usuario.Where(x => x.ApplicationUserID == user.Id).FirstOrDefault();
 
-                        var token = await _tokenService.GenerateTokenJWT(user.Id, usuario.Id);
+                        var token = await _tokenService.GenerateTokenJWT(usuarioId: usuario.Id, userId: user.Id);
 
                         var response = new LoginResponse()
                         {

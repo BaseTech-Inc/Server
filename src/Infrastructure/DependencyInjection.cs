@@ -30,7 +30,7 @@ namespace Infrastructure
             }
             else
             {
-                if (configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Development")
+                if (configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") != "Development")
                     services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseSqlServer(
                             configuration.GetConnectionString("DevelopmentConnection"),
@@ -135,6 +135,7 @@ namespace Infrastructure
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IPlacesService, PlacesService>();
             services.AddTransient<IMeshesService, MeshesService>();
+            services.AddTransient<IGoogleService, GoogleService>();
 
             return services;
         }

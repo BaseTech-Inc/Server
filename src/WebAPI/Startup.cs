@@ -69,14 +69,28 @@ namespace WebAPI
                     {securityScheme, new string[] { }}
                 });
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowJavascriptDevClient",
+                  builder =>
+                  {
+                      builder
+                      .WithOrigins("http://localhost:5500")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+                  });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
-            //}
+
+                app.UseCors("AllowJavascriptDevClient");
+            }
 
             app.UseHttpsRedirection();
 

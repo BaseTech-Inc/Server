@@ -5,7 +5,7 @@ namespace Application.Common.Interfaces
 {
     public interface ITokenService
     {
-        Task<(string tokenString, DateTime validTo)> GenerateTokenJWT(string userId, string usuarioId);
+        Task<(string tokenString, DateTime validTo)> GenerateTokenJWT(string usuarioId, string userId = null, string userName = null, string email = null);
 
         string DecodeTokenJwt(string part);
 

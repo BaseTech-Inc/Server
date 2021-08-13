@@ -15,13 +15,16 @@ namespace WebAPI.Controllers
     {
         public readonly IIdentityService _identityService;
         private readonly ITokenService _tokenService;
+        private readonly IGoogleService _googleService;
 
         public AccountController(
             IIdentityService identityService,
-            ITokenService tokenService)
+            ITokenService tokenService,
+            IGoogleService googleService)
         {
             _identityService = identityService;
             _tokenService = tokenService;
+            _googleService = googleService;
         }
 
         // POST: api/account/login/?email=email&password=password
@@ -29,6 +32,20 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<Response<LoginResponse>>> Login(string email, string password)
         {
             var authorizeResult = await _identityService.AuthenticateAsync(email, password);
+
+            if (!authorizeResult.Succeeded)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(authorizeResult);
+        }
+
+        // POST: api/account/login-google/?idToken=idToken
+        [HttpPost("login-google")]
+        public async Task<ActionResult<Response<LoginResponse>>> LoginGoogle(string idToken)
+        {
+            var authorizeResult = await _googleService.AuthenticateGoogleAsync(idToken);
 
             if (!authorizeResult.Succeeded)
             {

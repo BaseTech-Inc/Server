@@ -30,21 +30,35 @@ namespace Infrastructure.Services
             _context = context;
         }
 
-        public async Task<(string tokenString, DateTime validTo)> GenerateTokenJWT(string userId, string usuarioId)
+        public async Task<(string tokenString, DateTime validTo)> GenerateTokenJWT(string usuarioId, string userId = null, string userName = null, string email = null)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            string _userName;
+            string _email;
 
             var claims = new List<Claim>();
 
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.UserName));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
-            claims.Add(new Claim("uid", usuarioId));
-
-            foreach (var role in await _userManager.GetRolesAsync(user))
+            if (userId != null)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                var user = await _userManager.FindByIdAsync(userId);
+
+                _userName = user.UserName;
+                _email = user.Email;
+
+                foreach (var role in await _userManager.GetRolesAsync(user))
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
             }
+            else
+            {
+                _userName = userName;
+                _email = email;
+            }
+
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, _userName));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Email, _email));
+            claims.Add(new Claim("uid", usuarioId));
 
             var secretBytes = Encoding.UTF8.GetBytes(_configuration["JWT:SecretKeyy"]);
             var key = new SymmetricSecurityKey(secretBytes);
