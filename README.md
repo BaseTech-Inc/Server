@@ -30,11 +30,11 @@ $ git clone https://github.com/BaseTech-Inc/Tupa-Server.git
         # A SecretKey é usada para gerar o token de acesso
         $ dotnet user-secrets set "JWT:SecretKeyy" "valor_aleatório"
 
-        # O [ClientId](https://developers.google.com/workspace/guides/getstarted-overview) é usada para validar o token da google
+        # O ClientId é usada para validar o token da Google
         $ dotnet user-secrets set "Authentication:Google:ClientId" "ClientId"
     ```
 
-    Para gerar um valor aleatório pode-se usar esse [site](https://www.uuidgenerator.net/).
+    Para gerar um valor aleatório pode-se usar esse [site](https://www.uuidgenerator.net/), e para usar a autenticação pelo Google pode usar esse [site](https://developers.google.com/workspace/guides/getstarted-overview).
 
 - Se desejar usar o SQL Server, precisará atualizar **`WebAPI/appsettings.json`** da seguinte maneira:
 
