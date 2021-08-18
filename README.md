@@ -64,3 +64,7 @@ Como esse software funciona internamente e como ele interage com dependências
 externas - escritos em detalhes em [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 <img src="https://github.githubassets.com/images/mona-whisper.gif" align="right" />
+
+## Licença
+
+Esse projeto está sob licença. Veja o arquivo [`LICENÇA`](https://github.com/BaseTech-Inc/Tupa-Server/blob/master/LICENSE) para mais detalhes.
