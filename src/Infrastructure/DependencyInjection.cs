@@ -136,6 +136,7 @@ namespace Infrastructure
             services.AddTransient<IPlacesService, PlacesService>();
             services.AddTransient<IMeshesService, MeshesService>();
             services.AddTransient<IGoogleService, GoogleService>();
+            services.AddTransient<IIdentityGetService, IdentityGetService>();
 
             return services;
         }
