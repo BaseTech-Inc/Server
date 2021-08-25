@@ -23,7 +23,7 @@ namespace WebAPI.Controllers.v1
 
         // GET api/v1/Usuarios
         [HttpGet]
-        public async Task<ActionResult<Response<IList<UsuarioResponse>>>> GetUsuarios()
+        public async Task<ActionResult<Response<IList<UsuarioResponse>>>> Get()
         {
             var usuariosResult = await _identityGetService.GetAllIdentity();
 
@@ -32,7 +32,9 @@ namespace WebAPI.Controllers.v1
                 return Unauthorized();
             }
 
-            return usuariosResult;
+            return Ok (
+                usuariosResult
+                );
         }
     }
 }

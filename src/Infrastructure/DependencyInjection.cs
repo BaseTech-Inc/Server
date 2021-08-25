@@ -1,6 +1,7 @@
 ﻿using Application.Common.Enumerations;
 using Application.Common.Interfaces;
 using Infrastructure.AdministrativeDivision;
+using Infrastructure.Flooding;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Places;
@@ -30,7 +31,7 @@ namespace Infrastructure
             }
             else
             {
-                if (configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Development")
+                if (configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") != "Development")
                     services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseSqlServer(
                             configuration.GetConnectionString("DevelopmentConnection"),
@@ -137,6 +138,7 @@ namespace Infrastructure
             services.AddTransient<IMeshesService, MeshesService>();
             services.AddTransient<IGoogleService, GoogleService>();
             services.AddTransient<IIdentityGetService, IdentityGetService>();
+            services.AddTransient<ICGESPService, CGESPService>();
 
             return services;
         }

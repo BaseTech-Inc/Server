@@ -20,7 +20,7 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/Distrito/
         [HttpGet]
-        public async Task<ActionResult<Response<IList<Distrito>>>> Create(
+        public async Task<ActionResult<Response<IList<Distrito>>>> Get(
             [FromServices] IGetAllDistritosQueryHandler handler,
             [FromQuery] GetAllDistritosQuery command
         )
@@ -32,15 +32,14 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }
 
         // GET: api/Distritos/:name
         [HttpGet("{name}")]
-        public async Task<ActionResult<Response<IList<Distrito>>>> CreateByName(
+        public async Task<ActionResult<Response<IList<Distrito>>>> GetByName(
             [FromServices] IGetDistritosByNameQueryHandler handler,
             [FromRoute] GetDistritosByNameQuery command
         )
@@ -52,8 +51,7 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }

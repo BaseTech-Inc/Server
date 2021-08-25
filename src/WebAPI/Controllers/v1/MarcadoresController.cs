@@ -22,7 +22,7 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/Marcadores/
         [HttpGet]
-        public async Task<ActionResult<Response<IList<Marcadores>>>> Create(
+        public async Task<ActionResult<Response<IList<Marcadores>>>> Get(
             [FromServices] IGetAllMarcadoresQueryHandler handler,
             [FromQuery] GetAllMarcadoresQuery command
         )
@@ -34,8 +34,7 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }
@@ -74,8 +73,7 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }

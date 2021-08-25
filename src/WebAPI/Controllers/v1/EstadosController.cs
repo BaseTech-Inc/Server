@@ -22,7 +22,7 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/Paises/
         [HttpGet]
-        public async Task<ActionResult<Response<IList<Estado>>>> Create(
+        public async Task<ActionResult<Response<IList<Estado>>>> Get(
             [FromServices] IGetAllEstadosQueryHandler handler,
             [FromQuery] GetAllEstadosQuery command
         )
@@ -34,15 +34,14 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }
 
         // GET: api/Estados/:name
         [HttpGet("{name}")]
-        public async Task<ActionResult<Response<IList<Estado>>>> CreateByName(
+        public async Task<ActionResult<Response<IList<Estado>>>> GetByName(
             [FromServices] IGetEstadosByNameQueryHandler handler,
             [FromRoute] GetEstadosByNameQuery command
         )
@@ -54,8 +53,7 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }

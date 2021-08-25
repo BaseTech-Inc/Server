@@ -20,7 +20,7 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/Cidades/
         [HttpGet]
-        public async Task<ActionResult<Response<IList<Cidade>>>> Create(
+        public async Task<ActionResult<Response<IList<Cidade>>>> Get(
             [FromServices] IGetAllCidadeQueryHandler handler,
             [FromQuery] GetAllCidadeQuery command
         )
@@ -32,15 +32,14 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }
 
         // GET: api/Cidades/:name
         [HttpGet("{name}")]
-        public async Task<ActionResult<Response<IList<Cidade>>>> CreateByName(
+        public async Task<ActionResult<Response<IList<Cidade>>>> GetByName(
             [FromServices] IGetCidadesByNameQueryHandler handler,
             [FromRoute] GetCidadesByNameQuery command
         )
@@ -52,8 +51,7 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }

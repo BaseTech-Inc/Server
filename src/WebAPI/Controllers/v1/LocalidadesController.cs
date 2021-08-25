@@ -19,7 +19,7 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/localidades/?namePais=namePais&nameEstado=nameEstado&nameCidade=nameCidade&nameDistrito=nameDistrito
         [HttpGet]
-        public async Task<ActionResult<Response<IList<Distrito>>>> Create(
+        public async Task<ActionResult<Response<IList<Distrito>>>> Get(
             [FromServices] IGetLocalidadeByNameQueryHandler handler,
             [FromQuery] GetLocalidadesByNameQuery command
         )
@@ -31,8 +31,7 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }

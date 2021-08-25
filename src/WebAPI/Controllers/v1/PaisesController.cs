@@ -21,7 +21,7 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/Paises/
         [HttpGet]
-        public async Task<ActionResult<Response<IList<Pais>>>> Create(
+        public async Task<ActionResult<Response<IList<Pais>>>> Get(
             [FromServices] IGetAllPaisesQueryHandler handler,
             [FromQuery] GetAllPaisesQuery command
         )
@@ -33,15 +33,14 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }
 
         // GET: api/Paises/:name
         [HttpGet("{name}")]
-        public async Task<ActionResult<Response<IList<Pais>>>> CreateByName(
+        public async Task<ActionResult<Response<IList<Pais>>>> GetByName(
             [FromServices] IGetPaisesByNameQueryHandler handler,
             [FromRoute] GetPaisesByNameQuery command
         )
@@ -53,8 +52,7 @@ namespace WebAPI.Controllers.v1
                 return NotFound();
             }
 
-            return Created(
-                HttpRequestHeader.Referer.ToString(),
+            return Ok(
                 response
                 );
         }
