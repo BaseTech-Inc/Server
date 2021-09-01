@@ -35,5 +35,25 @@ namespace Application.Common.Models
                     }
             }
         }
+
+        private static Dictionary<string, string> acronyms =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+                {"AV.", "Avenida"},
+                {"R.", "Rua"},
+                {"TN.", "Tunel"},
+                {"CEL", "Coronel"},
+                {"PRES", "Presidente"}
+            };
+
+        public static string StreetConversion(this string street)
+        {
+            var streetList = street.Split(' ');
+            var resultList = streetList
+                .Select(word => acronyms.TryGetValue(word, out var newWord) ? newWord : word);
+
+            var result = string.Join(" ", resultList);
+
+            return result;
+        }
     }
 }

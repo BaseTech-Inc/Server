@@ -45,11 +45,16 @@ namespace Infrastructure.Common
 
         private static readonly HttpClient client = new HttpClient();
 
-        public static async Task<T> ProcessHttpClient<T>(string url, JsonSerializerOptions options = null, string mediaType = "application/json")
+        public static async Task<T> ProcessHttpClient<T>(
+            string url, 
+            JsonSerializerOptions options = null, 
+            string mediaType = "application/json")
         {
+            client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue(mediaType));
+            client.DefaultRequestHeaders.Add("Referer", "http://localhost:5001");
 
             var streamTask = client.GetStreamAsync(url);
             var objectResult = await JsonSerializer.DeserializeAsync<T>(await streamTask);
@@ -57,11 +62,14 @@ namespace Infrastructure.Common
             return objectResult;
         }
 
-        public static async Task<String> ProcessHttpClient(string url, string mediaType = "application/json")
+        public static async Task<String> ProcessHttpClient(
+            string url, 
+            string mediaType = "application/json")
         {
+            client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+                new MediaTypeWithQualityHeaderValue(mediaType));
 
             var streamTask = client.GetStringAsync(url);
 

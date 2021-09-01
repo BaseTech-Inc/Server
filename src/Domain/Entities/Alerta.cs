@@ -10,7 +10,9 @@ namespace Domain.Entities
 
         public Distrito Distrito { get; set; }
 
-        public DateTime Tempo { get; set; }
+        public DateTime TempoInicio { get; set; }
+
+        public DateTime TempoFinal { get; set; }
 
         public string Descricao { get; set; }
 

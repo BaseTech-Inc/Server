@@ -6,6 +6,7 @@ using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,106 +46,163 @@ namespace Infrastructure.Flooding
 
         public async Task<Response<IList<Alerta>>> ProcessCGESPByDate(DateTime date)
         {
-            // Get htmlText
             var htmlText = await ProcessHttpCGESP(date);
 
-            // Convert to html element
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(htmlText);
 
-            var documentContent = htmlDoc.DocumentNode.Descendants(0)
-                .Where(n => n.HasClass("col-alagamentos"))
-                        .FirstOrDefault()
-                            .Descendants(0)
-                                .Where(n => n.HasClass("content"))
-                                    .FirstOrDefault();
+            var documentContent = htmlDoc.DocumentNode.querySelector(".content");
+            var childNodesContent = documentContent.ChildNodes;
 
-            var childNodes = documentContent.ChildNodes;
+            var listAlertas = new List<Alerta>();
 
-            var listAlerts = new List<Alerta>();
-            var alerta = new Alerta();
-
-            foreach (var node in childNodes)
+            foreach (var node in childNodesContent)
             {
                 if (node.NodeType == HtmlNodeType.Element)
                 {
+                    // div.content > h1.tit-bairros
                     if (node.HasClass("tit-bairros"))
-                    {                        
+                    {
                         // Zonas
+                        // Nome zona
                     }
+                    // div.content > table.tb-pontos-de-alagamentos
                     else if (node.HasClass("tb-pontos-de-alagamentos"))
                     {
                         // Zonas > Bairros
+                        var RowsTable = node.ChildNodes;
+                        var bairro = "";
 
-                        var columns = node.ChildNodes;
-
-                        foreach (var column in columns)
+                        // div.content > table.tb-pontos-de-alagamentos > tbody
+                        foreach (var RowTable in RowsTable)
                         {
-                            var lines = column.ChildNodes;
+                            var CellsTable = RowTable.ChildNodes;
 
-                            foreach (var line in lines)
+                            // div.content > table.tb-pontos-de-alagamentos > tbody > tr
+                            foreach (var CellTable in CellsTable)
                             {
-                                if (line.HasClass("bairro"))
+                                // div.content > table.tb-pontos-de-alagamentos > tbody > tr > td.bairro
+                                if (CellTable.HasClass("bairro"))
                                 {
-                                    alerta = new Alerta();
+                                    // Nome bairro
+                                    bairro = CellTable.InnerText.Trim();
+                                }
+                                // div.content > table.tb-pontos-de-alagamentos > tbody > tr > td.total-pts
+                                else if (CellTable.HasClass("total-pts"))
+                                {
+                                    // Total de Pontos
+                                }
+                                // div.content > table.tb-pontos-de-alagamentos > tbody > tr > td
+                                else if (CellTable.ChildNodes.Count > 0)
+                                {
+                                    // Zonas > Bairros > Enchentes
+                                    var alertas = new Alerta();
 
-                                    var bairro = line.InnerText.Trim().Split("/ ")[0];
+                                    var bairroList = bairro;
+
+                                    if (bairro.Contains("/"))
+                                        bairroList = bairro.Split("/ ")[0];
 
                                     var distrito = _context.Distrito
-                                        .Where(x => EF.Functions.Like(x.Nome, "%" + bairro + "%"))
+                                        .Where(x => EF.Functions.Like(x.Nome, "%" + bairroList + "%"))
                                             .Where(x => EF.Functions.Like(x.Cidade.Nome, "São Paulo"))
                                                 .Where(x => EF.Functions.Like(x.Cidade.Estado.Nome, "São Paulo"))
                                                     .Where(x => EF.Functions.Like(x.Cidade.Estado.Pais.Nome, "Brasil"))
                                                         .Include(e => e.Cidade)
                                                             .Include(e => e.Cidade.Estado)
                                                                 .Include(e => e.Cidade.Estado.Pais)
-                                                                    .ToList()
-                                                                        .FirstOrDefault();
+                                                                    .OrderBy(x => x.Nome)
+                                                                        .ToList()
+                                                                            .FirstOrDefault();
 
-                                    alerta.Distrito = distrito;
-                                }
-                                else if (line.HasClass("total-pts"))
-                                {
-                                    // bairroEntity.pontos = line.InnerText.Trim();
-                                }
-                                else if (line.ChildNodes.Count > 0)
-                                {
-                                    // Zonas > Bairros > Enchentes
+                                    alertas.Distrito = distrito;
 
-                                    var infosEnchente = line.ChildNodes[1].ChildNodes[1].ChildNodes;
+                                    var infosEnchente = CellTable.ChildNodes[1].ChildNodes[1].ChildNodes;
 
+                                    // div.content > table.tb-pontos-de-alagamentos > tr > td > div > ul > li
                                     foreach (var infoEnchentes in infosEnchente)
                                     {
                                         // Zonas > Bairros > Enchentes > Informacoes
                                         if (infoEnchentes.Name == "li")
                                         {
+                                            // div.content > table.tb-pontos-de-alagamentos > tbody > tr > td > div > ul > li.inativo-intransitavel
                                             if (infoEnchentes.HasClass("inativo-intransitavel"))
                                             {
-                                                alerta.Transitividade = false;
+                                                alertas.Transitividade = false;
                                             }
+                                            // div.content > table.tb-pontos-de-alagamentos > tr > td > div > ul > li.inativo-transitavel
                                             else if (infoEnchentes.HasClass("inativo-transitavel"))
                                             {
-                                                alerta.Transitividade = true;
+                                                alertas.Transitividade = true;
                                             }
+                                            // div.content > table.tb-pontos-de-alagamentos > tbody > tr > td > div > ul > li.col-local
                                             else if (infoEnchentes.HasClass("col-local"))
                                             {
-                                                alerta.Tempo = date;
-                                                alerta.Descricao = infoEnchentes.ChildNodes[2].InnerText.Trim().AllFirstCharToUpper();
+                                                var horario = infoEnchentes.ChildNodes[0].InnerText.Trim();
 
-                                                //enchentesEntity.horario = infoEnchentes.ChildNodes[0].InnerText.Trim();
-                                                //enchentesEntity.local = infoEnchentes.ChildNodes[2].InnerText.Trim().AllFirstCharToUpper();
+                                                var found = horario.IndexOf("De");
+                                                var horarios = horario.Substring(found + 3).Split(" a ");
+
+                                                var tempoInicio = new DateTime(
+                                                    date.Year,
+                                                    date.Month,
+                                                    date.Day,
+                                                    Int32.Parse(horarios[0].Split(":")[0]),
+                                                    Int32.Parse(horarios[0].Split(":")[1]),
+                                                    0);
+
+                                                alertas.TempoInicio = tempoInicio;
+
+                                                var tempoFinal = new DateTime(
+                                                    date.Year,
+                                                    date.Month,
+                                                    date.Day,
+                                                    Int32.Parse(horarios[1].Split(":")[0]),
+                                                    Int32.Parse(horarios[1].Split(":")[1]),
+                                                    0);
+
+                                                alertas.TempoFinal = tempoFinal;
+
+                                                var nominatimService = new NominatimService();
+
+                                                var local = infoEnchentes.ChildNodes[2].InnerText.Trim().AllFirstCharToUpper();
+
+                                                var nominatimResult = await nominatimService.ProcessNominatim(
+                                                    local,
+                                                    alertas.Distrito.Nome,
+                                                    "São Paulo",
+                                                    "São Paulo");
+
+                                                if (nominatimResult.Count > 0)
+                                                {
+                                                    var lat = double.Parse(
+                                                    nominatimResult[0].lat,
+                                                    CultureInfo.InvariantCulture);
+                                                    var lon = double.Parse(
+                                                        nominatimResult[0].lon,
+                                                        CultureInfo.InvariantCulture);
+
+                                                    var ponto = new Ponto()
+                                                    {
+                                                        Latitude = lat,
+                                                        Longitude = lon
+                                                    };
+
+                                                    alertas.Ponto = ponto;
+                                                }
+                                                
                                             }
+                                            // div.content > table.tb-pontos-de-alagamentos > tbody > tr > td > div > ul > li.arial-descr-alag
                                             else if (infoEnchentes.HasClass("arial-descr-alag"))
                                             {
-                                                alerta.Descricao += infoEnchentes.ChildNodes[0].InnerText.Trim().Split("Sentido: ")[1].AllFirstCharToUpper() + infoEnchentes.ChildNodes[2].InnerText.Trim().Split("Referência: ")[1].AllFirstCharToUpper();
+                                                var descricao = infoEnchentes.ChildNodes[0].InnerText.Trim().Split("Sentido: ")[1].AllFirstCharToUpper() + " " + infoEnchentes.ChildNodes[2].InnerText.Trim().Split("Referência: ")[1].AllFirstCharToUpper();
 
-                                                //enchentesEntity.sentido = infoEnchentes.ChildNodes[0].InnerText.Trim().Split("Sentido: ")[1].AllFirstCharToUpper();
-                                                //enchentesEntity.referencia = infoEnchentes.ChildNodes[2].InnerText.Trim().Split("Referência: ")[1].AllFirstCharToUpper();
-
-                                                listAlerts.Add(alerta);
+                                                alertas.Descricao = descricao;
                                             }
                                         }
                                     }
+
+                                    listAlertas.Add(alertas);
                                 }
                             }
                         }
@@ -152,7 +210,7 @@ namespace Infrastructure.Flooding
                 }
             }
 
-            return new Response<IList<Alerta>>(listAlerts, message: $"");
+            return new Response<IList<Alerta>>(listAlertas, message: $"");
         }
     }
 }
