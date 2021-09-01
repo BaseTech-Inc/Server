@@ -6,6 +6,23 @@
 </i>
 </div>
 
+## Ajustes e melhorias
+
+O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
+
+- [ ] Authentication
+	- [ ] Refresh Token
+	- [ ] Autenticação usando Facebook
+
+- [ ] Database
+	- [ ] FAQ
+    - [X] Alertas
+	- [ ] Previsão
+	- [ ] Polígono de malhas
+	- [ ] Histórico Usuário
+		- [ ] Encode LinePolygono (Rotas)
+
+
 ## Começando
 
 ### Instalando localmente projeto
