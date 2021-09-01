@@ -11,13 +11,12 @@
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
 - [ ] Authentication
-	- [ ] Refresh Token
+	- [ ] Refresh Token **!important**
 	- [ ] Autenticação usando Facebook
 
 - [ ] Database
-	- [ ] FAQ
     - [X] Alertas
-	- [ ] Previsão
+	- [ ] Previsão **!important**
 	- [ ] Polígono de malhas
 	- [ ] Histórico Usuário
 		- [ ] Encode LinePolygono (Rotas)
