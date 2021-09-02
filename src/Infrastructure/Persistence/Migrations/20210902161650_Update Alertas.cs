@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Infrastructure.Persistence.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class UpdateAlertas : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -454,7 +454,8 @@ namespace Infrastructure.Persistence.Migrations
                     Id = table.Column<string>(type: "varchar(767)", nullable: false),
                     PontoId = table.Column<string>(type: "varchar(767)", nullable: true),
                     DistritoId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    Tempo = table.Column<DateTime>(type: "datetime", nullable: false),
+                    TempoInicio = table.Column<DateTime>(type: "datetime", nullable: false),
+                    TempoFinal = table.Column<DateTime>(type: "datetime", nullable: false),
                     Descricao = table.Column<string>(type: "text", nullable: true),
                     Transitividade = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Atividade = table.Column<bool>(type: "tinyint(1)", nullable: false)

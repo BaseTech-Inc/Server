@@ -35,7 +35,10 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("PontoId")
                         .HasColumnType("varchar(767)");
 
-                    b.Property<DateTime>("Tempo")
+                    b.Property<DateTime>("TempoFinal")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("TempoInicio")
                         .HasColumnType("datetime");
 
                     b.Property<bool>("Transitividade")

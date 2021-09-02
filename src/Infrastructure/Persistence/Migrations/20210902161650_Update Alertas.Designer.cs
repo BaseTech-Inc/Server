@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210813155400_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210902161650_Update Alertas")]
+    partial class UpdateAlertas
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,10 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("PontoId")
                         .HasColumnType("varchar(767)");
 
-                    b.Property<DateTime>("Tempo")
+                    b.Property<DateTime>("TempoFinal")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("TempoInicio")
                         .HasColumnType("datetime");
 
                     b.Property<bool>("Transitividade")

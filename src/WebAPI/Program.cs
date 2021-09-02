@@ -30,9 +30,11 @@ namespace WebAPI
                     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                     var context = services.GetRequiredService<ApplicationDbContext>();
 
+                    context.Database.SetCommandTimeout(0);
+
                     if (context.Database.IsSqlServer() || context.Database.IsRelational())
                     {
-                        context.Database.Migrate();
+                        await context.Database.MigrateAsync();
                     }
 
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
