@@ -11,5 +11,12 @@ namespace Application.Common.Interfaces
     public interface ICGESPService
     {
         Task<Response<IList<Alerta>>> ProcessCGESPByDate(DateTime date);
+
+        Task<Response<IList<Alerta>>> ProcessCGESPByDistrict(
+            DateTime date,
+            string district,
+            string city = "São Paulo",
+            string state = "São Paulo",
+            string country = "Brasil");
     }
 }

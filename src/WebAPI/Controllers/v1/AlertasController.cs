@@ -38,5 +38,24 @@ namespace WebAPI.Controllers.v1
                 response
                 );
         }
+
+        [HttpGet("Bairro")]
+        public async Task<ActionResult<Response<IList<Alerta>>>> GetByDistrict(
+            int year,
+            int month,
+            int day,
+            string district)
+        {
+            var response = await _CGESPService.ProcessCGESPByDistrict(new DateTime(year, month, day), district);
+
+            if (!response.Succeeded)
+            {
+                return NotFound();
+            }
+
+            return Ok(
+                response
+                );
+        }
     }
 }

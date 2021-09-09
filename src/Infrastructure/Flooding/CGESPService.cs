@@ -212,5 +212,40 @@ namespace Infrastructure.Flooding
 
             return new Response<IList<Alerta>>(listAlertas, message: $"");
         }
+
+        public async Task<Response<IList<Alerta>>> ProcessCGESPByDistrict(
+            DateTime date, 
+            string district, 
+            string city = "São Paulo", 
+            string state = "São Paulo",
+            string country = "Brasil")
+        {
+            var result = await ProcessCGESPByDate(date);
+            var listResult = new List<Alerta>();
+
+            if (result.Succeeded)
+            {
+                var listAlertsResult = result.Data;
+
+                foreach (var alertResult in listAlertsResult)
+                {
+                    var distritos = _context.Distrito
+                        .Where(x => EF.Functions.Like(x.Nome, "%" + district + "%"))
+                            .Where(x => EF.Functions.Like(x.Cidade.Nome, "%" + city + "%"))
+                                .Where(x => EF.Functions.Like(x.Cidade.Estado.Nome, "%" + state + "%"))
+                                    .Where(x => EF.Functions.Like(x.Cidade.Estado.Pais.Nome, "%" + country + "%"))
+                                        .OrderBy(x => x.Nome)
+                                            .ToList();
+
+                    foreach (var distrito in distritos)
+                    {
+                        if (distrito.Nome == alertResult.Distrito.Nome)
+                            listResult.Add(alertResult);
+                    }
+                }
+            }
+
+            return new Response<IList<Alerta>>(listResult, message: $"");
+        }
     }
 }
