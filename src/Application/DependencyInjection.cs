@@ -1,4 +1,5 @@
 ﻿using Application.Alertas.Commands.CreateAlertas;
+using Application.Alertas.Queries.GetAlertasByDate;
 using Application.Cidades.Queries.GetAllCidades;
 using Application.Cidades.Queries.GetCidadesByName;
 using Application.Distritos.Queries.GetAllDistritos;
@@ -73,7 +74,8 @@ namespace Application
             #region Alertas
 
             services
-                .AddTransient<ICreateAlertasCommandHandler, CreateAlertasCommandHandler>();
+                .AddTransient<ICreateAlertasCommandHandler, CreateAlertasCommandHandler>()
+                .AddTransient<IGetAlertasByDateQueryHandler, GetAlertasByDateQueryHandler>();
 
             #endregion
 

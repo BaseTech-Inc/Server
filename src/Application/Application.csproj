@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Alertas\Queries\GetAlertasByDate\" />
     <Folder Include="Cidades\Queries\GetMeshesCidadeById\" />
     <Folder Include="Common\Behaviours\" />
     <Folder Include="Distritos\Queries\GetMeshesDistritosById\" />

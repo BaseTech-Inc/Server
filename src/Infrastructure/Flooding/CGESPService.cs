@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Alertas.Queries.GetAlertasByDate;
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
 using HtmlAgilityPack;
@@ -209,6 +210,21 @@ namespace Infrastructure.Flooding
                     }
                 }
             }
+
+            var request = new GetAlertasByDateQuery 
+            {
+                date = date
+            };
+
+            var listAlertasDb = _context.Alerta
+                    .Where(x => x.TempoInicio.Date == request.date.Date)
+                        .Include(i => i.Ponto)
+                            .Include(e => e.Distrito)
+                                .Include(e => e.Distrito.Cidade.Estado)
+                                    .Include(e => e.Distrito.Cidade.Estado.Pais)
+                                        .ToList();
+
+            listAlertas.AddRange(listAlertasDb);
 
             return new Response<IList<Alerta>>(listAlertas, message: $"");
         }
