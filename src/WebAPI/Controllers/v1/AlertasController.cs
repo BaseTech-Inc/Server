@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Alertas.Commands.CreateAlertas;
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers.v1
@@ -54,6 +56,25 @@ namespace WebAPI.Controllers.v1
             }
 
             return Ok(
+                response
+                );
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "ElevatedRights")]
+        public async Task<ActionResult<Response<string>>> Create(
+            [FromServices] ICreateAlertasCommandHandler handler,
+            [FromQuery] CreateAlertasCommand command)
+        {
+            var response = await handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound();
+            }
+
+            return Created(
+                HttpRequestHeader.Referer.ToString(),
                 response
                 );
         }

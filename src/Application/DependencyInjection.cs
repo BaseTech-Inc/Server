@@ -1,4 +1,5 @@
-﻿using Application.Cidades.Queries.GetAllCidades;
+﻿using Application.Alertas.Commands.CreateAlertas;
+using Application.Cidades.Queries.GetAllCidades;
 using Application.Cidades.Queries.GetCidadesByName;
 using Application.Distritos.Queries.GetAllDistritos;
 using Application.Distritos.Queries.GetDistritosByName;
@@ -62,10 +63,17 @@ namespace Application
 
             #endregion
 
-            #region
+            #region Localidade
 
             services
                 .AddTransient<IGetLocalidadeByNameQueryHandler, GetLocalidadeByNameQueryHandler>();
+
+            #endregion
+
+            #region Alertas
+
+            services
+                .AddTransient<ICreateAlertasCommandHandler, CreateAlertasCommandHandler>();
 
             #endregion
 
