@@ -11,6 +11,8 @@ using Domain.Enumerations;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
+using System.Web;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Identity
 {
@@ -20,17 +22,23 @@ namespace Infrastructure.Identity
         private readonly ITokenService _tokenService;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IApplicationDbContext _context;
+        private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
             ITokenService tokenService,
             RoleManager<IdentityRole> roleManager,
-            IApplicationDbContext context)
+            IApplicationDbContext context,
+            IEmailService emailService,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _roleManager = roleManager;
             _context = context;
+            _emailService = emailService;
+            _configuration = configuration;
         }
 
         public async Task<Response<LoginResponse>> AuthenticateAsync(string email, string password)
@@ -108,8 +116,19 @@ namespace Infrastructure.Identity
                 if (resultCreateAppUser.Succeeded)
                 {
                     var tokenEmail = await _tokenService.GenerateTokenEmail(appUser.Id);
+                    var url = $"{ _configuration["JWT:ValidIssuer"] }api/Account/verify-email?userId=" + HttpUtility.UrlEncode(usuario.Id) + "&tokenEmail=" + HttpUtility.UrlEncode(tokenEmail);
 
-                    return new Response<string>(usuario.Id, message: $"User Registered. Please confirm your account by visiting this URL { tokenEmail }");
+                    await _emailService.SendEmailAsync(
+                        appUser.Email,
+                        $"<h1>Olá, 👋</h1>" +
+                        $"<p>Apenas uma verificação de email:</p>" +
+                        $"</ br>" +
+                        $"<form action='{ url }' method='POST'>" +
+                        $"<input type='submit' value='Submit' >" +
+                        $"</form>",
+                        "Tupa - Verification");
+
+                    return new Response<string>(usuario.Id, message: $"User Registered. Please confirm your account by visiting this URL { url }");
                 }
             } 
             else
