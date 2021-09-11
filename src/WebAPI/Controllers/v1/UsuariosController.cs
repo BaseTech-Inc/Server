@@ -21,7 +21,7 @@ namespace WebAPI.Controllers.v1
             _identityGetService = identityGetService;
         }
 
-        // GET api/v1/Usuarios
+        // GET: api/v1/Usuarios
         [HttpGet]
         public async Task<ActionResult<Response<IList<UsuarioResponse>>>> Get()
         {

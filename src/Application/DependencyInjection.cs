@@ -7,6 +7,9 @@ using Application.Distritos.Queries.GetDistritosByName;
 using Application.Estados.Queries.GetAllEstados;
 using Application.Estados.Queries.GetEstadosByName;
 using Application.Estados.Queries.GetPaisesByName;
+using Application.HistoricoUsuarios.Commands.CreateHistorico;
+using Application.HistoricoUsuarios.Commands.DeleteHistorico;
+using Application.HistoricoUsuarios.Queries.GetAllHistorico;
 using Application.Localidades.Queries.GetLocalidadesByNames;
 using Application.Marcador.Commands.CreateMarcadores;
 using Application.Marcador.Commands.DeleteMarcadores;
@@ -76,6 +79,15 @@ namespace Application
             services
                 .AddTransient<ICreateAlertasCommandHandler, CreateAlertasCommandHandler>()
                 .AddTransient<IGetAlertasByDateQueryHandler, GetAlertasByDateQueryHandler>();
+
+            #endregion
+
+            #region HistoricoUsuario
+
+            services
+                .AddTransient<ICreateHistoricoCommandHandler, CreateHistoricoCommandHandler>()
+                .AddTransient<IDeleteHistoricoCommandHandler, DeleteHistoricoCommandHandler>()
+                .AddTransient<IGetAllHistoricoQueryHandler, GetAllHistoricoQueryHandler>();
 
             #endregion
 
