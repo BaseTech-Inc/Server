@@ -1,6 +1,7 @@
-﻿using Application.Common.Models;
+﻿using System.Threading.Tasks;
+
+using Application.Common.Models;
 using Application.Common.Security;
-using System.Threading.Tasks;
 
 namespace Application.Common.Interfaces
 {

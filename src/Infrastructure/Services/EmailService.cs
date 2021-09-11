@@ -1,12 +1,10 @@
-﻿using Application.Common.Interfaces;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
+
+using Application.Common.Interfaces;
 
 namespace Infrastructure.Services
 {
@@ -73,7 +71,7 @@ namespace Infrastructure.Services
                 {
                     client.Send(message);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }

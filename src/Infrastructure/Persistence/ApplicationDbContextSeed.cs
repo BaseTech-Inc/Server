@@ -1,4 +1,12 @@
-﻿using Application.Common.Enumerations;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+using static Infrastructure.AdministrativeDivision.DivisionLocation;
+using Application.Common.Enumerations;
 using Application.Common.Interfaces;
 using Application.GeoJson;
 using Application.GeoJson.Features;
@@ -6,16 +14,6 @@ using Application.GeoJson.Geometry;
 using Domain.Entities;
 using Domain.Enumerations;
 using Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using static Infrastructure.AdministrativeDivision.DivisionLocation;
 
 namespace Infrastructure.Persistence
 {

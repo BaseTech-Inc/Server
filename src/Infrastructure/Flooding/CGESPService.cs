@@ -1,16 +1,16 @@
-﻿using Application.Alertas.Queries.GetAlertasByDate;
-using Application.Common.Interfaces;
-using Application.Common.Models;
-using Domain.Entities;
-using HtmlAgilityPack;
-using Infrastructure.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+
+using Infrastructure.Common;
+using Application.Alertas.Queries.GetAlertasByDate;
+using Application.Common.Interfaces;
+using Application.Common.Models;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Flooding
 {

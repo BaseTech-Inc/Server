@@ -1,11 +1,4 @@
-﻿using Domain.Enumerations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Common.Security
+﻿namespace Application.Common.Security
 {
     public class UsuarioResponse
     {

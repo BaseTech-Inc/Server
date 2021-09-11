@@ -1,13 +1,10 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Models;
-using Domain.Entities;
-using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Application.Common.Interfaces;
+using Application.Common.Models;
+using Domain.Entities;
 
 namespace Application.Marcador.Queries.GetAllMarcadores
 {

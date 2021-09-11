@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Web;
+using Microsoft.Extensions.Configuration;
 
 using Application.Common.Interfaces;
 using Application.Common.Models;
@@ -8,11 +11,6 @@ using Application.Common.Security;
 using Application.Common.Enumerations;
 using Domain.Entities;
 using Domain.Enumerations;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System;
-using System.Web;
-using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Identity
 {

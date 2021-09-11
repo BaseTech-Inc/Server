@@ -1,11 +1,9 @@
-﻿using Application.Common.Interfaces;
+﻿using System.Linq;
+using System.Threading.Tasks;
+
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Marcador.Commands.UpdateMarcadores;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Marcador.Commands.DeleteMarcadores
 {

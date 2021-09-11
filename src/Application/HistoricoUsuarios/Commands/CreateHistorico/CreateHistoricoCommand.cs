@@ -1,11 +1,10 @@
-﻿using Application.Common.Interfaces;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.HistoricoUsuarios.Commands.CreateHistorico
 {
@@ -76,8 +75,6 @@ namespace Application.HistoricoUsuarios.Commands.CreateHistorico
             {
                 return new Response<string>(message: $"error while creating: ${ entityHistorico.Id }");
             }
-
-            return null;
         }
     }
 }

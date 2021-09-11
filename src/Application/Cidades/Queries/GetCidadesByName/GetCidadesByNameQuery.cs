@@ -1,12 +1,10 @@
-﻿using Application.Common.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Cidades.Queries.GetCidadesByName
 {

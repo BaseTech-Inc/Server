@@ -1,17 +1,15 @@
-﻿using Application.Common.Interfaces;
+﻿using Google.Apis.Auth;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Common.Security;
 using Domain.Entities;
 using Domain.Enumerations;
-using Google.Apis.Auth;
-using Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {

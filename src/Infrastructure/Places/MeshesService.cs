@@ -1,14 +1,10 @@
-﻿using Application.Common.Interfaces;
+﻿using Newtonsoft.Json;
+using System.Threading.Tasks;
+
+using Application.Common.Interfaces;
 using Application.GeoJson.Features;
 using Application.GeoJson.Geometry;
 using Infrastructure.Common;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Places
 {
