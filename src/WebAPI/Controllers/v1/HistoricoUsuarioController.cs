@@ -20,6 +20,9 @@ namespace WebAPI.Controllers.v1
         { }
 
         // GET: api/v1/HistoricoUsuario/
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
         [HttpGet]
         public async Task<ActionResult<Response<IList<HistoricoUsuario>>>> Get(
             [FromServices] IGetAllHistoricoQueryHandler handler,
@@ -39,6 +42,9 @@ namespace WebAPI.Controllers.v1
         }
 
         // POST: api/v1/HistoricoUsuario/?userId=userId&LatitudeChegada=LatitudeChegada&LongitudeChegada=LongitudeChegada&...
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
         [HttpPost]
         public async Task<ActionResult<Response<string>>> Create(
             [FromServices] ICreateHistoricoCommandHandler handler,
@@ -59,6 +65,9 @@ namespace WebAPI.Controllers.v1
         }
 
         // DELETE: api/v1/Marcadores/?Id=Id&UserId=UserId
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
         [HttpDelete]
         public async Task<ActionResult<Response<string>>> Delete(
             [FromServices] IDeleteHistoricoCommandHandler handler,

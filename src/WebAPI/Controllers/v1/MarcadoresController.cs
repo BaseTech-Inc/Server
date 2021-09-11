@@ -21,6 +21,9 @@ namespace WebAPI.Controllers.v1
         { }
 
         // GET: api/v1/Marcadores/
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
         [HttpGet]
         public async Task<ActionResult<Response<IList<Marcadores>>>> Get(
             [FromServices] IGetAllMarcadoresQueryHandler handler,
@@ -40,6 +43,9 @@ namespace WebAPI.Controllers.v1
         }
 
         // POST: api/v1/Marcadores/?latitude=latitude&longitude=longitude&Nome=Nome
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
         [HttpPost]
         public async Task<ActionResult<Response<string>>> Create(
             [FromServices] ICreateMarcadoresCommandHandler handler,
@@ -60,6 +66,9 @@ namespace WebAPI.Controllers.v1
         }
 
         // DELETE: api/v1/Marcadores/?Id=Id
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
         [HttpDelete]
         public async Task<ActionResult<Response<string>>> Delete(
             [FromServices] IDeleteMarcadoresCommandHandler handler,
@@ -79,6 +88,9 @@ namespace WebAPI.Controllers.v1
         }
 
         // UPDATE: api/Marcadores/?Id=Id&latitude=latitude&longitude=longitude&Nome=Nome
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
         [HttpPut]
         public async Task<ActionResult<Response<string>>> Update(
             [FromServices] IUpdateMarcadoresCommandHandler handler,
