@@ -48,6 +48,15 @@ $ git clone https://github.com/BaseTech-Inc/Tupa-Server.git
 
         # O ClientId é usada para validar o token da Google
         $ dotnet user-secrets set "Authentication:Google:ClientId" "ClientId"
+
+        # O username é usado para validar o e-mail smtp
+        $ dotnet user-secrets set "smtp:username" "username"
+
+        # O password é usado para validar o e-mail smtp
+        $ dotnet user-secrets set "smtp:password" "password"
+
+        # O fromAdress é usado para ser o rementente do e-mail
+        $ dotnet user-secrets set "smtp:fromAdress" "fromAdress"
     ```
 
     Para gerar um valor aleatório pode-se usar esse [site](https://www.uuidgenerator.net/), e para usar a autenticação pelo Google pode usar esse [site](https://developers.google.com/workspace/guides/getstarted-overview).
