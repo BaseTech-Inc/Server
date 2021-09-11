@@ -19,7 +19,7 @@ namespace WebAPI.Controllers.v1
         public PaisesController()
         { }
 
-        // GET: api/Paises/
+        // GET: api/v1/Paises/
         [HttpGet]
         public async Task<ActionResult<Response<IList<Pais>>>> Get(
             [FromServices] IGetAllPaisesQueryHandler handler,
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // GET: api/Paises/:name
+        // GET: api/v1/Paises/:name
         [HttpGet("{name}")]
         public async Task<ActionResult<Response<IList<Pais>>>> GetByName(
             [FromServices] IGetPaisesByNameQueryHandler handler,

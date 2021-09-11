@@ -19,7 +19,7 @@ namespace WebAPI.Controllers.v1
         public HistoricoUsuarioController()
         { }
 
-        // GET: api/HistoricoUsuario/
+        // GET: api/v1/HistoricoUsuario/
         [HttpGet]
         public async Task<ActionResult<Response<IList<HistoricoUsuario>>>> Get(
             [FromServices] IGetAllHistoricoQueryHandler handler,
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // POST: api/Marcadores/?latitude=latitude&longitude=longitude&Nome=Nome
+        // POST: api/v1/HistoricoUsuario/?userId=userId&LatitudeChegada=LatitudeChegada&LongitudeChegada=LongitudeChegada&...
         [HttpPost]
         public async Task<ActionResult<Response<string>>> Create(
             [FromServices] ICreateHistoricoCommandHandler handler,
@@ -58,7 +58,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // DELETE: api/Marcadores/?Id=Id
+        // DELETE: api/v1/Marcadores/?Id=Id&UserId=UserId
         [HttpDelete]
         public async Task<ActionResult<Response<string>>> Delete(
             [FromServices] IDeleteHistoricoCommandHandler handler,

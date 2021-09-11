@@ -17,7 +17,7 @@ namespace WebAPI.Controllers.v1
         public LocalidadesController()
         { }
 
-        // GET: api/localidades/?namePais=namePais&nameEstado=nameEstado&nameCidade=nameCidade&nameDistrito=nameDistrito
+        // GET: api/v1/localidades/?namePais=namePais&nameEstado=nameEstado&nameCidade=nameCidade&nameDistrito=nameDistrito
         [HttpGet]
         public async Task<ActionResult<Response<IList<Distrito>>>> Get(
             [FromServices] IGetLocalidadeByNameQueryHandler handler,

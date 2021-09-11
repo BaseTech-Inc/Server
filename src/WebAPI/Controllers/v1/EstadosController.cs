@@ -20,7 +20,7 @@ namespace WebAPI.Controllers.v1
         public EstadosController()
         { }
 
-        // GET: api/Paises/
+        // GET: api/v1/Estados/
         [HttpGet]
         public async Task<ActionResult<Response<IList<Estado>>>> Get(
             [FromServices] IGetAllEstadosQueryHandler handler,
@@ -39,7 +39,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // GET: api/Estados/:name
+        // GET: api/v1/Estados/:name
         [HttpGet("{name}")]
         public async Task<ActionResult<Response<IList<Estado>>>> GetByName(
             [FromServices] IGetEstadosByNameQueryHandler handler,

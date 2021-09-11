@@ -18,7 +18,7 @@ namespace WebAPI.Controllers.v1
         public CidadesController()
         { }
 
-        // GET: api/Cidades/
+        // GET: api/v1/Cidades/
         [HttpGet]
         public async Task<ActionResult<Response<IList<Cidade>>>> Get(
             [FromServices] IGetAllCidadeQueryHandler handler,
@@ -37,7 +37,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // GET: api/Cidades/:name
+        // GET: api/v1/Cidades/:name
         [HttpGet("{name}")]
         public async Task<ActionResult<Response<IList<Cidade>>>> GetByName(
             [FromServices] IGetCidadesByNameQueryHandler handler,

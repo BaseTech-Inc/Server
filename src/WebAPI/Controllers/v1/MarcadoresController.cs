@@ -20,7 +20,7 @@ namespace WebAPI.Controllers.v1
         public MarcadoresController()
         { }
 
-        // GET: api/Marcadores/
+        // GET: api/v1/Marcadores/
         [HttpGet]
         public async Task<ActionResult<Response<IList<Marcadores>>>> Get(
             [FromServices] IGetAllMarcadoresQueryHandler handler,
@@ -39,7 +39,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // POST: api/Marcadores/?latitude=latitude&longitude=longitude&Nome=Nome
+        // POST: api/v1/Marcadores/?latitude=latitude&longitude=longitude&Nome=Nome
         [HttpPost]
         public async Task<ActionResult<Response<string>>> Create(
             [FromServices] ICreateMarcadoresCommandHandler handler,
@@ -59,7 +59,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // DELETE: api/Marcadores/?Id=Id
+        // DELETE: api/v1/Marcadores/?Id=Id
         [HttpDelete]
         public async Task<ActionResult<Response<string>>> Delete(
             [FromServices] IDeleteMarcadoresCommandHandler handler,

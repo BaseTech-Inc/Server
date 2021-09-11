@@ -23,6 +23,7 @@ namespace WebAPI.Controllers.v1
             _CGESPService = CGESPService;
         }
 
+        // GET: api/v1/Alertas?year=year&month=month&day=day
         [HttpGet]
         public async Task<ActionResult<Response<IList<Alerta>>>> Get(
             int year,
@@ -41,6 +42,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
+        // GET: api/v1/Alertas/Bairro?year=year&month=month&day=day&district=district
         [HttpGet("Bairro")]
         public async Task<ActionResult<Response<IList<Alerta>>>> GetByDistrict(
             int year,
@@ -60,6 +62,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
+        // POST: api/v1/Alertas?Latitude=Latitude&Longitude=Longitude&Distrito=Distrito&TempoInicio=TempoInicio&...
         [HttpPost]
         [Authorize(Policy = "ElevatedRights")]
         public async Task<ActionResult<Response<string>>> Create(

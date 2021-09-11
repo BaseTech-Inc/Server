@@ -18,7 +18,7 @@ namespace WebAPI.Controllers.v1
         public DistritosController()
         { }
 
-        // GET: api/Distrito/
+        // GET: api/v1/Distritos/
         [HttpGet]
         public async Task<ActionResult<Response<IList<Distrito>>>> Get(
             [FromServices] IGetAllDistritosQueryHandler handler,
@@ -37,7 +37,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // GET: api/Distritos/:name
+        // GET: api/v1/Distritos/:name
         [HttpGet("{name}")]
         public async Task<ActionResult<Response<IList<Distrito>>>> GetByName(
             [FromServices] IGetDistritosByNameQueryHandler handler,
