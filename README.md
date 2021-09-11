@@ -18,8 +18,8 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão voltada
     - [X] Alertas
 	- [ ] Previsão **!important**
 	- [ ] Polígono de malhas
-	- [ ] Histórico Usuário
-		- [ ] Encode LinePolygono (Rotas)
+	- [X] Histórico Usuário
+	- [ ] Encode LinePolygon (Rotas)
 
 
 ## Começando
