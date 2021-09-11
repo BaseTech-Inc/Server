@@ -12,5 +12,9 @@ namespace Application.Common.Interfaces
             string emailTo,
             string body,
             string subject);
+
+        string templateBody(
+            string username,
+            string url);
     }
 }

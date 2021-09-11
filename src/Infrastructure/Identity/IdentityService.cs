@@ -120,12 +120,9 @@ namespace Infrastructure.Identity
 
                     await _emailService.SendEmailAsync(
                         appUser.Email,
-                        $"<h1>Olá, 👋</h1>" +
-                        $"<p>Apenas uma verificação de email:</p>" +
-                        $"</ br>" +
-                        $"<form action='{ url }' method='POST'>" +
-                        $"<input type='submit' value='Submit' >" +
-                        $"</form>",
+                        _emailService.templateBody(
+                            appUser.UserName,
+                            url),
                         "Tupa - Verification");
 
                     return new Response<string>(usuario.Id, message: $"User Registered. Please confirm your account by visiting this URL { url }");
