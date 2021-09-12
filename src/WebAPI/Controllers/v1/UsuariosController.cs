@@ -29,7 +29,7 @@ namespace WebAPI.Controllers.v1
 
             if (!usuariosResult.Succeeded)
             {
-                return Unauthorized();
+                return NotFound(usuariosResult);
             }
 
             return Ok (

@@ -34,7 +34,7 @@ namespace WebAPI.Controllers.v1
 
             if (!response.Succeeded)
             {
-                return NotFound();
+                return NotFound(response);
             }
 
             return Ok(
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers.v1
 
             if (!response.Succeeded)
             {
-                return NotFound();
+                return NotFound(response);
             }
 
             return Ok(
@@ -73,7 +73,7 @@ namespace WebAPI.Controllers.v1
 
             if (!response.Succeeded)
             {
-                return NotFound();
+                return BadRequest(response);
             }
 
             return Created(

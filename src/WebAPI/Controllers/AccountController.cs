@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
 
             if (!authorizeResult.Succeeded)
             {
-                return Unauthorized();
+                return BadRequest(authorizeResult);
             }
 
             return Ok(authorizeResult);
@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
 
             if (!authorizeResult.Succeeded)
             {
-                return Unauthorized();
+                return BadRequest(authorizeResult);
             }
 
             return Ok(authorizeResult);
@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
 
             if (!createUserResult.Succeeded)
             {
-                return BadRequest();
+                return BadRequest(createUserResult);
             }
 
             return Ok(createUserResult);
@@ -77,7 +77,7 @@ namespace WebAPI.Controllers
 
             if (!verifyEmailResult.Succeeded)
             {
-                return BadRequest();
+                return BadRequest(verifyEmailResult);
             }
 
             return Ok(verifyEmailResult);

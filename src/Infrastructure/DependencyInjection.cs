@@ -31,10 +31,13 @@ namespace Infrastructure
             else
             {
                 if (configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Development")
-                    services.AddDbContext<ApplicationDbContext>(options =>
+                    /*services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseSqlServer(
                             configuration.GetConnectionString("DevelopmentConnection"),
-                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));*/
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseMySQL(
+                            configuration.GetConnectionString("DevelopmentConnection")));
                 else
                     services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseMySQL(
