@@ -16,6 +16,7 @@ using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Places;
 using Infrastructure.Services;
+using Infrastructure.GooglePoint;
 
 namespace Infrastructure
 {
@@ -142,6 +143,7 @@ namespace Infrastructure
             services.AddTransient<IIdentityGetService, IdentityGetService>();
             services.AddTransient<ICGESPService, CGESPService>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IGooglePointService, GooglePointService>();
 
             return services;
         }

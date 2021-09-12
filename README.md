@@ -19,7 +19,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão voltada
 	- [ ] Previsão **!important**
 	- [ ] Polígono de malhas
 	- [X] Histórico Usuário
-	- [ ] Encode LinePolygon (Rotas)
+	- [X] Encode PolyLine (Rotas)
 
 
 ## Começando

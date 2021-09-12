@@ -137,9 +137,7 @@ namespace Infrastructure.Persistence
                             Poligono = polygon
                         };
 
-                        listPoligonoEstado.Add(poligonoEstadoEntity);
-
-                        
+                        listPoligonoEstado.Add(poligonoEstadoEntity);                        
                     }
                 };
 
