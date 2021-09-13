@@ -7,6 +7,7 @@ using Application.Distritos.Queries.GetAllDistritos;
 using Application.Distritos.Queries.GetDistritosById;
 using Application.Distritos.Queries.GetDistritosByName;
 using Application.Estados.Queries.GetAllEstados;
+using Application.Estados.Queries.GetEstadosById;
 using Application.Estados.Queries.GetEstadosByName;
 using Application.Estados.Queries.GetPaisesByName;
 using Application.HistoricoUsuarios.Commands.CreateHistorico;
@@ -49,6 +50,7 @@ namespace Application
 
             services
                 .AddTransient<IGetAllEstadosQueryHandler, GetAllEstadosQueryHandler>()
+                .AddTransient<IGetEstadosByIdQueryHandler, GetEstadosByIdQueryHandler>()
                 .AddTransient<IGetEstadosByNameQueryHandler, GetEstadosByNameQueryHandler>();
 
             #endregion

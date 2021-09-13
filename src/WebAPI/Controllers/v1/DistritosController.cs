@@ -59,7 +59,7 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/v1/Distritos/id/:Id
         [HttpGet("id/{Id}")]
-        public async Task<ActionResult<Response<IList<Distrito>>>> GetById(
+        public async Task<ActionResult<Response<Distrito>>> GetById(
             [FromServices] IGetDistritosByIdQueryHandler handler,
             [FromRoute] GetDistritosByIdQuery command
         )

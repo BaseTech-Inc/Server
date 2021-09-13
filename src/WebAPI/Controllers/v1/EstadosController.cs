@@ -1,5 +1,6 @@
 ﻿using Application.Common.Models;
 using Application.Estados.Queries.GetAllEstados;
+using Application.Estados.Queries.GetEstadosById;
 using Application.Estados.Queries.GetEstadosByName;
 using Application.Estados.Queries.GetPaisesByName;
 using Application.Paises.Queries.GetAllPaises;
@@ -39,11 +40,30 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // GET: api/v1/Estados/:name
-        [HttpGet("{name}")]
+        // GET: api/v1/Estados/name/:name
+        [HttpGet("name/{name}")]
         public async Task<ActionResult<Response<IList<Estado>>>> GetByName(
             [FromServices] IGetEstadosByNameQueryHandler handler,
             [FromRoute] GetEstadosByNameQuery command
+        )
+        {
+            var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/Estados/id/:Id
+        [HttpGet("id/{Id}")]
+        public async Task<ActionResult<Response<Estado>>> GetById(
+            [FromServices] IGetEstadosByIdQueryHandler handler,
+            [FromRoute] GetEstadosByIdQuery command
         )
         {
             var response = handler.Handle(command);
