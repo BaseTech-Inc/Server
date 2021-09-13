@@ -22,6 +22,25 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
+        /// <summary>
+        /// Adiciona as configurações para se conectar com a fonte de dados e fontes externas.
+        /// </summary>
+        /// <remarks>
+        /// Comandos úteis:
+        /// <list type="bullet">
+        /// <item>
+        /// <term>Adicionar migrations</term>
+        /// <description>dotnet ef migrations add "MigrationName" -s ../WebAPI/ -o ./Persistence/Migrations/</description>
+        /// </item>
+        /// <item>
+        /// <term>Atualizar banco</term>
+        /// <description>dotnet ef database update -s ../WebAPI/</description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        /// <returns>
+        /// Retorna o <paramref name="services"/> com o serviços da infraestrutura.
+        /// </returns>
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))

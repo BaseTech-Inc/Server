@@ -20,6 +20,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão voltada
 	- [ ] Polígono de malhas
 	- [X] Histórico Usuário
 	- [X] Encode PolyLine (Rotas)
+    - [ ] Pesquisa com paginação
 
 
 ## Começando
