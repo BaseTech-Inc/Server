@@ -1,6 +1,7 @@
 ﻿using Application.Common.Models;
 using Application.Estados.Queries.GetAllEstados;
 using Application.Paises.Queries.GetAllPaises;
+using Application.Paises.Queries.GetPaisesById;
 using Application.Paises.Queries.GetPaisesByName;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -38,11 +39,30 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // GET: api/v1/Paises/:name
-        [HttpGet("{name}")]
+        // GET: api/v1/Paises/name/:name
+        [HttpGet("name/{name}")]
         public async Task<ActionResult<Response<IList<Pais>>>> GetByName(
             [FromServices] IGetPaisesByNameQueryHandler handler,
             [FromRoute] GetPaisesByNameQuery command
+        )
+        {
+            var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/Paises/id/:Id
+        [HttpGet("id/{Id}")]
+        public async Task<ActionResult<Response<Pais>>> GetById(
+            [FromServices] IGetPaisesByIdQueryHandler handler,
+            [FromRoute] GetPaisesByIdQuery command
         )
         {
             var response = handler.Handle(command);

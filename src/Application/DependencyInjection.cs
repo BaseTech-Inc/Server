@@ -19,6 +19,7 @@ using Application.Marcador.Commands.DeleteMarcadores;
 using Application.Marcador.Commands.UpdateMarcadores;
 using Application.Marcador.Queries.GetAllMarcadores;
 using Application.Paises.Queries.GetAllPaises;
+using Application.Paises.Queries.GetPaisesById;
 using Application.Paises.Queries.GetPaisesByName;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -42,6 +43,7 @@ namespace Application
 
             services
                 .AddTransient<IGetAllPaisesQueryHandler, GetAllPaisesQueryHandler>()
+                .AddTransient<IGetPaisesByIdQueryHandler, GetPaisesByIdQueryHandler>()
                 .AddTransient<IGetPaisesByNameQueryHandler, GetPaisesByNameQueryHandler>();
 
             #endregion
