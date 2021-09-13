@@ -1,5 +1,6 @@
 ﻿using Application.Common.Models;
 using Application.Distritos.Queries.GetAllDistritos;
+using Application.Distritos.Queries.GetDistritosById;
 using Application.Distritos.Queries.GetDistritosByName;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -37,11 +38,30 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // GET: api/v1/Distritos/:name
-        [HttpGet("{name}")]
+        // GET: api/v1/Distritos/name/:name
+        [HttpGet("name/{name}")]
         public async Task<ActionResult<Response<IList<Distrito>>>> GetByName(
             [FromServices] IGetDistritosByNameQueryHandler handler,
             [FromRoute] GetDistritosByNameQuery command
+        )
+        {
+            var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/Distritos/id/:Id
+        [HttpGet("id/{Id}")]
+        public async Task<ActionResult<Response<IList<Distrito>>>> GetById(
+            [FromServices] IGetDistritosByIdQueryHandler handler,
+            [FromRoute] GetDistritosByIdQuery command
         )
         {
             var response = handler.Handle(command);

@@ -4,6 +4,7 @@ using Application.Cidades.Queries.GetAllCidades;
 using Application.Cidades.Queries.GetCidadesById;
 using Application.Cidades.Queries.GetCidadesByName;
 using Application.Distritos.Queries.GetAllDistritos;
+using Application.Distritos.Queries.GetDistritosById;
 using Application.Distritos.Queries.GetDistritosByName;
 using Application.Estados.Queries.GetAllEstados;
 using Application.Estados.Queries.GetEstadosByName;
@@ -65,6 +66,7 @@ namespace Application
 
             services
                 .AddTransient<IGetAllDistritosQueryHandler, GetAllDistritosQueryHandler>()
+                .AddTransient<IGetDistritosByIdQueryHandler, GetDistritosByIdQueryHandler>()
                 .AddTransient<IGetDistritosByNameQueryHandler, GetDistritosByNameQueryHandler>();
 
             #endregion
