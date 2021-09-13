@@ -59,7 +59,7 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/v1/Cidades/:Id
         [HttpGet("{Id}")]
-        public async Task<ActionResult<Response<IList<Cidade>>>> GetById(
+        public async Task<ActionResult<Response<Cidade>>> GetById(
             [FromServices] IGetCidadesByIdQueryHandler handler,
             [FromRoute] GetCidadesByIdQuery command
         )
