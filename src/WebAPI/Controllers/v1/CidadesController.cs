@@ -38,8 +38,8 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // GET: api/v1/Cidades/:name
-        [HttpGet("{name}")]
+        // GET: api/v1/Cidades/name/:name
+        [HttpGet("name/{name}")]
         public async Task<ActionResult<Response<IList<Cidade>>>> GetByName(
             [FromServices] IGetCidadesByNameQueryHandler handler,
             [FromRoute] GetCidadesByNameQuery command
@@ -57,8 +57,8 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // GET: api/v1/Cidades/:Id
-        [HttpGet("{Id}")]
+        // GET: api/v1/Cidades/id/:Id
+        [HttpGet("id/{Id}")]
         public async Task<ActionResult<Response<Cidade>>> GetById(
             [FromServices] IGetCidadesByIdQueryHandler handler,
             [FromRoute] GetCidadesByIdQuery command
