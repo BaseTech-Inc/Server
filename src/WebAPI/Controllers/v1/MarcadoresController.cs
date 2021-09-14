@@ -3,6 +3,7 @@ using Application.Marcador.Commands.CreateMarcadores;
 using Application.Marcador.Commands.DeleteMarcadores;
 using Application.Marcador.Commands.UpdateMarcadores;
 using Application.Marcador.Queries.GetAllMarcadores;
+using Application.Marcador.Queries.GetMarcadoresById;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,28 @@ namespace WebAPI.Controllers.v1
         public async Task<ActionResult<Response<IList<Marcadores>>>> Get(
             [FromServices] IGetAllMarcadoresQueryHandler handler,
             [FromQuery] GetAllMarcadoresQuery command
+        )
+        {
+            var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/Marcadores/id/
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
+        [HttpGet("id/")]
+        public async Task<ActionResult<Response<Marcadores>>> GetById(
+            [FromServices] IGetMarcadoresByIdQueryHandler handler,
+            [FromQuery] GetMarcadoresByIdQuery command
         )
         {
             var response = handler.Handle(command);

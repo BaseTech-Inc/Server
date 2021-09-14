@@ -19,6 +19,7 @@ using Application.Marcador.Commands.CreateMarcadores;
 using Application.Marcador.Commands.DeleteMarcadores;
 using Application.Marcador.Commands.UpdateMarcadores;
 using Application.Marcador.Queries.GetAllMarcadores;
+using Application.Marcador.Queries.GetMarcadoresById;
 using Application.Paises.Queries.GetAllPaises;
 using Application.Paises.Queries.GetPaisesById;
 using Application.Paises.Queries.GetPaisesByName;
@@ -36,7 +37,8 @@ namespace Application
                 .AddTransient<ICreateMarcadoresCommandHandler, CreateMarcadoresCommandHandler>()
                 .AddTransient<IDeleteMarcadoresCommandHandler, DeleteMarcadoresCommandHandler>()
                 .AddTransient<IUpdateMarcadoresCommandHandler, UpdateMarcadoresCommandHandler>()
-                .AddTransient<IGetAllMarcadoresQueryHandler, GetAllMarcadoresQueryHandler>();
+                .AddTransient<IGetAllMarcadoresQueryHandler, GetAllMarcadoresQueryHandler>()
+                .AddTransient<IGetMarcadoresByIdQueryHandler, GetMarcadoresByIdQueryHandler>();
 
             #endregion
 
