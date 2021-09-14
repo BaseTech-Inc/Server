@@ -84,6 +84,10 @@ e executar o seguinte comando:
         $ dotnet ef database update -s ../WebAPI/
     ```
 
+### Usando o  projeto
+
+- Para usar o projeto localmente é nescessário [Definir como projeto de inicialização](https://docs.microsoft.com/pt-br/visualstudio/ide/creating-solutions-and-projects?view=vs-2019) o projeto `WebAPI`.
+
 ## Arquitetura
 
 Como esse software funciona internamente e como ele interage com dependências 
