@@ -41,6 +41,28 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
+        // GET: api/v1/HistoricoUsuario/id/
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
+        [HttpGet("date/")]
+        public async Task<ActionResult<Response<IList<HistoricoUsuario>>>> GetById(
+            [FromServices] IGetAllHistoricoQueryHandler handler,
+            [FromQuery] GetAllHistoricoQuery command
+        )
+        {
+            var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
         // POST: api/v1/HistoricoUsuario/?userId=userId&LatitudeChegada=LatitudeChegada&LongitudeChegada=LongitudeChegada&...
         /// <summary>
         /// Não é para passar o userId

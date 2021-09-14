@@ -13,6 +13,7 @@ using Application.Estados.Queries.GetPaisesByName;
 using Application.HistoricoUsuarios.Commands.CreateHistorico;
 using Application.HistoricoUsuarios.Commands.DeleteHistorico;
 using Application.HistoricoUsuarios.Queries.GetAllHistorico;
+using Application.HistoricoUsuarios.Queries.GetHistoricoById;
 using Application.Localidades.Queries.GetLocalidadesByNames;
 using Application.Marcador.Commands.CreateMarcadores;
 using Application.Marcador.Commands.DeleteMarcadores;
@@ -95,7 +96,8 @@ namespace Application
             services
                 .AddTransient<ICreateHistoricoCommandHandler, CreateHistoricoCommandHandler>()
                 .AddTransient<IDeleteHistoricoCommandHandler, DeleteHistoricoCommandHandler>()
-                .AddTransient<IGetAllHistoricoQueryHandler, GetAllHistoricoQueryHandler>();
+                .AddTransient<IGetAllHistoricoQueryHandler, GetAllHistoricoQueryHandler>()
+                .AddTransient<IGetHistoricoByIdQueryHandler, GetHistoricoByIdQueryHandler>();
 
             #endregion
 
