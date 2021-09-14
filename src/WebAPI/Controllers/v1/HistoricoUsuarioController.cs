@@ -2,6 +2,7 @@
 using Application.HistoricoUsuarios.Commands.CreateHistorico;
 using Application.HistoricoUsuarios.Commands.DeleteHistorico;
 using Application.HistoricoUsuarios.Queries.GetAllHistorico;
+using Application.HistoricoUsuarios.Queries.GetHistoricoById;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,10 +46,10 @@ namespace WebAPI.Controllers.v1
         /// <summary>
         /// Não é para passar o userId
         /// </summary>
-        [HttpGet("date/")]
-        public async Task<ActionResult<Response<IList<HistoricoUsuario>>>> GetById(
-            [FromServices] IGetAllHistoricoQueryHandler handler,
-            [FromQuery] GetAllHistoricoQuery command
+        [HttpGet("id/")]
+        public async Task<ActionResult<Response<HistoricoUsuario>>> GetById(
+            [FromServices] IGetHistoricoByIdQueryHandler handler,
+            [FromQuery] GetHistoricoByIdQuery command
         )
         {
             var response = handler.Handle(command);
