@@ -1,4 +1,5 @@
 ﻿using Application.Alertas.Commands.CreateAlertas;
+using Application.Alertas.Commands.DeleteAlertas;
 using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
@@ -78,6 +79,28 @@ namespace WebAPI.Controllers.v1
 
             return Created(
                 HttpRequestHeader.Referer.ToString(),
+                response
+                );
+        }
+
+        // DELETE: api/v1/Alertas/?Id=Id
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
+        [HttpDelete]
+        public async Task<ActionResult<Response<string>>> Delete(
+            [FromServices] IDeleteAlertasCommandHandler handler,
+            [FromQuery] DeleteAlertasCommand command
+        )
+        {
+            var response = await handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
                 response
                 );
         }
