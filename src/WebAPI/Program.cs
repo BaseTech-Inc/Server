@@ -32,7 +32,7 @@ namespace WebAPI
 
                     if (context.Database.IsSqlServer() || context.Database.IsRelational())
                     {
-                        await context.Database.MigrateAsync();
+                        //await context.Database.MigrateAsync();
                     }
 
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
@@ -40,8 +40,8 @@ namespace WebAPI
                     var placesService = services.GetRequiredService<IPlacesService>();
                     var meshesService = services.GetRequiredService<IMeshesService>();
 
-                    await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
-                    await ApplicationDbContextSeed.SeedDefaultPlacesAsync(context, placesService, meshesService, logger);
+                    //await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
+                    //await ApplicationDbContextSeed.SeedDefaultPlacesAsync(context, placesService, meshesService, logger);
                 }
                 catch (Exception ex)
                 {

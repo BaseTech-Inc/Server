@@ -1,29 +1,50 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Models;
+﻿using Application.Common.Models;
 using Application.GeoJson.Features;
 using Application.GeoJson.Geometry;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.GooglePoint
+namespace Application.Common.GooglePoints
 {
     /// <summary>
     /// See https://developers.google.com/maps/documentation/utilities/polylinealgorithm
     /// </summary>
-    public class GooglePointService : IGooglePointService
+    public static class GooglePoint
     {
-        public GooglePointService()
-        { }
+        /// <summary>
+        /// Decode google style polyline coordinates.
+        /// </summary>
+        /// <param name="encodedPoints"></param>
+        /// <returns></returns>
+        public static Feature<LineString> DecodeGeojson(string encodedPoints)
+        {
+            var decodeCoordinates = DecodeCoordinates(encodedPoints);
+
+            var coordinates = new List<IPosition>();
+
+            foreach (var decodeCoordinate in decodeCoordinates)
+            {
+                coordinates.Add(new Position(
+                    latitude: decodeCoordinate.Latitude,
+                    longitude:  decodeCoordinate.Longitude));
+            }
+
+            var geometry = new LineString(coordinates);
+            var feature = new Feature<LineString>(geometry);
+
+            return feature;
+        }
 
         /// <summary>
         /// Decode google style polyline coordinates.
         /// </summary>
         /// <param name="encodedPoints"></param>
         /// <returns></returns>
-        public IEnumerable<CoordinateEntity> DecodeCoordinates(string encodedPoints)
+        public static IEnumerable<Ponto> DecodeCoordinates(string encodedPoints)
         {
             if (string.IsNullOrEmpty(encodedPoints))
                 throw new ArgumentNullException("encodedPoints");
@@ -69,7 +90,7 @@ namespace Infrastructure.GooglePoint
 
                 currentLng += (sum & 1) == 1 ? ~(sum >> 1) : (sum >> 1);
 
-                yield return new CoordinateEntity
+                yield return new Ponto
                 {
                     Latitude = Convert.ToDouble(currentLat) / 1E5,
                     Longitude = Convert.ToDouble(currentLng) / 1E5
@@ -82,14 +103,14 @@ namespace Infrastructure.GooglePoint
         /// </summary>
         /// <param name="points"></param>
         /// <returns></returns>
-        public string EncodeGeojson(Feature<LineString> points)
+        public static string EncodeGeojson(Feature<LineString> points)
         {
-            var coordinateEntities =  new List<CoordinateEntity>();
+            var coordinateEntities = new List<Ponto>();
 
             foreach (var point in points.Geometry.Coordinates)
             {
-                coordinateEntities.Add(new CoordinateEntity() 
-                { 
+                coordinateEntities.Add(new Ponto()
+                {
                     Latitude = point.Latitude,
                     Longitude = point.Longitude
                 });
@@ -103,7 +124,7 @@ namespace Infrastructure.GooglePoint
         /// </summary>
         /// <param name="points"></param>
         /// <returns></returns>
-        public string EncodeCoordinate(IEnumerable<CoordinateEntity> points)
+        public static string EncodeCoordinate(IEnumerable<Ponto> points)
         {
             var str = new StringBuilder();
 
