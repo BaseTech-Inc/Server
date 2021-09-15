@@ -104,7 +104,7 @@ namespace Infrastructure.Persistence
             }
 
             // Estado
-            /*if (!context.Estado.Any())
+            if (!context.Estado.Any())
             {
                 logger.LogInformation("Estado Seed");
 
@@ -218,7 +218,7 @@ namespace Infrastructure.Persistence
 
                 context.Distrito.AddRange(listEntity);
                 await context.SaveChangesAsync();
-            }*/
+            }
         }
 
         private static async Task<IEnumerable<Poligono>> SeedDefaultMeshesAsync(
