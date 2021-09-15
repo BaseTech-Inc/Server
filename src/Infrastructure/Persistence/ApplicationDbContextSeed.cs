@@ -14,6 +14,7 @@ using Application.GeoJson.Geometry;
 using Domain.Entities;
 using Domain.Enumerations;
 using Infrastructure.Identity;
+using Application.Common.GooglePoints;
 
 namespace Infrastructure.Persistence
 {
@@ -103,7 +104,7 @@ namespace Infrastructure.Persistence
             }
 
             // Estado
-            if (!context.Estado.Any())
+            /*if (!context.Estado.Any())
             {
                 logger.LogInformation("Estado Seed");
 
@@ -217,10 +218,10 @@ namespace Infrastructure.Persistence
 
                 context.Distrito.AddRange(listEntity);
                 await context.SaveChangesAsync();
-            }
+            }*/
         }
 
-        private static async Task<List<Poligono>> SeedDefaultMeshesAsync(
+        private static async Task<IEnumerable<Poligono>> SeedDefaultMeshesAsync(
             ApplicationDbContext context,
             IMeshesService meshesService,
             string path, 
@@ -246,49 +247,44 @@ namespace Infrastructure.Persistence
 
                     foreach (var geoJsonPolygon in geoJsonListPolygons)
                     {
-                        var i = 0;
+                        var count = 0;
 
                         // Polygon
                         var poligonoEntity = new Poligono();
 
-                        listPolygons.Add(poligonoEntity);
-
                         // Point
-                        var pontoListEntity = new List<Ponto>();
                         var poligonoPontoListEntity = new List<PoligonoPonto>();
 
                         foreach (var geoJsonLineString in geoJsonPolygon.Geometry.Coordinates)
                         {
                             foreach (var geoJsonPoint in geoJsonLineString.Coordinates)
                             {
-                                i++;
-
-                                var d = DateTime.Now;
-
-                                var ponto = new Ponto()
-                                {
-                                    Count = i,
-                                    Latitude = geoJsonPoint.Latitude,
-                                    Longitude = geoJsonPoint.Longitude
-                                };
-
                                 var poligonoPonto = new PoligonoPonto()
                                 {
                                     Poligono = poligonoEntity,
-                                    Ponto = ponto
+                                    Ponto = new Ponto()
+                                    {
+                                        Count = count++,
+                                        Latitude = geoJsonPoint.Latitude,
+                                        Longitude = geoJsonPoint.Longitude
+                                    }
                                 };
 
-                                pontoListEntity.Add(ponto);
                                 poligonoPontoListEntity.Add(poligonoPonto);
                             }
-                        }
+                        }                        
 
                         context.PoligonoPonto.AddRange(poligonoPontoListEntity);
                         await context.SaveChangesAsync();
+
+                        listPolygons.Add(poligonoEntity);
                     }     
 
                     break;
                 case GeoJSONObjectType.MultiPolygon:
+                    if (geoJsonListPolygons != null)
+                        geoJsonListPolygons.Clear();
+
                     geoJsonListPolygons = new List<Feature<Polygon>>();
 
                     var geoJsonMultiPolygons = await meshesService.ProcessMeshes<MultiPolygon>(path, "/" + identifier);

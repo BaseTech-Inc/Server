@@ -29,43 +29,40 @@ namespace Application.Paises.Queries.GetMeshesPaisesById
         {
             try
             {
-                var pontoList = new List<Ponto>();
+                var listEncode = new List<String>();
 
-                var entityPoligonosPais = _context.PoligonoEstado
-                    .Where(x => x.Estado.Id == request.Id)
-                        .Include(e => e.Estado)
-                            .Include(e => e.Poligono)
-                                .ToList();
+                var entityPoligonoPais = _context.PoligonoPais
+                    .Where(x => x.Pais.Id == request.Id)
+                        .Include(e => e.Poligono)
+                            .ToList();
 
-                foreach (var entityPoligonoPais in entityPoligonosPais)
+                foreach (var polygon in entityPoligonoPais)
                 {
+                    var pontoList = new List<Ponto>();
+
                     var entityPoligono = _context.Poligono
-                        .Where(x => x.Id == entityPoligonoPais.Poligono.Id)
+                        .Where(x => x == polygon.Poligono)
                             .ToList()
                                 .FirstOrDefault();
 
                     var entityPoligonoPontos = _context.PoligonoPonto
-                        .Where(x => x.Poligono.Id == entityPoligono.Id)
+                        .Where(x => x.Poligono == entityPoligono)
                             .Include(e => e.Ponto)
-                                .OrderBy(x => x.Ponto.Count)
-                                    .ToList();
+                                .ToList();
 
                     foreach (var entityPoligonoPonto in entityPoligonoPontos)
                     {
-                        var entityPonto = _context.Ponto
-                            .Where(x => x.Id == entityPoligonoPonto.Ponto.Id)
-                                .ToList()
-                                    .FirstOrDefault();
-
-                        pontoList.Add(entityPonto);
+                        pontoList.Add(entityPoligonoPonto.Ponto);
                     }
-                }
 
-                var encodeCoordinate = GooglePoint.EncodeCoordinate(pontoList);
+                    var encodeCoordinate = GooglePoint.EncodeCoordinate(pontoList).Replace(@"\\", @"\");
+
+                    listEncode.Add(encodeCoordinate);
+                }
 
                 var paisesVm = new PaisesVm
                 {
-                    EncodePoints = encodeCoordinate
+                    EncodePoints = listEncode
                 };
 
                 return new Response<PaisesVm>(
