@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Common;
+
+namespace Domain.Entities
 {
-    public class Ponto
+    public class Ponto : CountEntity
     {
         public string Id { get; set; }
 

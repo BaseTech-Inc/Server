@@ -79,7 +79,7 @@ namespace WebAPI.Controllers.v1
         }
 
         // GET: api/v1/Paises/meshes/:Id
-        [HttpGet("meshes/{Id}")]
+        /*[HttpGet("meshes/{Id}")]
         public async Task<ActionResult<Response<PaisesVm>>> GetMeshesById(
             [FromServices] IGetMeshesPaisesByIdQueryHandler handler,
             [FromRoute] GetMeshesPaisesByIdQuery command
@@ -95,6 +95,6 @@ namespace WebAPI.Controllers.v1
             return Ok(
                 response
                 );
-        }
+        }*/
     }
 }

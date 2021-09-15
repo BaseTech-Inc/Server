@@ -9,8 +9,6 @@ namespace Application.Paises.Queries.GetMeshesPaisesById
 {
     public class PaisesVm
     {
-        public string AlgorithmSee { get; set; }
-
         public string EncodePoints { get; set; }
     }
 }

@@ -246,6 +246,8 @@ namespace Infrastructure.Persistence
 
                     foreach (var geoJsonPolygon in geoJsonListPolygons)
                     {
+                        var i = 0;
+
                         // Polygon
                         var poligonoEntity = new Poligono();
 
@@ -259,8 +261,13 @@ namespace Infrastructure.Persistence
                         {
                             foreach (var geoJsonPoint in geoJsonLineString.Coordinates)
                             {
+                                i++;
+
+                                var d = DateTime.Now;
+
                                 var ponto = new Ponto()
                                 {
+                                    Count = i,
                                     Latitude = geoJsonPoint.Latitude,
                                     Longitude = geoJsonPoint.Longitude
                                 };
