@@ -9,6 +9,7 @@ using Application.Cidades.Queries.GetMeshesCidadeById;
 using Application.Distritos.Queries.GetAllDistritos;
 using Application.Distritos.Queries.GetDistritosById;
 using Application.Distritos.Queries.GetDistritosByName;
+using Application.Distritos.Queries.GetDistritosWithPagination;
 using Application.Estados.Queries.GetAllEstados;
 using Application.Estados.Queries.GetEstadosById;
 using Application.Estados.Queries.GetEstadosByName;
@@ -87,7 +88,8 @@ namespace Application
             services
                 .AddTransient<IGetAllDistritosQueryHandler, GetAllDistritosQueryHandler>()
                 .AddTransient<IGetDistritosByIdQueryHandler, GetDistritosByIdQueryHandler>()
-                .AddTransient<IGetDistritosByNameQueryHandler, GetDistritosByNameQueryHandler>();
+                .AddTransient<IGetDistritosByNameQueryHandler, GetDistritosByNameQueryHandler>()
+                .AddTransient<IGetDistritosWithPaginationQueryHandler, GetDistritosWithPaginationQueryHandler>();
 
             #endregion
 

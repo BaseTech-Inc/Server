@@ -2,6 +2,7 @@
 using Application.Distritos.Queries.GetAllDistritos;
 using Application.Distritos.Queries.GetDistritosById;
 using Application.Distritos.Queries.GetDistritosByName;
+using Application.Distritos.Queries.GetDistritosWithPagination;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -65,6 +66,25 @@ namespace WebAPI.Controllers.v1
         )
         {
             var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/Distrito/pagination/
+        [HttpGet("pagination/")]
+        public async Task<ActionResult<Response<PaginatedList<Distrito>>>> GetWithPagination(
+            [FromServices] IGetDistritosWithPaginationQueryHandler handler,
+            [FromQuery] GetDistritosWithPaginationQuery command
+        )
+        {
+            var response = await handler.Handle(command);
 
             if (!response.Succeeded)
             {
