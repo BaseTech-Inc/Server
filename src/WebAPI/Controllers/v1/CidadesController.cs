@@ -1,6 +1,7 @@
 ﻿using Application.Cidades.Queries.GetAllCidades;
 using Application.Cidades.Queries.GetCidadesById;
 using Application.Cidades.Queries.GetCidadesByName;
+using Application.Cidades.Queries.GetMeshesCidadeById;
 using Application.Common.Models;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -62,6 +63,25 @@ namespace WebAPI.Controllers.v1
         public async Task<ActionResult<Response<Cidade>>> GetById(
             [FromServices] IGetCidadesByIdQueryHandler handler,
             [FromRoute] GetCidadesByIdQuery command
+        )
+        {
+            var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/Cidades/meshes/:Id
+        [HttpGet("meshes/{Id}")]
+        public async Task<ActionResult<Response<CidadeVm>>> GetMeshesById(
+            [FromServices] IGetMeshesCidadesByIdQueryHandler handler,
+            [FromRoute] GetMeshesCidadesByIdQuery command
         )
         {
             var response = handler.Handle(command);

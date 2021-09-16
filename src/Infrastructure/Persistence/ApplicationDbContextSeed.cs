@@ -77,7 +77,7 @@ namespace Infrastructure.Persistence
             // Pais
             if (!context.Pais.Any())
             {
-                logger.LogInformation("Pais Seed");
+                logger.LogInformation("Pais Informations Seed");
 
                 var entity = new Pais
                 {
@@ -87,6 +87,8 @@ namespace Infrastructure.Persistence
 
                 context.Pais.Add(entity);
                 await context.SaveChangesAsync();
+
+                logger.LogInformation("Pais Meshes Seed");
 
                 var polygons = await SeedDefaultMeshesAsync(context, meshesService, "/paises", "BR");
 
@@ -106,7 +108,7 @@ namespace Infrastructure.Persistence
             // Estado
             if (!context.Estado.Any())
             {
-                logger.LogInformation("Estado Seed");
+                logger.LogInformation("Estado Informations Seed");
 
                 var states = await placesService.ProcessPlaces<DivisionState>("/estados");                
 
@@ -126,7 +128,9 @@ namespace Infrastructure.Persistence
                         Sigla = state.Initials
                     };
 
-                    listEntity.Add(entity);                    
+                    listEntity.Add(entity);
+
+                    logger.LogInformation("Estado Meshes Seed");
 
                     var polygons = await SeedDefaultMeshesAsync(context, meshesService, "/estados", state.Id.ToString());
 
@@ -149,7 +153,7 @@ namespace Infrastructure.Persistence
             // Cidade
             if (!context.Cidade.Any())
             {
-                logger.LogInformation("Cidade Seed");
+                logger.LogInformation("Cidade Informations Seed");
 
                 var counties = await placesService.ProcessPlaces<DivisionCounty>("/municipios");
 
@@ -169,7 +173,9 @@ namespace Infrastructure.Persistence
 
                     listEntity.Add(entity);
 
-                    if (county.Name == "São Paulo")
+                    logger.LogInformation("Cidade Meshes Seed");
+                    // pegar meshes de todas as cidades do estado de São Paulo
+                    if (state.Nome == "São Paulo")
                     {
                         var polygons = await SeedDefaultMeshesAsync(context, meshesService, "/municipios", county.Id.ToString());
 
@@ -196,7 +202,7 @@ namespace Infrastructure.Persistence
             // Distrito
             if (!context.Distrito.Any())
             {
-                logger.LogInformation("Distrito Seed");
+                logger.LogInformation("Distrito Informations Seed");
 
                 var districts = await placesService.ProcessPlaces<DivisionDistrict>("/distritos");
 

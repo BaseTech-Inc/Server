@@ -9,34 +9,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Paises.Queries.GetMeshesPaisesById
+namespace Application.Cidades.Queries.GetMeshesCidadeById
 {
-    public class GetMeshesPaisesByIdQuery
+    public class GetMeshesCidadesByIdQuery
     {
         public string Id { get; set; }
     }
 
-    public class GetMeshesPaisesByIdQueryHandler : IGetMeshesPaisesByIdQueryHandler
+    public class GetMeshesCidadesByIdQueryHandler : IGetMeshesCidadesByIdQueryHandler
     {
         private readonly IApplicationDbContext _context;
 
-        public GetMeshesPaisesByIdQueryHandler(IApplicationDbContext context)
+        public GetMeshesCidadesByIdQueryHandler(IApplicationDbContext context)
         {
             _context = context;
         }
 
-        public Response<PaisesVm> Handle(GetMeshesPaisesByIdQuery request)
+        public Response<CidadeVm> Handle(GetMeshesCidadesByIdQuery request)
         {
             try
             {
                 var listEncode = new List<String>();
 
-                var entityPoligonoPais = _context.PoligonoPais
-                    .Where(x => x.Pais.Id == request.Id)
+                var entityPoligonoCidade = _context.PoligonoCidade
+                    .Where(x => x.Cidade.Id == request.Id)
                         .Include(e => e.Poligono)
                             .ToList();
 
-                foreach (var polygon in entityPoligonoPais)
+                foreach (var polygon in entityPoligonoCidade)
                 {
                     var pontoList = new List<Ponto>();
 
@@ -61,18 +61,18 @@ namespace Application.Paises.Queries.GetMeshesPaisesById
                     listEncode.Add(encodeCoordinate);
                 }
 
-                var paisesVm = new PaisesVm
+                var cidadeVm = new CidadeVm
                 {
                     EncodePoints = listEncode
                 };
 
-                return new Response<PaisesVm>(
-                    data: paisesVm, 
+                return new Response<CidadeVm>(
+                    data: cidadeVm,
                     message: "See https://developers.google.com/maps/documentation/utilities/polylinealgorithm");
             }
             catch
             {
-                return new Response<PaisesVm>(message: $"error to get");
+                return new Response<CidadeVm>(message: $"error to get");
             }
         }
     }

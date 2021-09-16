@@ -48,7 +48,8 @@ namespace Application.Estados.Queries.GetMeshesEstadosById
                     var entityPoligonoPontos = _context.PoligonoPonto
                         .Where(x => x.Poligono == entityPoligono)
                             .Include(e => e.Ponto)
-                                .ToList();
+                                .OrderBy(x => x.Ponto.Count)
+                                    .ToList();
 
                     foreach (var entityPoligonoPonto in entityPoligonoPontos)
                     {
