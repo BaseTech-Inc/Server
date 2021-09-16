@@ -3,6 +3,7 @@ using Application.HistoricoUsuarios.Commands.CreateHistorico;
 using Application.HistoricoUsuarios.Commands.DeleteHistorico;
 using Application.HistoricoUsuarios.Queries.GetAllHistorico;
 using Application.HistoricoUsuarios.Queries.GetHistoricoById;
+using Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,25 @@ namespace WebAPI.Controllers.v1
         )
         {
             var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/HistoricoUsuario/pagination/
+        [HttpGet("pagination/")]
+        public async Task<ActionResult<Response<PaginatedList<HistoricoUsuario>>>> GetWithPagination(
+            [FromServices] IGetHistoricoWithPaginationQueryHandler handler,
+            [FromQuery] GetHistoricoWithPaginationQuery command
+        )
+        {
+            var response = await handler.Handle(command);
 
             if (!response.Succeeded)
             {
