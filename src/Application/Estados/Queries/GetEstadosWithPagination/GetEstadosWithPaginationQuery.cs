@@ -12,7 +12,6 @@ namespace Application.Estados.Queries.GetEstadosWithPagination
 {
     public class GetEstadosWithPaginationQuery
     {
-        public string Id { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
@@ -31,8 +30,7 @@ namespace Application.Estados.Queries.GetEstadosWithPagination
             try
             {
                 var entity = _context.Estado
-                    .Where(x => x.Id == request.Id)
-                        .Include(e => e.Pais);
+                    .Include(e => e.Pais);
 
                 var entityPagination = await PaginatedList<Estado>.CreateAsync(entity, request.PageNumber, request.PageSize);
 

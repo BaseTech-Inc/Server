@@ -2,6 +2,7 @@
 using Application.Estados.Queries.GetAllEstados;
 using Application.Estados.Queries.GetEstadosById;
 using Application.Estados.Queries.GetEstadosByName;
+using Application.Estados.Queries.GetEstadosWithPagination;
 using Application.Estados.Queries.GetMeshesEstadosById;
 using Application.Estados.Queries.GetPaisesByName;
 using Application.Paises.Queries.GetAllPaises;
@@ -68,6 +69,25 @@ namespace WebAPI.Controllers.v1
         )
         {
             var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/Estados/pagination/
+        [HttpGet("pagination/")]
+        public async Task<ActionResult<Response<PaginatedList<Estado>>>> GetWithPagination(
+            [FromServices] IGetEstadosWithPaginationQueryHandler handler,
+            [FromQuery] GetEstadosWithPaginationQuery command
+        )
+        {
+            var response = await handler.Handle(command);
 
             if (!response.Succeeded)
             {
