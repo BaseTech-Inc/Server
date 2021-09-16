@@ -36,10 +36,8 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoById
                 var entity = _context.HistoricoUsuario
                     .Where(x => x.Usuario == entityUsuario)
                         .Where(x => x.Id == request.Id)
-                            .Include(e => e.PontoPartida)
-                                .Include(e => e.PontoChegada)
-                                    .ToList()
-                                        .FirstOrDefault();
+                            .ToList()
+                                .FirstOrDefault();
 
                 return new Response<HistoricoUsuario>(data: entity);
             }

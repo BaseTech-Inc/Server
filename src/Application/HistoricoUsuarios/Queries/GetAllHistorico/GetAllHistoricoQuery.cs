@@ -31,9 +31,7 @@ namespace Application.HistoricoUsuarios.Queries.GetAllHistorico
 
                 var entity = _context.HistoricoUsuario
                     .Where(x => x.Usuario == entityUsuario)
-                        .Include(e => e.PontoPartida)
-                            .Include(e => e.PontoChegada)
-                                .ToList();
+                        .ToList();
 
                 return new Response<IList<HistoricoUsuario>>(data: entity);
             }
