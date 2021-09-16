@@ -88,8 +88,6 @@ namespace Infrastructure.Persistence
                 context.Pais.Add(entity);
                 await context.SaveChangesAsync();
 
-                logger.LogInformation("Pais Meshes Seed");
-
                 var polygons = await SeedDefaultMeshesAsync(context, meshesService, "/paises", "BR");
 
                 foreach (var polygon in polygons)
@@ -118,8 +116,6 @@ namespace Infrastructure.Persistence
                 var listEntity = new List<Estado>();
 
                 var listPoligonoEstado = new List<PoligonoEstado>();
-
-                logger.LogInformation("Estado Meshes Seed");
 
                 foreach (var state in states)
                 {
@@ -159,8 +155,6 @@ namespace Infrastructure.Persistence
 
                 var listEntity = new List<Cidade>();
                 var listPoligonoCidadeEntity = new List<PoligonoCidade>();
-
-                logger.LogInformation("Cidade Meshes Seed");
 
                 foreach (var county in counties)
                 {

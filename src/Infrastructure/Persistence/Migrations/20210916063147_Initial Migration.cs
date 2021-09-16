@@ -77,7 +77,8 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(767)", nullable: false),
                     Latitude = table.Column<double>(type: "double", nullable: false),
-                    Longitude = table.Column<double>(type: "double", nullable: false)
+                    Longitude = table.Column<double>(type: "double", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -348,27 +349,14 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(767)", nullable: false),
                     UsuarioId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    PontoChegadaId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    PontoPartidaId = table.Column<string>(type: "varchar(767)", nullable: true),
+                    TempoChegada = table.Column<DateTime>(type: "datetime", nullable: false),
+                    TempoPartida = table.Column<DateTime>(type: "datetime", nullable: false),
                     DistanciaPercurso = table.Column<double>(type: "double", nullable: false),
-                    Duracao = table.Column<DateTime>(type: "datetime", nullable: false),
                     Rota = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HistoricoUsuario", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_HistoricoUsuario_Ponto_PontoChegadaId",
-                        column: x => x.PontoChegadaId,
-                        principalTable: "Ponto",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_HistoricoUsuario_Ponto_PontoPartidaId",
-                        column: x => x.PontoPartidaId,
-                        principalTable: "Ponto",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_HistoricoUsuario_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
@@ -592,16 +580,6 @@ namespace Infrastructure.Persistence.Migrations
                 name: "IX_HistoricoPrevisao_DistritoId",
                 table: "HistoricoPrevisao",
                 column: "DistritoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HistoricoUsuario_PontoChegadaId",
-                table: "HistoricoUsuario",
-                column: "PontoChegadaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HistoricoUsuario_PontoPartidaId",
-                table: "HistoricoUsuario",
-                column: "PontoPartidaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HistoricoUsuario_UsuarioId",

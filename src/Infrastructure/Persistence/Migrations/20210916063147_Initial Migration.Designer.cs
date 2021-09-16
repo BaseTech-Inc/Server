@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210915035118_Update Entity Count")]
-    partial class UpdateEntityCount
+    [Migration("20210916063147_Initial Migration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -158,26 +158,19 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<double>("DistanciaPercurso")
                         .HasColumnType("double");
 
-                    b.Property<DateTime>("Duracao")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("PontoChegadaId")
-                        .HasColumnType("varchar(767)");
-
-                    b.Property<string>("PontoPartidaId")
-                        .HasColumnType("varchar(767)");
-
                     b.Property<string>("Rota")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("TempoChegada")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("TempoPartida")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("UsuarioId")
                         .HasColumnType("varchar(767)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PontoChegadaId");
-
-                    b.HasIndex("PontoPartidaId");
 
                     b.HasIndex("UsuarioId");
 
@@ -326,9 +319,6 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(767)");
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
                     b.Property<string>("PoligonoId")
                         .HasColumnType("varchar(767)");
 
@@ -349,6 +339,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(767)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("double");
@@ -667,21 +660,9 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.HistoricoUsuario", b =>
                 {
-                    b.HasOne("Domain.Entities.Ponto", "PontoChegada")
-                        .WithMany()
-                        .HasForeignKey("PontoChegadaId");
-
-                    b.HasOne("Domain.Entities.Ponto", "PontoPartida")
-                        .WithMany()
-                        .HasForeignKey("PontoPartidaId");
-
                     b.HasOne("Domain.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId");
-
-                    b.Navigation("PontoChegada");
-
-                    b.Navigation("PontoPartida");
 
                     b.Navigation("Usuario");
                 });
