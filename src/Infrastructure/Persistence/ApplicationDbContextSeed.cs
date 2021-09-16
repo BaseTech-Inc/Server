@@ -175,7 +175,7 @@ namespace Infrastructure.Persistence
 
                     logger.LogInformation("Cidade Meshes Seed");
                     // pegar meshes de todas as cidades do estado de São Paulo
-                    if (state.Nome == "São Paulo")
+                    if (county.Name == "São Paulo")
                     {
                         var polygons = await SeedDefaultMeshesAsync(context, meshesService, "/municipios", county.Id.ToString());
 
