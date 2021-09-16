@@ -1,6 +1,7 @@
 ﻿using Application.Cidades.Queries.GetAllCidades;
 using Application.Cidades.Queries.GetCidadesById;
 using Application.Cidades.Queries.GetCidadesByName;
+using Application.Cidades.Queries.GetCidadesWithPagination;
 using Application.Cidades.Queries.GetMeshesCidadeById;
 using Application.Common.Models;
 using Domain.Entities;
@@ -66,6 +67,25 @@ namespace WebAPI.Controllers.v1
         )
         {
             var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/Cidades/pagination
+        [HttpGet("pagination/")]
+        public async Task<ActionResult<Response<PaginatedList<Cidade>>>> GetWithPagination(
+            [FromServices] IGetCidadesWithPaginationQueryHandler handler,
+            [FromQuery] GetCidadesWithPaginationQuery command
+        )
+        {
+            var response = await handler.Handle(command);
 
             if (!response.Succeeded)
             {

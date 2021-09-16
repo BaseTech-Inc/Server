@@ -4,6 +4,7 @@ using Application.Alertas.Queries.GetAlertasByDate;
 using Application.Cidades.Queries.GetAllCidades;
 using Application.Cidades.Queries.GetCidadesById;
 using Application.Cidades.Queries.GetCidadesByName;
+using Application.Cidades.Queries.GetCidadesWithPagination;
 using Application.Cidades.Queries.GetMeshesCidadeById;
 using Application.Distritos.Queries.GetAllDistritos;
 using Application.Distritos.Queries.GetDistritosById;
@@ -76,7 +77,8 @@ namespace Application
                 .AddTransient<IGetAllCidadeQueryHandler, GetAllCidadeQueryHandler>()
                 .AddTransient<IGetCidadesByIdQueryHandler, GetCidadesByIdQueryHandler>()
                 .AddTransient<IGetCidadesByNameQueryHandler, GetCidadesByNameQueryHandler>()
-                .AddTransient<IGetMeshesCidadesByIdQueryHandler, GetMeshesCidadesByIdQueryHandler>();
+                .AddTransient<IGetMeshesCidadesByIdQueryHandler, GetMeshesCidadesByIdQueryHandler>()
+                .AddTransient<IGetCidadesWithPaginationQueryHandler, GetCidadesWithPaginationQueryHandler>();
 
             #endregion
 
