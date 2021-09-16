@@ -17,10 +17,10 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão voltada
 - [ ] Database
     - [X] Alertas
 	- [ ] Previsão **!important**
-	- [ ] Polígono de malhas
+	- [X] Polígono de malhas
 	- [X] Histórico Usuário
 	- [X] Encode PolyLine (Rotas)
-    - [ ] Pesquisa com paginação
+    - [X] Pesquisa com paginação
 
 
 ## Começando
