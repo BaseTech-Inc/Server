@@ -64,7 +64,7 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
-        // POST: api/v1/HistoricoUsuario/?userId=userId&LatitudeChegada=LatitudeChegada&LongitudeChegada=LongitudeChegada&...
+        // POST: api/v1/HistoricoUsuario/?
         /// <summary>
         /// Não é para passar o userId
         /// </summary>

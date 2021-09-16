@@ -12,17 +12,11 @@ namespace Application.HistoricoUsuarios.Commands.CreateHistorico
     {
         public string UserId { get; set; }
 
-        public double LatitudeChegada { get; set; }
+        public DateTime TempoChegada { get; set; }
 
-        public double LongitudeChegada { get; set; }
-
-        public double LatitudePartida { get; set; }
-
-        public double LongitudePartida { get; set; }
+        public DateTime TempoPartida { get; set; }
 
         public double DistanciaPercurso { get; set; }
-
-        public DateTime Duracao { get; set; }
 
         public string Rota { get; set; }
     }
@@ -39,26 +33,13 @@ namespace Application.HistoricoUsuarios.Commands.CreateHistorico
 
         public async Task<Response<string>> Handle(CreateHistoricoCommand request)
         {
-            var entityPontoChegada = new Ponto
-            {
-                Latitude = request.LatitudeChegada,
-                Longitude = request.LongitudeChegada
-            };
-
-            var entityPontoPartida = new Ponto
-            {
-                Latitude = request.LatitudePartida,
-                Longitude = request.LongitudePartida
-            };
-
             var entityUsuario = _context.Usuario.Where(x => x.Id == request.UserId).FirstOrDefault();
 
             var entityHistorico = new HistoricoUsuario
             {
                 DistanciaPercurso = request.DistanciaPercurso,
-                Duracao = request.Duracao,
-                PontoChegada = entityPontoChegada,
-                PontoPartida = entityPontoPartida,
+                TempoChegada = request.TempoChegada,
+                TempoPartida = request.TempoPartida,
                 Usuario = entityUsuario,
                 Rota = request.Rota
             };

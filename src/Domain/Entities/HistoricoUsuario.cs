@@ -8,13 +8,11 @@ namespace Domain.Entities
 
         public Usuario Usuario { get; set; }
 
-        public Ponto PontoChegada { get; set; }
+        public DateTime TempoChegada { get; set; }
 
-        public Ponto PontoPartida { get; set; }
+        public DateTime TempoPartida { get; set; }
 
         public double DistanciaPercurso { get; set; }
-
-        public DateTime Duracao { get; set; }
 
         public string Rota { get; set; }
     }
