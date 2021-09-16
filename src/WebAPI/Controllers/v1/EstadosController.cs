@@ -2,6 +2,7 @@
 using Application.Estados.Queries.GetAllEstados;
 using Application.Estados.Queries.GetEstadosById;
 using Application.Estados.Queries.GetEstadosByName;
+using Application.Estados.Queries.GetMeshesEstadosById;
 using Application.Estados.Queries.GetPaisesByName;
 using Application.Paises.Queries.GetAllPaises;
 using Domain.Entities;
@@ -64,6 +65,25 @@ namespace WebAPI.Controllers.v1
         public async Task<ActionResult<Response<Estado>>> GetById(
             [FromServices] IGetEstadosByIdQueryHandler handler,
             [FromRoute] GetEstadosByIdQuery command
+        )
+        {
+            var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/Estados/meshes/:Id
+        [HttpGet("meshes/{Id}")]
+        public async Task<ActionResult<Response<EstadoVm>>> GetMeshesById(
+            [FromServices] IGetMeshesEstadoByIdQueryHandler handler,
+            [FromRoute] GetMeshesEstadoByIdQuery command
         )
         {
             var response = handler.Handle(command);

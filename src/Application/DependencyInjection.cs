@@ -10,6 +10,7 @@ using Application.Distritos.Queries.GetDistritosByName;
 using Application.Estados.Queries.GetAllEstados;
 using Application.Estados.Queries.GetEstadosById;
 using Application.Estados.Queries.GetEstadosByName;
+using Application.Estados.Queries.GetMeshesEstadosById;
 using Application.Estados.Queries.GetPaisesByName;
 using Application.HistoricoUsuarios.Commands.CreateHistorico;
 using Application.HistoricoUsuarios.Commands.DeleteHistorico;
@@ -59,6 +60,7 @@ namespace Application
             services
                 .AddTransient<IGetAllEstadosQueryHandler, GetAllEstadosQueryHandler>()
                 .AddTransient<IGetEstadosByIdQueryHandler, GetEstadosByIdQueryHandler>()
+                .AddTransient<IGetMeshesEstadoByIdQueryHandler, GetMeshesEstadoByIdQueryHandler>()
                 .AddTransient<IGetEstadosByNameQueryHandler, GetEstadosByNameQueryHandler>();
 
             #endregion
