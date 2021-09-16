@@ -12,15 +12,11 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão voltada
 
 - [ ] Authentication
 	- [ ] Refresh Token **!important**
+    - [ ] Recuperar Senha
 	- [ ] Autenticação usando Facebook
 
 - [ ] Database
-    - [X] Alertas
 	- [ ] Previsão **!important**
-	- [X] Polígono de malhas
-	- [X] Histórico Usuário
-	- [X] Encode PolyLine (Rotas)
-    - [X] Pesquisa com paginação
 
 
 ## Começando
