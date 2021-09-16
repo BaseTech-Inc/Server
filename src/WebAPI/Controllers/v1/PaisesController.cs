@@ -4,6 +4,7 @@ using Application.Paises.Queries.GetAllPaises;
 using Application.Paises.Queries.GetMeshesPaisesById;
 using Application.Paises.Queries.GetPaisesById;
 using Application.Paises.Queries.GetPaisesByName;
+using Application.Paises.Queries.GetPaisesWithPagination;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -67,6 +68,25 @@ namespace WebAPI.Controllers.v1
         )
         {
             var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/Paises/pagination/
+        [HttpGet("pagination/")]
+        public async Task<ActionResult<Response<PaginatedList<Pais>>>> GetWithPagination(
+            [FromServices] IGetPaisesWithPaginationQueryHandler handler,
+            [FromQuery] GetPaisesWithPaginationQuery command
+        )
+        {
+            var response = await handler.Handle(command);
 
             if (!response.Succeeded)
             {
