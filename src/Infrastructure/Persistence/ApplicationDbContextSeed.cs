@@ -119,6 +119,8 @@ namespace Infrastructure.Persistence
 
                 var listPoligonoEstado = new List<PoligonoEstado>();
 
+                logger.LogInformation("Estado Meshes Seed");
+
                 foreach (var state in states)
                 {
                     var entity = new Estado
@@ -129,8 +131,6 @@ namespace Infrastructure.Persistence
                     };
 
                     listEntity.Add(entity);
-
-                    logger.LogInformation("Estado Meshes Seed");
 
                     var polygons = await SeedDefaultMeshesAsync(context, meshesService, "/estados", state.Id.ToString());
 
@@ -160,6 +160,8 @@ namespace Infrastructure.Persistence
                 var listEntity = new List<Cidade>();
                 var listPoligonoCidadeEntity = new List<PoligonoCidade>();
 
+                logger.LogInformation("Cidade Meshes Seed");
+
                 foreach (var county in counties)
                 {
                     // Estado 
@@ -173,7 +175,6 @@ namespace Infrastructure.Persistence
 
                     listEntity.Add(entity);
 
-                    logger.LogInformation("Cidade Meshes Seed");
                     // pegar meshes de todas as cidades do estado de São Paulo
                     if (county.Name == "São Paulo")
                     {
