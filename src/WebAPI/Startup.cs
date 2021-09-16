@@ -70,7 +70,7 @@ namespace WebAPI
                   builder =>
                   {
                       builder
-                      .WithOrigins("http://localhost:5500")
+                      .WithOrigins("http://localhost:44381")
                       .AllowAnyHeader()
                       .AllowAnyMethod();
                   });
