@@ -15,7 +15,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão voltada
     - [ ] Recuperar Senha
 	- [ ] Autenticação usando Facebook
 
-- [ ] Database
+- [ ] Infrastructure
 	- [ ] Previsão **!important**
 
 
