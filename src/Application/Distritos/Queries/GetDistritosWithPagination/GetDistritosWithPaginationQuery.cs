@@ -33,7 +33,8 @@ namespace Application.Distritos.Queries.GetDistritosWithPagination
                 var entity = _context.Distrito
                     .Include(e => e.Cidade)
                         .Include(e => e.Cidade.Estado)
-                            .Include(e => e.Cidade.Estado.Pais);
+                            .Include(e => e.Cidade.Estado.Pais)
+                                .OrderBy(x => x.Nome);
 
                 var entityPagination = await PaginatedList<Distrito>.CreateAsync(entity, request.PageNumber, request.PageSize);
 

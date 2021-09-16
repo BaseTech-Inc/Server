@@ -28,7 +28,8 @@ namespace Application.Paises.Queries.GetPaisesWithPagination
         {
             try
             {
-                var entity = _context.Pais;
+                var entity = _context.Pais
+                    .OrderBy(x => x.Nome);
 
                 var entityPagination = await PaginatedList<Pais>.CreateAsync(entity, request.PageNumber, request.PageSize);
 

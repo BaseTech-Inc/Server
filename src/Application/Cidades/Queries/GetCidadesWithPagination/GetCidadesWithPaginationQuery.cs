@@ -31,7 +31,8 @@ namespace Application.Cidades.Queries.GetCidadesWithPagination
             {
                 var entity = _context.Cidade
                     .Include(e => e.Estado)
-                        .Include(e => e.Estado.Pais);
+                        .Include(e => e.Estado.Pais)
+                            .OrderBy(x => x.Nome);
 
                 var entityPagination = await PaginatedList<Cidade>.CreateAsync(entity, request.PageNumber, request.PageSize);
 

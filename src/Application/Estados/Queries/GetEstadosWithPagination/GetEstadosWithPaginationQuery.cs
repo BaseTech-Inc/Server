@@ -30,7 +30,8 @@ namespace Application.Estados.Queries.GetEstadosWithPagination
             try
             {
                 var entity = _context.Estado
-                    .Include(e => e.Pais);
+                    .Include(e => e.Pais)
+                        .OrderBy(x => x.Nome);
 
                 var entityPagination = await PaginatedList<Estado>.CreateAsync(entity, request.PageNumber, request.PageSize);
 
