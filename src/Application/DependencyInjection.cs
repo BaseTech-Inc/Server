@@ -28,6 +28,7 @@ using Application.Paises.Queries.GetAllPaises;
 using Application.Paises.Queries.GetMeshesPaisesById;
 using Application.Paises.Queries.GetPaisesById;
 using Application.Paises.Queries.GetPaisesByName;
+using Application.Paises.Queries.GetPaisesWithPagination;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
@@ -53,7 +54,8 @@ namespace Application
                 .AddTransient<IGetAllPaisesQueryHandler, GetAllPaisesQueryHandler>()
                 .AddTransient<IGetPaisesByIdQueryHandler, GetPaisesByIdQueryHandler>()
                 .AddTransient<IGetPaisesByNameQueryHandler, GetPaisesByNameQueryHandler>()
-                .AddTransient<IGetMeshesPaisesByIdQueryHandler, GetMeshesPaisesByIdQueryHandler>();
+                .AddTransient<IGetMeshesPaisesByIdQueryHandler, GetMeshesPaisesByIdQueryHandler>()
+                .AddTransient<IGetPaisesWithPaginationQueryHandler, GetPaisesWithPaginationQueryHandler>();
 
             #endregion
 
