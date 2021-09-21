@@ -94,6 +94,7 @@ namespace Infrastructure.Identity
 
                 var usuario = new Usuario
                 { 
+                    Email = email,
                     TipoUsuario = new TipoUsuario
                     {
                         Descricao = EnumTipoUsuario.Comum

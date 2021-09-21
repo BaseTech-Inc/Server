@@ -42,6 +42,7 @@ namespace Infrastructure.Persistence
 
             var usuario = new Usuario
             {
+                Email = "manager@localhost",
                 TipoUsuario = new TipoUsuario
                 {
                     Descricao = EnumTipoUsuario.Premium

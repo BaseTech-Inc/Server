@@ -8,6 +8,8 @@
 
         public string ContaBancaria { get; set; }
 
+        public string Email { get; set; }
+
         public string ApplicationUserID { get; set; }
     }
 }

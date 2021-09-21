@@ -10,6 +10,7 @@ using Application.Common.Models;
 using Application.Common.Security;
 using Domain.Entities;
 using Domain.Enumerations;
+using System.Linq;
 
 namespace Infrastructure.Services
 {
@@ -50,23 +51,32 @@ namespace Infrastructure.Services
                 // verifica se não existe nenhum usuário cadastrado com esse username e email
                 if ((userExist == null) && (emailExist == null))
                 {
-                    var listUsuario = new List<Usuario>();
+                    var usuarioExist = _context.Usuario
+                        .Where(x => x.Email == payload.Email)
+                            .FirstOrDefault();
 
-                    var usuario = new Usuario
+                    if (usuarioExist == null)
                     {
-                        TipoUsuario = new TipoUsuario
+                        var usuario = new Usuario
                         {
-                            Descricao = EnumTipoUsuario.Comum
-                        }
-                    };
+                            Email = payload.Email,
+                            TipoUsuario = new TipoUsuario
+                            {
+                                Descricao = EnumTipoUsuario.Comum
+                            },
+                        };
 
-                    _context.Usuario.Add(usuario);
+                        _context.Usuario.Add(usuario);
+                        _context.SaveChanges();
 
-                    var token = await _tokenService.GenerateTokenJWT(usuarioId: usuario.Id, userName: payload.Name, email: payload.Email);
+                        usuarioExist = usuario;
+                    }                    
+
+                    var token = await _tokenService.GenerateTokenJWT(usuarioId: usuarioExist.Id, userName: payload.Name, email: payload.Email);
 
                     var response = new LoginResponse()
                     {
-                        uid = usuario.Id,
+                        uid = usuarioExist.Id,
                         access_token = token.tokenString,
                         token_type = "bearer",
                         expiration = token.validTo
