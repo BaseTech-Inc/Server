@@ -17,6 +17,12 @@ namespace Application.Alertas.Commands.CreateAlertas
 
         public string Distrito { get; set; }
 
+        public string Cidade { get; set; }
+
+        public string Estado { get; set; }
+
+        public string Pais { get; set; }
+
         public DateTime TempoInicio { get; set; }
 
         public DateTime TempoFinal { get; set; }
@@ -48,12 +54,15 @@ namespace Application.Alertas.Commands.CreateAlertas
 
             var entityDistrito = _context.Distrito
                 .Where(x => EF.Functions.Like(x.Nome, "%" + request.Distrito + "%"))
-                    .Include(e => e.Cidade)
-                        .Include(e => e.Cidade.Estado)
-                            .Include(e => e.Cidade.Estado.Pais)
-                                .OrderBy(x => x.Nome)
-                                    .ToList()                                    
-                                        .FirstOrDefault();
+                    .Where(x => EF.Functions.Like(x.Cidade.Nome, "%" + request.Cidade + "%"))
+                        .Where(x => EF.Functions.Like(x.Cidade.Estado.Nome, "%" + request.Estado + "%"))
+                            .Where(x => EF.Functions.Like(x.Cidade.Estado.Pais.Nome, "%" + request.Pais + "%"))
+                                .Include(e => e.Cidade)
+                                    .Include(e => e.Cidade.Estado)
+                                        .Include(e => e.Cidade.Estado.Pais)
+                                            .OrderBy(x => x.Nome)
+                                                .ToList()                                    
+                                                    .FirstOrDefault();
 
             var entityAlertas = new Alerta
             {
