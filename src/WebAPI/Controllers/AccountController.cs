@@ -82,5 +82,33 @@ namespace WebAPI.Controllers
 
             return Ok(verifyEmailResult);
         }
+
+        // POST: api/account/generate-password-reset/?
+        [HttpPost("generate-password-reset")]
+        public async Task<ActionResult<Response<string>>> GeneretePasswordReset(string email)
+        {
+            var generetePasswordResetResult = await _identityService.GeneretPasswordResetAsync(email);
+
+            if (!generetePasswordResetResult.Succeeded)
+            {
+                return BadRequest(generetePasswordResetResult);
+            }
+
+            return Ok(generetePasswordResetResult);
+        }
+
+        // POST: api/account/change-password/?
+        [HttpPost("change-password")]
+        public async Task<ActionResult<Response<string>>> ChangePassword(string email, string token, string password)
+        {
+            var changePasswordResult = await _identityService.ChangePasswordAsync(email, token, password);
+
+            if (!changePasswordResult.Succeeded)
+            {
+                return BadRequest(changePasswordResult);
+            }
+
+            return Ok(changePasswordResult);
+        }
     }
 }

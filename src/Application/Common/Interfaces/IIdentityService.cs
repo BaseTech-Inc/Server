@@ -12,5 +12,9 @@ namespace Application.Common.Interfaces
         Task<Response<string>> RegisterAsync(string username, string email, string password);
 
         Task<Response<string>> VerifyEmailAsync(string userId, string tokenEmail);
+
+        Task<Response<string>> GeneretPasswordResetAsync(string email);
+
+        Task<Response<string>> ChangePasswordAsync(string email, string token, string password);
     }
 }

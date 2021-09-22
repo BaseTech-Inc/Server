@@ -161,10 +161,13 @@ namespace Infrastructure.Identity
             if (user != null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var url = $"";
 
                 await _emailService.SendEmailAsync(
                     user.Email,
-                    token,
+                    _emailService.templateBodyChangePassoword(
+                            user.UserName,
+                            url),
                     "Tupa - Change Password");
 
                 return new Response<string>(token, message: $"Successfully generated token.");
@@ -173,8 +176,20 @@ namespace Infrastructure.Identity
             return new Response<string>(message: $"This email was not registered.");
         }
 
-        public async Task<Response<string>> ChangePasswordAsync(string userId, string token, string password)
+        public async Task<Response<string>> ChangePasswordAsync(string email, string token, string password)
         {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, token, password);
+
+                if (result.Succeeded)
+                {
+                    return new Response<string>("", message: $"Success when changing password");
+                }
+            }
+
             return new Response<string>(message: $"Failed to change password.");
         }
     }
