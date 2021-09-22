@@ -119,7 +119,7 @@ namespace Infrastructure.Identity
 
                     await _emailService.SendEmailAsync(
                         appUser.Email,
-                        _emailService.templateBody(
+                        _emailService.templateBodyVerifyEmail(
                             appUser.UserName,
                             url),
                         "Tupa - Verification");
@@ -152,6 +152,30 @@ namespace Infrastructure.Identity
             }
 
             return new Response<string>(message: $"Failed to verify email.");
+        }
+
+        public async Task<Response<string>> GeneretPasswordResetAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                await _emailService.SendEmailAsync(
+                    user.Email,
+                    token,
+                    "Tupa - Change Password");
+
+                return new Response<string>(token, message: $"Successfully generated token.");
+            }
+
+            return new Response<string>(message: $"This email was not registered.");
+        }
+
+        public async Task<Response<string>> ChangePasswordAsync(string userId, string token, string password)
+        {
+            return new Response<string>(message: $"Failed to change password.");
         }
     }
 }

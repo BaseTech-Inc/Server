@@ -77,7 +77,7 @@ namespace Infrastructure.Services
             }
         }
 
-        public string templateBody(
+        public string templateBodyVerifyEmail(
             string username,
             string url)
         {

@@ -9,7 +9,7 @@ namespace Application.Common.Interfaces
             string body,
             string subject);
 
-        string templateBody(
+        string templateBodyVerifyEmail(
             string username,
             string url);
     }
