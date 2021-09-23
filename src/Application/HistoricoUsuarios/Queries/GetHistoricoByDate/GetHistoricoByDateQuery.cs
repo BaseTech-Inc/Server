@@ -1,11 +1,13 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
+using System.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.HistoricoUsuarios.Queries.GetHistoricoByDate
 {
@@ -34,10 +36,8 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoByDate
 
                 var entity = _context.HistoricoUsuario
                     .Where(x => x.Usuario == entityUsuario)
-                        .Where(x => x.TempoPartida.Year == request.date.Year)
-                            .Where(x => x.TempoPartida.Month == request.date.Month)
-                                .Where(x => x.TempoPartida.Day == request.date.Day)
-                                    .ToList();
+                        .Where(x => x.TempoPartida.Date == request.date.Date)
+                            .ToList();
 
                 return new Response<IList<HistoricoUsuario>>(data: entity);
             }
