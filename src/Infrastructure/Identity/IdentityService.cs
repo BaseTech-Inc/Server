@@ -124,7 +124,7 @@ namespace Infrastructure.Identity
                             url),
                         "Tupa - Verification");
 
-                    return new Response<string>(usuario.Id, message: $"User Registered. Please confirm your account by visiting this URL { url }");
+                    return new Response<string>(usuario.Id, message: $"User Registered.");
                 }
             } 
             else
