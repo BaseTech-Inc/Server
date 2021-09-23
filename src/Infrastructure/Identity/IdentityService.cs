@@ -161,7 +161,7 @@ namespace Infrastructure.Identity
             if (user != null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var url = $"";
+                var url = $"https://tupaweb.azurewebsites.net/Login/Reset-Password?email=" + HttpUtility.UrlEncode(email) + "&token=" + HttpUtility.UrlEncode(token);
 
                 await _emailService.SendEmailAsync(
                     user.Email,
