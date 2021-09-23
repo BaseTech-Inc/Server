@@ -19,6 +19,7 @@ using Application.Estados.Queries.GetPaisesByName;
 using Application.HistoricoUsuarios.Commands.CreateHistorico;
 using Application.HistoricoUsuarios.Commands.DeleteHistorico;
 using Application.HistoricoUsuarios.Queries.GetAllHistorico;
+using Application.HistoricoUsuarios.Queries.GetHistoricoByDate;
 using Application.HistoricoUsuarios.Queries.GetHistoricoById;
 using Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination;
 using Application.Localidades.Queries.GetLocalidadesByNames;
@@ -117,7 +118,8 @@ namespace Application
                 .AddTransient<IDeleteHistoricoCommandHandler, DeleteHistoricoCommandHandler>()
                 .AddTransient<IGetAllHistoricoQueryHandler, GetAllHistoricoQueryHandler>()
                 .AddTransient<IGetHistoricoByIdQueryHandler, GetHistoricoByIdQueryHandler>()
-                .AddTransient<IGetHistoricoWithPaginationQueryHandler, GetHistoricoWithPaginationQueryHandler>();
+                .AddTransient<IGetHistoricoWithPaginationQueryHandler, GetHistoricoWithPaginationQueryHandler>()
+                .AddTransient<IGetHistoricoByDateQueryHandler, GetHistoricoByDateQueryHandler>();
 
             #endregion
 
