@@ -115,7 +115,7 @@ namespace Infrastructure.Identity
                 if (resultCreateAppUser.Succeeded)
                 {
                     var tokenEmail = await _tokenService.GenerateTokenEmail(appUser.Id);
-                    var url = $"{ _configuration["baseUrl"] }api/Account/verify-email?userId=" + HttpUtility.UrlEncode(usuario.Id) + "&tokenEmail=" + HttpUtility.UrlEncode(tokenEmail);
+                    var url = $"https://tupaweb.azurewebsites.net/Login/Verfiy?userId=" + HttpUtility.UrlEncode(usuario.Id) + "&tokenEmail=" + HttpUtility.UrlEncode(tokenEmail);
 
                     await _emailService.SendEmailAsync(
                         appUser.Email,
