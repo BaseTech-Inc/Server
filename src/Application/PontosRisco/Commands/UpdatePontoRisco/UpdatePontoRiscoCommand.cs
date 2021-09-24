@@ -29,7 +29,7 @@ namespace Application.PontosRisco.Commands.UpdatePontoRisco
             _context = context;
         }
 
-        public async Task<Response<PontoRisco>> Handle(UpdatePontoRiscoCommand request)
+        public async Task<Response<string>> Handle(UpdatePontoRiscoCommand request)
         {
             var entity = _context.PontoRisco
                 .Where(x => x.Id == request.Id)
@@ -49,11 +49,11 @@ namespace Application.PontosRisco.Commands.UpdatePontoRisco
 
                     _context.SaveChanges();
 
-                    return new Response<PontoRisco>(data: entity);
+                    return new Response<string>(data: entity.Id.ToString());
                 }
                 catch
                 {
-                    return new Response<PontoRisco>(message: $"error while updating: ${ entity.Id }");
+                    return new Response<string>(message: $"error while updating: ${ entity.Id }");
                 }
             }
             else
