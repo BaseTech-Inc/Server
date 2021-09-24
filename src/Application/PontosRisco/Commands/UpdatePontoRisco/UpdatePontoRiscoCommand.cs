@@ -58,7 +58,7 @@ namespace Application.PontosRisco.Commands.UpdatePontoRisco
             }
             else
             {
-                return new Response<PontoRisco>(message: $"no ${ entity.Id } was found ");
+                return new Response<string>(message: $"no ${ entity.Id } was found ");
             }
         }
     }
