@@ -133,6 +133,14 @@ namespace Infrastructure
                             }
 
                             return Task.CompletedTask;
+                        },
+                        OnAuthenticationFailed = context =>
+                        {
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Headers.Add("Token-Expired", "true");
+                            }
+                            return Task.CompletedTask;
                         }
                     };
 
@@ -140,6 +148,8 @@ namespace Infrastructure
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
 
                         ValidIssuer = configuration["JWT:ValidIssuer"],
                         ValidAudience = configuration["JWT:ValidAudience"],

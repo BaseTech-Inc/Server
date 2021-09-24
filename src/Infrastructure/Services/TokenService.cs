@@ -70,7 +70,7 @@ namespace Infrastructure.Services
                 audience: _configuration["JWT:ValidAudience"],
                 claims,
                 notBefore: DateTime.Now,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddDays(30),
                 signingCredentials);
 
             return (new JwtSecurityTokenHandler().WriteToken(token).ToString(), token.ValidTo);
