@@ -36,6 +36,9 @@ using Application.Paises.Queries.GetPaisesWithPagination;
 using Application.PontosRisco.Commands.CreatePontoRisco;
 using Application.PontosRisco.Commands.DeletePontoRisco;
 using Application.PontosRisco.Commands.UpdatePontoRisco;
+using Application.PontosRisco.Queries.GetAllPontoRisco;
+using Application.PontosRisco.Queries.GetPontoRiscoById;
+using Application.PontosRisco.Queries.GetPontoRiscoWithPagination;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
@@ -130,8 +133,11 @@ namespace Application
 
             services
                 .AddTransient<ICreatePontoRiscoCommandHandler, CreatePontoRiscoCommandHandler>()
+                .AddTransient<IUpdatePontoRiscoCommandHandler, UpdatePontoRiscoCommandHandler>()
                 .AddTransient<IDeletePontoRiscoCommandHandler, DeletePontoRiscoCommandHandler>()
-                .AddTransient<IUpdatePontoRiscoCommandHandler, UpdatePontoRiscoCommandHandler>();
+                .AddTransient<IGetAllPontoRiscoQueryHandler, GetAllPontoRiscoQueryHandler>()
+                .AddTransient<IGetPontoRiscoByIdQueryHandler, GetPontoRiscoByIdQueryHandler>()
+                .AddTransient<IGetPontoRiscoWithPaginationQueryHandler, GetPontoRiscoWithPaginationQueryHandler>();
 
             #endregion
 

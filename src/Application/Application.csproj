@@ -15,7 +15,6 @@
     <Folder Include="Common\Behaviours\" />
     <Folder Include="Distritos\Queries\GetMeshesDistritosById\" />
     <Folder Include="PontosRisco\Commands\CreatePontoRisco\" />
-    <Folder Include="PontosRisco\Queries\GetAllPontoRisco\" />
   </ItemGroup>
 
   <ItemGroup>
