@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +30,9 @@ namespace Application.PontosRisco.Queries.GetPontoRiscoById
             {
                 var entity = _context.PontoRisco
                     .Where(x => x.Id == request.Id)
-                        .ToList()
-                            .FirstOrDefault();
+                        .Include(e => e.Ponto)
+                            .ToList()
+                                .FirstOrDefault();
 
                 return new Response<PontoRisco>(data: entity);
             }

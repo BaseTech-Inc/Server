@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Application.PontosRisco.Queries.GetPontoRiscoWithPagination
         {
             try
             {
-                var entity = _context.PontoRisco;
+                var entity = _context.PontoRisco.Include(e => e.Ponto);
 
                 var entityPagination = await PaginatedList<PontoRisco>.CreateAsync(entity, request.PageNumber, request.PageSize);
 

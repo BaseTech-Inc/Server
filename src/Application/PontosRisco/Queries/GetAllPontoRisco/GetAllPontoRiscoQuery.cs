@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Application.PontosRisco.Queries.GetAllPontoRisco
         {
             try
             {
-                return new Response<IList<PontoRisco>>(data: _context.PontoRisco.ToList());
+                return new Response<IList<PontoRisco>>(data: _context.PontoRisco.Include(e => e.Ponto).ToList());
             }
             catch
             {
