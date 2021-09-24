@@ -14,6 +14,10 @@
   <ItemGroup>
     <Folder Include="Common\Behaviours\" />
     <Folder Include="Distritos\Queries\GetMeshesDistritosById\" />
+    <Folder Include="PontosRisco\Commands\CreatePontoRisco\" />
+    <Folder Include="PontosRisco\Commands\DeletePontoRisco\" />
+    <Folder Include="PontosRisco\Commands\UpdatePontoRisco\" />
+    <Folder Include="PontosRisco\Queries\GetAllPontoRisco\" />
   </ItemGroup>
 
   <ItemGroup>
