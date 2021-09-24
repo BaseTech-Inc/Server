@@ -3,14 +3,16 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210924151708_Updated PontoRisco")]
+    partial class UpdatedPontoRisco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,10 +363,15 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("text");
 
+                    b.Property<string>("DistritoId")
+                        .HasColumnType("varchar(767)");
+
                     b.Property<string>("PontoId")
                         .HasColumnType("varchar(767)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DistritoId");
 
                     b.HasIndex("PontoId");
 
@@ -779,9 +786,15 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.PontoRisco", b =>
                 {
+                    b.HasOne("Domain.Entities.Distrito", "Distrito")
+                        .WithMany()
+                        .HasForeignKey("DistritoId");
+
                     b.HasOne("Domain.Entities.Ponto", "Ponto")
                         .WithMany()
                         .HasForeignKey("PontoId");
+
+                    b.Navigation("Distrito");
 
                     b.Navigation("Ponto");
                 });

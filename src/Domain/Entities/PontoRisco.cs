@@ -12,8 +12,6 @@ namespace Domain.Entities
 
         public string Descricao { get; set; }
 
-        public Distrito Distrito { get; set; }
-
         public Ponto Ponto { get; set; }
     }
 }

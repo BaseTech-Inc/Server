@@ -33,6 +33,7 @@ using Application.Paises.Queries.GetMeshesPaisesById;
 using Application.Paises.Queries.GetPaisesById;
 using Application.Paises.Queries.GetPaisesByName;
 using Application.Paises.Queries.GetPaisesWithPagination;
+using Application.PontosRisco.Commands.CreatePontoRisco;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
@@ -120,6 +121,13 @@ namespace Application
                 .AddTransient<IGetHistoricoByIdQueryHandler, GetHistoricoByIdQueryHandler>()
                 .AddTransient<IGetHistoricoWithPaginationQueryHandler, GetHistoricoWithPaginationQueryHandler>()
                 .AddTransient<IGetHistoricoByDateQueryHandler, GetHistoricoByDateQueryHandler>();
+
+            #endregion
+
+            #region PontoRisco
+
+            services
+                .AddTransient<ICreatePontoRiscoCommandHandler, CreatePontoRiscoCommandHandler>();
 
             #endregion
 
