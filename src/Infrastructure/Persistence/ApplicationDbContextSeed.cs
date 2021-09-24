@@ -67,7 +67,41 @@ namespace Infrastructure.Persistence
                 var token = await userManager.GenerateEmailConfirmationTokenAsync(manager);
                 await userManager.ConfirmEmailAsync(manager, token);
             }
-        }        
+        }
+
+        public static async Task SeedDefaultPontosRiscoAsync(
+            ApplicationDbContext context,
+            ILogger logger)
+        {
+            if (!context.PontoRisco.Any())
+            {
+                logger.LogInformation("PontoRisco Informations Seed");
+
+                var listPontoRisco = new List<PontoRisco>()
+                {
+                    new PontoRisco { Descricao = "Avenida Antônio Munhoz Bonilha", Ponto = new Ponto { Latitude = -23.499512255206376, Longitude = -46.683796270303695 } },
+                    new PontoRisco { Descricao = "Rua Ricardo Cavatton", Ponto = new Ponto { Latitude = -23.51154577099006, Longitude = -46.702789758619346 } },
+                    new PontoRisco { Descricao = "Avenida Sumaré", Ponto = new Ponto { Latitude = -23.5291898, Longitude = -46.6791973 } },
+                    new PontoRisco { Descricao = "Marginal Pinheiros", Ponto = new Ponto { Latitude = -23.5652793, Longitude = -46.7027212 } },
+                    new PontoRisco { Descricao = "Rua Maria Antonia", Ponto = new Ponto { Latitude = -23.546291599953275, Longitude = -46.65101229874567 } },
+                    new PontoRisco { Descricao = "Rua Caio Prado", Ponto = new Ponto { Latitude = -23.549035278846254, Longitude = -46.64859688222123 } },
+                    new PontoRisco { Descricao = "Corredor Norte-Sul", Ponto = new Ponto { Latitude = -23.5488099, Longitude = -46.639034 } },
+                    new PontoRisco { Descricao = "Rua São Francisco", Ponto = new Ponto { Latitude = -23.549059644370665, Longitude = -46.63796092457814 } },
+                    new PontoRisco { Descricao = "Avenida do Estado", Ponto = new Ponto { Latitude = -23.55043198166717, Longitude = -46.626502326549996 } },
+                    new PontoRisco { Descricao = "Avenida Aricanduva", Ponto = new Ponto { Latitude = -23.5637057, Longitude = -46.5136243 } },
+                    new PontoRisco { Descricao = "Avenida Professor Luiz Ignácio Anhaia Mello", Ponto = new Ponto { Latitude = -23.581698347704315, Longitude = -46.56167553310564 } },
+                    new PontoRisco { Descricao = "Avenida Alcântara Machado", Ponto = new Ponto { Latitude = -23.54435799265057, Longitude = -46.5931803832838 } },
+                    new PontoRisco { Descricao = "Avenida Celso Garcia", Ponto = new Ponto { Latitude = -23.53666103385123, Longitude = -46.58914367537825 } },
+                    new PontoRisco { Descricao = "Marginal Pinheiros", Ponto = new Ponto { Latitude = -23.593279141769965, Longitude = -46.694204159345865 } },
+                    new PontoRisco { Descricao = "Avenida Marquês de São Vicente", Ponto = new Ponto { Latitude = -23.519291936748548, Longitude = -46.6746502960441 } },
+                    new PontoRisco { Descricao = "Avenida Santo Amaro", Ponto = new Ponto { Latitude = -23.626077715193002, Longitude = -46.68722756134409 } },
+                    new PontoRisco { Descricao = "Avenida Professor Abraão de Morais", Ponto = new Ponto { Latitude = -23.61844814506177, Longitude = -46.62820989239213 } },
+                };
+
+                context.PontoRisco.AddRange(listPontoRisco);
+                await context.SaveChangesAsync();
+            }
+        }
 
         public static async Task SeedDefaultPlacesAsync(
             ApplicationDbContext context,
