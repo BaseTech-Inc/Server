@@ -170,7 +170,7 @@ namespace Infrastructure.Identity
                             url),
                     "Tupa - Change Password");
 
-                return new Response<string>(token, message: $"Successfully generated token.");
+                return new Response<string>("", message: $"Successfully generated token.");
             }
 
             return new Response<string>(message: $"This email was not registered.");
