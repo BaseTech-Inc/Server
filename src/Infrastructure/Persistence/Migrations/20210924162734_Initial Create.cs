@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Infrastructure.Persistence.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -274,12 +274,32 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PontoRisco",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Descricao = table.Column<string>(type: "text", nullable: true),
+                    PontoId = table.Column<string>(type: "varchar(767)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PontoRisco", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PontoRisco_Ponto_PontoId",
+                        column: x => x.PontoId,
+                        principalTable: "Ponto",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Usuario",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(767)", nullable: false),
                     TipoUsuarioId = table.Column<string>(type: "varchar(767)", nullable: true),
                     ContaBancaria = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
                     ApplicationUserID = table.Column<string>(type: "varchar(85)", nullable: true)
                 },
                 constraints: table =>
@@ -647,6 +667,11 @@ namespace Infrastructure.Persistence.Migrations
                 column: "PontoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PontoRisco_PontoId",
+                table: "PontoRisco",
+                column: "PontoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Usuario_ApplicationUserID",
                 table: "Usuario",
                 column: "ApplicationUserID");
@@ -700,6 +725,9 @@ namespace Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "PoligonoPonto");
+
+            migrationBuilder.DropTable(
+                name: "PontoRisco");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

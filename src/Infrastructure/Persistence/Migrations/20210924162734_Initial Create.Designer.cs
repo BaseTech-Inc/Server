@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210924150158_Created PontoRisco")]
-    partial class CreatedPontoRisco
+    [Migration("20210924162734_Initial Create")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -352,6 +352,25 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ponto");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PontoRisco", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PontoId")
+                        .HasColumnType("varchar(767)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PontoId");
+
+                    b.ToTable("PontoRisco");
                 });
 
             modelBuilder.Entity("Domain.Entities.TipoUsuario", b =>
@@ -756,6 +775,15 @@ namespace Infrastructure.Persistence.Migrations
                         .HasForeignKey("PontoId");
 
                     b.Navigation("Poligono");
+
+                    b.Navigation("Ponto");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PontoRisco", b =>
+                {
+                    b.HasOne("Domain.Entities.Ponto", "Ponto")
+                        .WithMany()
+                        .HasForeignKey("PontoId");
 
                     b.Navigation("Ponto");
                 });
