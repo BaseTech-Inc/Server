@@ -34,6 +34,7 @@ using Application.Paises.Queries.GetPaisesById;
 using Application.Paises.Queries.GetPaisesByName;
 using Application.Paises.Queries.GetPaisesWithPagination;
 using Application.PontosRisco.Commands.CreatePontoRisco;
+using Application.PontosRisco.Commands.DeletePontoRisco;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
@@ -127,7 +128,8 @@ namespace Application
             #region PontoRisco
 
             services
-                .AddTransient<ICreatePontoRiscoCommandHandler, CreatePontoRiscoCommandHandler>();
+                .AddTransient<ICreatePontoRiscoCommandHandler, CreatePontoRiscoCommandHandler>()
+                .AddTransient<IDeletePontoRiscoCommandHandler, DeletePontoRiscoCommandHandler>();
 
             #endregion
 
