@@ -88,6 +88,7 @@ namespace WebAPI.Controllers.v1
         /// Não é para passar o userId
         /// </summary>
         [HttpDelete]
+        [Authorize(Policy = "ElevatedRights")]
         public async Task<ActionResult<Response<string>>> Delete(
             [FromServices] IDeleteAlertasCommandHandler handler,
             [FromQuery] DeleteAlertasCommand command
