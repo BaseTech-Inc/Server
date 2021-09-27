@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -15,16 +16,13 @@ namespace WebAPI.Controllers
     public class AccountController : ControllerBase
     {
         public readonly IIdentityService _identityService;
-        private readonly ITokenService _tokenService;
         private readonly IGoogleService _googleService;
 
         public AccountController(
             IIdentityService identityService,
-            ITokenService tokenService,
             IGoogleService googleService)
         {
             _identityService = identityService;
-            _tokenService = tokenService;
             _googleService = googleService;
         }
 
