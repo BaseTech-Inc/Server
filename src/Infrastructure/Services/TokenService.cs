@@ -34,7 +34,7 @@ namespace Infrastructure.Services
             _context = context;
         }
 
-        public async Task<(string tokenString, DateTime validTo)> GenerateTokens(Usuario usuario, string userId = null, HttpContext httpContext)
+        public async Task<(string tokenString, DateTime validTo)> GenerateTokens(Usuario usuario, string userId, HttpContext httpContext)
         {
             var identityUser = await _userManager.FindByIdAsync(userId);
 
