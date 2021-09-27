@@ -11,6 +11,7 @@ using Application.Common.Security;
 using Domain.Entities;
 using Domain.Enumerations;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Services
 {
@@ -33,7 +34,7 @@ namespace Infrastructure.Services
             _tokenService = tokenService;
         }
 
-        public async Task<Response<LoginResponse>> AuthenticateGoogleAsync(string idToken)
+        public async Task<Response<LoginResponse>> AuthenticateGoogleAsync(string idToken, HttpContext httpContext)
         {
             var googleAuth = _configuration["Authentication:Google:ClientId"];
 
@@ -70,9 +71,9 @@ namespace Infrastructure.Services
                         _context.SaveChanges();
 
                         usuarioExist = usuario;
-                    }                    
+                    }
 
-                    var token = await _tokenService.GenerateTokenJWT(usuarioId: usuarioExist.Id, userName: payload.Name, email: payload.Email);
+                    var token = await _tokenService.GenerateTokenJWT(usuarioExist.Id, userName: payload.Name, email: payload.Email);
 
                     var response = new LoginResponse()
                     {

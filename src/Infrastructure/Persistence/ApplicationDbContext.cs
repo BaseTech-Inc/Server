@@ -36,6 +36,7 @@ namespace Infrastructure.Persistence
         public DbSet<PontoRisco> PontoRisco { get; set; }
         public DbSet<TipoUsuario> TipoUsuario { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<RefreshToken> RefreshToken { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

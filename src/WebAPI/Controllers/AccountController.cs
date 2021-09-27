@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Common.Security;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<Response<LoginResponse>>> Login(string email, string password)
         {
-            var authorizeResult = await _identityService.AuthenticateAsync(email, password);
+            var authorizeResult = await _identityService.AuthenticateAsync(email, password, HttpContext);
 
             if (!authorizeResult.Succeeded)
             {
@@ -45,7 +46,7 @@ namespace WebAPI.Controllers
         [HttpPost("login-google")]
         public async Task<ActionResult<Response<LoginResponse>>> LoginGoogle(string idToken)
         {
-            var authorizeResult = await _googleService.AuthenticateGoogleAsync(idToken);
+            var authorizeResult = await _googleService.AuthenticateGoogleAsync(idToken, HttpContext);
 
             if (!authorizeResult.Succeeded)
             {
@@ -67,6 +68,48 @@ namespace WebAPI.Controllers
             }
 
             return Ok(createUserResult);
+        }
+
+        // POST: api/account/refresh-token/?
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<Response<LoginResponse>>> RefreshToken()
+        {
+            var verifyRefreshTokenResult = await _identityService.RefreshToken(HttpContext);
+
+            if (!verifyRefreshTokenResult.Succeeded)
+            {
+                return BadRequest(verifyRefreshTokenResult);
+            }
+
+            return Ok(verifyRefreshTokenResult);
+        }
+
+        // POST: api/account/revoke-token/?
+        [HttpPost("revoke-token")]
+        public async Task<ActionResult<Response<string>>> RevokeToken(string token)
+        {
+            var verifyRevokeTokenResult = await _identityService.RevokeToken(HttpContext, token);
+
+            if (!verifyRevokeTokenResult.Succeeded)
+            {
+                return BadRequest(verifyRevokeTokenResult);
+            }
+
+            return Ok(verifyRevokeTokenResult);
+        }
+
+        // POST: api/account/logout/?
+        [HttpPost("logout")]
+        public async Task<ActionResult<Response<string>>> Logout()
+        {
+            var verifyLogoutResult = await _identityService.LogoutAsync(HttpContext);
+
+            if (!verifyLogoutResult.Succeeded)
+            {
+                return BadRequest(verifyLogoutResult);
+            }
+
+            return Ok(verifyLogoutResult);
         }
 
         // POST: api/account/verify-email/?userId=userId&tokenEmail=tokenEmail

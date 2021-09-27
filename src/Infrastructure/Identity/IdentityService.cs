@@ -11,6 +11,9 @@ using Application.Common.Security;
 using Application.Common.Enumerations;
 using Domain.Entities;
 using Domain.Enumerations;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Infrastructure.Identity
 {
@@ -39,7 +42,7 @@ namespace Infrastructure.Identity
             _configuration = configuration;
         }
 
-        public async Task<Response<LoginResponse>> AuthenticateAsync(string email, string password)
+        public async Task<Response<LoginResponse>> AuthenticateAsync(string email, string password, HttpContext httpContext)
         {
             // verifica se o usuário existe, para não gerar futuros erros
             var user = await _userManager.FindByEmailAsync(email);
@@ -64,7 +67,8 @@ namespace Infrastructure.Identity
 
                         var usuario = _context.Usuario.Where(x => x.ApplicationUserID == user.Id).FirstOrDefault();
 
-                        var token = await _tokenService.GenerateTokenJWT(usuarioId: usuario.Id, userId: user.Id);
+                        // Generate tokens
+                        var token = await _tokenService.GenerateTokens(usuario, user.Id, httpContext);
 
                         var response = new LoginResponse()
                         {
@@ -133,6 +137,77 @@ namespace Infrastructure.Identity
             }
 
             return new Response<string>(message: $"Error during registration.");
+        }
+
+        public async Task<Response<LoginResponse>> RefreshToken(HttpContext httpContext)
+        {
+            Func<RefreshToken, bool> IsRefreshTokenValid = existingToken =>
+            {
+                // Is token already revoked, then return false
+                if (existingToken.RevokedByIp != null && existingToken.RevokedOn != DateTime.MinValue)
+                {
+                    return false;
+                }
+
+                // Token already expired, then return false
+                if (existingToken.ExpiryOn <= DateTime.UtcNow)
+                {
+                    return false;
+                }
+
+                return true;
+            };
+
+            var token = httpContext.Request.Cookies["refreshToken"];
+            var identityUserTask = _userManager.Users;
+            var identityUser = identityUserTask.Include(x => x.RefreshTokens).Include(x => x.Usuario)
+                .FirstOrDefault(x => x.RefreshTokens.Any(y => y.Token == token && y.UserId == x.Id));
+
+            // Get existing refresh token if it is valid and revoke it
+            var existingRefreshToken = identityUser.RefreshTokens.FirstOrDefault(x => x.Token == token);
+
+            if (!IsRefreshTokenValid(existingRefreshToken))
+            {
+                return new Response<LoginResponse>(message: $"Failed.");
+            }
+
+            existingRefreshToken.RevokedByIp = httpContext.Connection.RemoteIpAddress.ToString();
+            existingRefreshToken.RevokedOn = DateTime.UtcNow;
+
+            // Generate new tokens
+            var newToken = await _tokenService.GenerateTokens(identityUser.Usuario.FirstOrDefault(), identityUser.Id, httpContext);
+
+            var response = new LoginResponse()
+            {
+                uid = identityUser.Usuario.FirstOrDefault().Id,
+                access_token = newToken.tokenString,
+                token_type = "bearer",
+                expiration = newToken.validTo
+            };
+
+            return new Response<LoginResponse>(response, message: $"Success.");
+        }
+
+        public async Task<Response<string>> RevokeToken(HttpContext httpContext, string token)
+        {
+            var result = await _tokenService.RevokeRefreshToken(httpContext, token);
+
+            // If user found, then revoke
+            if (result)
+            {
+                return new Response<string>("", message: $"Success.");
+            }
+
+            // Otherwise, return error
+            return new Response<string>(message: $"Failed.");
+        }
+
+        public async Task<Response<string>> LogoutAsync(HttpContext httpContext)
+        {
+            // Revoke Refresh Token 
+            await _tokenService.RevokeRefreshToken(httpContext);
+
+            return new Response<string>("", message: $"Logged Out.");
         }
 
         public async Task<Response<string>> VerifyEmailAsync(string userId, string tokenEmail)
