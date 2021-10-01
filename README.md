@@ -11,11 +11,9 @@
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
 - [ ] Authentication
-	- [ ] Refresh Token **!important**
 	- [ ] Autenticação usando Facebook
 
-- [ ] Infrastructure
-	- [ ] Previsão **!important**
+- [ ] Mensagens de erro customizadas usando StackOverflow
 
 
 ## Começando
