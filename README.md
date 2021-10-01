@@ -53,6 +53,9 @@ $ git clone https://github.com/BaseTech-Inc/Tupa-Server.git
 
         # O fromAdress é usado para ser o rementente do e-mail
         $ dotnet user-secrets set "smtp:fromAdress" "fromAdress"
+
+        # O appid é para fazer requisições na API OpenWeather
+        $ dotnet user-secrets set "OpenWeaher:appid" "appid"
     ```
 
     Para gerar um valor aleatório pode-se usar esse [site](https://www.uuidgenerator.net/), e para usar a autenticação pelo Google pode usar esse [site](https://developers.google.com/workspace/guides/getstarted-overview).

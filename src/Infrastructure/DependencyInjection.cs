@@ -18,6 +18,7 @@ using Infrastructure.Places;
 using Infrastructure.Services;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Infrastructure.Forecast;
 
 namespace Infrastructure
 {
@@ -180,6 +181,7 @@ namespace Infrastructure
             services.AddTransient<IIdentityGetService, IdentityGetService>();
             services.AddTransient<ICGESPService, CGESPService>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IOpenWeatherService, OpenWeatherService>();
 
             return services;
         }

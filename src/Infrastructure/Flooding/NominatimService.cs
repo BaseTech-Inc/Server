@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Infrastructure.Common;
 
@@ -21,28 +21,38 @@ namespace Infrastructure.Flooding
         {
             string url;
 
-            if (street.StartsWith("Av.") || street.StartsWith("Tn."))
+            if (street != null)
+            {
+                if (street.StartsWith("Av.") || street.StartsWith("Tn."))
+                {
+                    url = baseUrl
+                        .SetQueryParams(new
+                        {
+                            q = $"{ street.StreetConversion() }, { city }, { state }",
+                            polygon_geojson = 1,
+                            format = "jsonv2"
+                        });
+                }
+                else
+                {
+                    url = baseUrl
+                        .SetQueryParams(new
+                        {
+                            q = $"{ street.StreetConversion() }, { district }, { city }, { state }",
+                            polygon_geojson = 1,
+                            format = "jsonv2"
+                        });
+                }
+            } else
             {
                 url = baseUrl
-                       .SetQueryParams(new
-                       {
-                           q = $"{ street.StreetConversion() }, { city }, { state }",
-                           polygon_geojson = 1,
-                           format = "jsonv2"
-                       });
+                    .SetQueryParams(new
+                    {
+                        q = $"{ district }, { city }, { state }",
+                        polygon_geojson = 1,
+                        format = "jsonv2"
+                    });
             }
-            else
-            {
-                url = baseUrl
-                       .SetQueryParams(new
-                       {
-                           q = $"{ street.StreetConversion() }, { district }, { city }, { state }",
-                           polygon_geojson = 1,
-                           format = "jsonv2"
-                       });
-            }
-
-
 
             var htmlText = await HttpRequestUrl.ProcessHttpClient<IList<NominatimDto>>(url);
 
