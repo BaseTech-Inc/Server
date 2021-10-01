@@ -151,5 +151,19 @@ namespace WebAPI.Controllers
 
             return Ok(changePasswordResult);
         }
+
+        // POST: api/account/change-password/id
+        [HttpPost("change-password/id")]
+        public async Task<ActionResult<Response<string>>> ChangePasswordWithId(string userId, string oldPassword, string newPassword)
+        {
+            var changePasswordResult = await _identityService.ChangePasswordWithIdAsync(userId, oldPassword, newPassword);
+
+            if (!changePasswordResult.Succeeded)
+            {
+                return BadRequest(changePasswordResult);
+            }
+
+            return Ok(changePasswordResult);
+        }
     }
 }

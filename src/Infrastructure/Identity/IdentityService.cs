@@ -267,5 +267,32 @@ namespace Infrastructure.Identity
 
             return new Response<string>(message: $"Failed to change password.");
         }
+
+        public async Task<Response<string>> ChangePasswordWithIdAsync(string userId, string oldPassword, string newPassword)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                // verifica se a senha passada é correta
+                var checkPassword = await _userManager.CheckPasswordAsync(user, oldPassword);
+
+                if (checkPassword)
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                    var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+                    if (result.Succeeded)
+                    {
+                        return new Response<string>("", message: $"Success when changing password");
+                    }
+
+                    return new Response<string>(message: $"Failed to change password.");
+                }
+            }
+
+            return new Response<string>(message: $"This user was not registered.");
+        }
     }
 }

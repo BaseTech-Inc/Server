@@ -12,7 +12,6 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão voltada
 
 - [ ] Authentication
 	- [ ] Refresh Token **!important**
-    - [ ] Recuperar Senha
 	- [ ] Autenticação usando Facebook
 
 - [ ] Infrastructure
