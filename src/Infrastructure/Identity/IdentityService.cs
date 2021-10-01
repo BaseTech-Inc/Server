@@ -270,7 +270,9 @@ namespace Infrastructure.Identity
 
         public async Task<Response<string>> ChangePasswordWithIdAsync(string userId, string oldPassword, string newPassword)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var usuario = _context.Usuario.Where(x => x.Id == userId).FirstOrDefault();
+
+            var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
 
             if (user != null)
             {
