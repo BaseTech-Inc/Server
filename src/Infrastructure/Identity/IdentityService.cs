@@ -94,43 +94,52 @@ namespace Infrastructure.Identity
             // verifica se não existe nenhum usuário cadastrado com esse username e email
             if ((userExist == null) && (emailExist == null))
             {
-                var listUsuario = new List<Usuario>();
+                var passwordValidator = new PasswordValidator<ApplicationUser>();
+                var result = await passwordValidator.ValidateAsync(_userManager, null, password);
 
-                var usuario = new Usuario
-                { 
-                    Email = email,
-                    TipoUsuario = new TipoUsuario
+                if (result.Succeeded)
+                {
+                    var listUsuario = new List<Usuario>();
+
+                    var usuario = new Usuario
                     {
-                        Descricao = EnumTipoUsuario.Comum
-                    },
-                    
-                };
+                        Email = email,
+                        TipoUsuario = new TipoUsuario
+                        {
+                            Descricao = EnumTipoUsuario.Comum
+                        },
+                        Nome = username
+                    };
 
-                listUsuario.Add(usuario);                
+                    listUsuario.Add(usuario);
 
-                var appUser = new ApplicationUser
+                    var appUser = new ApplicationUser
+                    {
+                        UserName = username.Replace(" ", ""),
+                        Email = email,
+                        Usuario = listUsuario,
+                    };
+
+                    var resultCreateAppUser = await _userManager.CreateAsync(appUser, password);
+
+                    if (resultCreateAppUser.Succeeded)
+                    {
+                        var tokenEmail = await _tokenService.GenerateTokenEmail(appUser.Id);
+                        var url = $"https://tupaweb.azurewebsites.net/Login/Verfiy?userId=" + HttpUtility.UrlEncode(usuario.Id) + "&tokenEmail=" + HttpUtility.UrlEncode(tokenEmail);
+
+                        await _emailService.SendEmailAsync(
+                            appUser.Email,
+                            _emailService.templateBodyVerifyEmail(
+                                appUser.UserName,
+                                url),
+                            "Tupa - Verification");
+
+                        return new Response<string>(usuario.Id, message: $"User Registered.");
+                    }
+                } else
                 {
-                    UserName = username,
-                    Email = email,
-                    Usuario = listUsuario,
-                };
-
-                var resultCreateAppUser = await _userManager.CreateAsync(appUser, password);
-
-                if (resultCreateAppUser.Succeeded)
-                {
-                    var tokenEmail = await _tokenService.GenerateTokenEmail(appUser.Id);
-                    var url = $"https://tupaweb.azurewebsites.net/Login/Verfiy?userId=" + HttpUtility.UrlEncode(usuario.Id) + "&tokenEmail=" + HttpUtility.UrlEncode(tokenEmail);
-
-                    await _emailService.SendEmailAsync(
-                        appUser.Email,
-                        _emailService.templateBodyVerifyEmail(
-                            appUser.UserName,
-                            url),
-                        "Tupa - Verification");
-
-                    return new Response<string>(usuario.Id, message: $"User Registered.");
-                }
+                    return new Response<string>(message: $"Password not valid.");
+                }                
             } 
             else
             {
@@ -300,7 +309,7 @@ namespace Infrastructure.Identity
     
         public async Task<Response<IDictionary<string, string>>> GetBasicProfile(string UserId)
         {
-            var usuario = _context.Usuario.Where(x => x.Id == UserId).FirstOrDefault();
+            var usuario = _context.Usuario.Where(x => x.Id == UserId).Include(i => i.TipoUsuario).FirstOrDefault();
 
             var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
 
@@ -309,6 +318,7 @@ namespace Infrastructure.Identity
                 var response = new Dictionary<string, string>();
 
                 response.Add("UserName", user.UserName);
+                response.Add("Nome", usuario.Nome);
                 response.Add("Email", user.Email);
                 response.Add("EmailConfirmed", user.EmailConfirmed.ToString());
                 response.Add("TipoUsuario", (usuario.TipoUsuario != null) ? usuario.TipoUsuario.Descricao.ToString() : EnumTipoUsuario.Comum.ToString());
@@ -317,6 +327,36 @@ namespace Infrastructure.Identity
             }
 
             return new Response<IDictionary<string, string>>(message: $"This user was not registered.");
+        }
+
+        public async Task<Response<string>> UpdateBasicProfile(string UserId, string UserName, string TipoUsuario)
+        {
+            var usuario = _context.Usuario.Where(x => x.Id == UserId).FirstOrDefault();
+
+            var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
+
+            if (user != null)
+            {
+                EnumTipoUsuario enumTipoUsuario;
+                Enum.TryParse(TipoUsuario.ToString(), out enumTipoUsuario);
+
+                var tipoUsuario = _context.TipoUsuario.Where(x => x.Descricao == enumTipoUsuario).FirstOrDefault();
+
+                if (tipoUsuario != null)
+                {
+                    usuario.Nome = UserName;
+                    usuario.TipoUsuario = tipoUsuario;
+
+                    _context.SaveChanges();
+
+                    return new Response<string>("", message: $"Success.");
+                } else
+                {
+                    return new Response<string>(message: $"Invalid user type.");
+                }                
+            }
+
+            return new Response<string>(message: $"This user was not registered.");
         }
     }
 }

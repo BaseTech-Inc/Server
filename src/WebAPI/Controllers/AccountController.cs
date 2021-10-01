@@ -169,7 +169,7 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/account/get-basic-profile
-        [HttpPost("basic-profile")]
+        [HttpGet("basic-profile")]
         [Authorize]
         public async Task<ActionResult<Response<IDictionary<string, string>>>> GetBasicProfile(string UserId)
         {
@@ -181,6 +181,24 @@ namespace WebAPI.Controllers
             }
 
             return Ok(getBasicProfile);
+        }
+
+        // PUT: api/account/get-basic-profile
+        [HttpPut("basic-profile")]
+        [Authorize]
+        public async Task<ActionResult<Response<IDictionary<string, string>>>> UpdateBasicProfile(
+            string UserId, 
+            string UserName, 
+            string TipoUsuario)
+        {
+            var updateBasicProfile = await _identityService.UpdateBasicProfile(UserId, UserName, TipoUsuario);
+
+            if (!updateBasicProfile.Succeeded)
+            {
+                return BadRequest(updateBasicProfile);
+            }
+
+            return Ok(updateBasicProfile);
         }
     }
 }

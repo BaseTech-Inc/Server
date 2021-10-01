@@ -46,7 +46,8 @@ namespace Infrastructure.Persistence
                 TipoUsuario = new TipoUsuario
                 {
                     Descricao = EnumTipoUsuario.Premium
-                }
+                },
+                Nome = "manager@localhost"
             };
 
             listUsuario.Add(usuario);
