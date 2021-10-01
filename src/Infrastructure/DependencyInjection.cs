@@ -16,6 +16,8 @@ using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Places;
 using Infrastructure.Services;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Infrastructure
 {
@@ -113,23 +115,25 @@ namespace Infrastructure
 
                             try
                             {
-                                var part = context.Token.Split(".")[1];
-                                var bytes = Convert.FromBase64String(part);
-                                var stringsBytes = Encoding.UTF8.GetString(bytes).Replace("\"", "").Split(",");
+                                var handler = new JwtSecurityTokenHandler();
+                                var token = handler.ReadJwtToken(context.Token);
 
-                                foreach (var stringBytes in stringsBytes)
+                                var keys = token.Payload.Keys;
+
+                                foreach (var key in keys)
                                 {
-                                    if (stringBytes.Contains("uid"))
+                                    if (key == "uid")
                                     {
-                                        var uid = stringBytes.Split(":")[1];
+                                        var uid = token.Payload[key].ToString();
 
                                         context.Request.QueryString = context.Request.QueryString.Add("UserId", uid);
                                     }
                                 }
                             }
-                            catch
+                            catch (Exception ex)
                             {
-
+                                throw new ArgumentOutOfRangeException(
+                                    "ReadJwtToken", ex);
                             }
 
                             return Task.CompletedTask;

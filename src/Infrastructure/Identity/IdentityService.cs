@@ -102,7 +102,8 @@ namespace Infrastructure.Identity
                     TipoUsuario = new TipoUsuario
                     {
                         Descricao = EnumTipoUsuario.Comum
-                    }
+                    },
+                    
                 };
 
                 listUsuario.Add(usuario);                
@@ -111,7 +112,7 @@ namespace Infrastructure.Identity
                 {
                     UserName = username,
                     Email = email,
-                    Usuario = listUsuario
+                    Usuario = listUsuario,
                 };
 
                 var resultCreateAppUser = await _userManager.CreateAsync(appUser, password);
@@ -268,9 +269,9 @@ namespace Infrastructure.Identity
             return new Response<string>(message: $"Failed to change password.");
         }
 
-        public async Task<Response<string>> ChangePasswordWithIdAsync(string userId, string oldPassword, string newPassword)
+        public async Task<Response<string>> ChangePasswordWithIdAsync(string UserId, string oldPassword, string newPassword)
         {
-            var usuario = _context.Usuario.Where(x => x.Id == userId).FirstOrDefault();
+            var usuario = _context.Usuario.Where(x => x.Id == UserId).FirstOrDefault();
 
             var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
 
@@ -297,9 +298,9 @@ namespace Infrastructure.Identity
             return new Response<string>(message: $"This user was not registered.");
         }
     
-        public async Task<Response<IDictionary<string, string>>> GetBasicProfile(string userId)
+        public async Task<Response<IDictionary<string, string>>> GetBasicProfile(string UserId)
         {
-            var usuario = _context.Usuario.Where(x => x.Id == userId).FirstOrDefault();
+            var usuario = _context.Usuario.Where(x => x.Id == UserId).FirstOrDefault();
 
             var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
 

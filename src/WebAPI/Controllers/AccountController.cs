@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Common.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -154,9 +155,10 @@ namespace WebAPI.Controllers
 
         // POST: api/account/change-password/id
         [HttpPost("change-password/id")]
-        public async Task<ActionResult<Response<string>>> ChangePasswordWithId(string userId, string oldPassword, string newPassword)
+        [Authorize]
+        public async Task<ActionResult<Response<string>>> ChangePasswordWithId(string UserId, string oldPassword, string newPassword)
         {
-            var changePasswordResult = await _identityService.ChangePasswordWithIdAsync(userId, oldPassword, newPassword);
+            var changePasswordResult = await _identityService.ChangePasswordWithIdAsync(UserId, oldPassword, newPassword);
 
             if (!changePasswordResult.Succeeded)
             {
@@ -168,9 +170,10 @@ namespace WebAPI.Controllers
 
         // GET: api/account/get-basic-profile
         [HttpPost("basic-profile")]
-        public async Task<ActionResult<Response<IDictionary<string, string>>>> GetBasicProfile(string userId)
+        [Authorize]
+        public async Task<ActionResult<Response<IDictionary<string, string>>>> GetBasicProfile(string UserId)
         {
-            var getBasicProfile = await _identityService.GetBasicProfile(userId);
+            var getBasicProfile = await _identityService.GetBasicProfile(UserId);
 
             if (!getBasicProfile.Succeeded)
             {
