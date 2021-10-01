@@ -297,7 +297,7 @@ namespace Infrastructure.Identity
             return new Response<string>(message: $"This user was not registered.");
         }
     
-        public async Task<Response<Dictionary<string, string>>> GetBasicProfile(string userId)
+        public async Task<Response<IDictionary<string, string>>> GetBasicProfile(string userId)
         {
             var usuario = _context.Usuario.Where(x => x.Id == userId).FirstOrDefault();
 
@@ -310,12 +310,12 @@ namespace Infrastructure.Identity
                 response.Add("UserName", user.UserName);
                 response.Add("Email", user.Email);
                 response.Add("EmailConfirmed", user.EmailConfirmed.ToString());
-                response.Add("TipoUsuario", usuario.TipoUsuario.Descricao.ToString());
+                response.Add("TipoUsuario", (usuario.TipoUsuario != null) ? usuario.TipoUsuario.Descricao.ToString() : EnumTipoUsuario.Comum.ToString());
 
-                return new Response<Dictionary<string, string>>(response, message: $"This user was not registered.");
+                return new Response<IDictionary<string, string>>(response, message: $"Success.");
             }
 
-            return new Response<Dictionary<string, string>>(message: $"This user was not registered.");
+            return new Response<IDictionary<string, string>>(message: $"This user was not registered.");
         }
     }
 }

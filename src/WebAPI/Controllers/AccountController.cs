@@ -168,7 +168,7 @@ namespace WebAPI.Controllers
 
         // GET: api/account/get-basic-profile
         [HttpPost("basic-profile")]
-        public async Task<ActionResult<Response<string>>> GetBasicProfile(string userId)
+        public async Task<ActionResult<Response<IDictionary<string, string>>>> GetBasicProfile(string userId)
         {
             var getBasicProfile = await _identityService.GetBasicProfile(userId);
 

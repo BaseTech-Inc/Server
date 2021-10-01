@@ -27,6 +27,6 @@ namespace Application.Common.Interfaces
 
         Task<Response<string>> ChangePasswordWithIdAsync(string userId, string oldPassword, string newPassword);
 
-        Task<Response<Dictionary<string, string>>> GetBasicProfile(string userId);
+        Task<Response<IDictionary<string, string>>> GetBasicProfile(string userId);
     }
 }
