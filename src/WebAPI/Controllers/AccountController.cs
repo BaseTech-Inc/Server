@@ -165,5 +165,19 @@ namespace WebAPI.Controllers
 
             return Ok(changePasswordResult);
         }
+
+        // GET: api/account/get-basic-profile
+        [HttpPost("basic-profile")]
+        public async Task<ActionResult<Response<string>>> GetBasicProfile(string userId)
+        {
+            var getBasicProfile = await _identityService.GetBasicProfile(userId);
+
+            if (!getBasicProfile.Succeeded)
+            {
+                return BadRequest(getBasicProfile);
+            }
+
+            return Ok(getBasicProfile);
+        }
     }
 }

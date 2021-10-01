@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Application.Common.Models;
 using Application.Common.Security;
@@ -25,5 +26,7 @@ namespace Application.Common.Interfaces
         Task<Response<string>> ChangePasswordAsync(string email, string token, string password);
 
         Task<Response<string>> ChangePasswordWithIdAsync(string userId, string oldPassword, string newPassword);
+
+        Task<Response<Dictionary<string, string>>> GetBasicProfile(string userId);
     }
 }

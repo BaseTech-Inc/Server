@@ -296,5 +296,26 @@ namespace Infrastructure.Identity
 
             return new Response<string>(message: $"This user was not registered.");
         }
+    
+        public async Task<Response<Dictionary<string, string>>> GetBasicProfile(string userId)
+        {
+            var usuario = _context.Usuario.Where(x => x.Id == userId).FirstOrDefault();
+
+            var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
+
+            if (user != null)
+            {
+                var response = new Dictionary<string, string>();
+
+                response.Add("UserName", user.UserName);
+                response.Add("Email", user.Email);
+                response.Add("EmailConfirmed", user.EmailConfirmed.ToString());
+                response.Add("TipoUsuario", usuario.TipoUsuario.Descricao.ToString());
+
+                return new Response<Dictionary<string, string>>(response, message: $"This user was not registered.");
+            }
+
+            return new Response<Dictionary<string, string>>(message: $"This user was not registered.");
+        }
     }
 }
