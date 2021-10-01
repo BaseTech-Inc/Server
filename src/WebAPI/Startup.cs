@@ -72,7 +72,18 @@ namespace WebAPI
                       builder
                       .WithOrigins("http://localhost:44381")
                       .AllowAnyHeader()
-                      .AllowAnyMethod();
+                      .AllowAnyMethod()
+                      .AllowCredentials();
+                  });
+
+                options.AddPolicy("AllowCSharpProductionClient",
+                  builder =>
+                  {
+                      builder
+                      .WithOrigins("https://tupaweb.azurewebsites.net")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials();
                   });
             });
         }
@@ -84,6 +95,9 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
 
                 app.UseCors("AllowJavascriptDevClient");
+            } else
+            {
+                app.UseCors("AllowCSharpProductionClient");
             }
 
             app.UseHttpsRedirection();
