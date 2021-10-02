@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Models
 {
-    public class OpenWeatherDto
+    public class ForecastResponse
     {
-        public Coord coord { get; set; }
+        public CoordForecast coord { get; set; }
 
-        public IList<Weather> weather { get; set; }
+        public WeatherForecast weather { get; set; }
 
-        public Main main { get; set; }
+        public MainForecast main { get; set; }
 
-        public string name { get; set; }
+        public string q { get; set; }
     }
 
-    public class Coord
+    public class CoordForecast
     {
         public double lon { get; set; }
 
         public double lat { get; set; }
     }
 
-    public class Weather
+    public class WeatherForecast
     {
         public string main { get; set; }
 
@@ -33,7 +33,7 @@ namespace Application.Common.Models
         public string icon { get; set; }
     }
 
-    public class Main
+    public class MainForecast
     {
         public float temp { get; set; }
 

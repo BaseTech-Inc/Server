@@ -58,5 +58,26 @@ namespace Infrastructure.Flooding
 
             return htmlText;
         }
+
+        public async Task<NominatimDto> ProcessNominatimByCoords(
+            string lat,
+            string lon)
+        {
+            string url;
+
+            url = baseUrl
+                .AddPath("reverse")
+                .SetQueryParams(new
+                {
+                    lat = lat.Replace(",", "."),
+                    lon = lon.Replace(",", "."),
+                    format = "jsonv2"
+                });
+
+
+            var htmlText = await HttpRequestUrl.ProcessHttpClient<NominatimDto>(url);
+
+            return htmlText;
+        }
     }
 }

@@ -9,11 +9,11 @@ namespace Application.Common.Interfaces
 {
     public interface IOpenWeatherService
     {
-        Task<Response<OpenWeatherDto>> ProcessCurrentByCoord(
+        Task<Response<ForecastResponse>> ProcessCurrentByCoord(
             double lat,
             double lon);
 
-        Task<Response<OpenWeatherDto>> ProcessCurrentByName(
+        Task<Response<ForecastResponse>> ProcessCurrentByName(
             string street,
             string district,
             string city = "São Paulo",

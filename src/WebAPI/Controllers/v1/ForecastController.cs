@@ -22,7 +22,7 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/v1/Forecast/coord
         [HttpGet("coord")]
-        public async Task<ActionResult<Response<OpenWeatherDto>>> GetByCoord(
+        public async Task<ActionResult<Response<ForecastResponse>>> GetByCoord(
             float lat,
             float lon)
         {
@@ -40,7 +40,7 @@ namespace WebAPI.Controllers.v1
 
         // GET: api/v1/Forecast/name
         [HttpGet("name")]
-        public async Task<ActionResult<Response<OpenWeatherDto>>> GetByName(
+        public async Task<ActionResult<Response<ForecastResponse>>> GetByName(
             string street,
             string district,
             string city,
