@@ -393,7 +393,9 @@ namespace Infrastructure.Identity
         {
             var usuario = _context.Usuario.Where(x => x.Id == UserId).FirstOrDefault();
 
-            var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
+            var identityUserTask = _userManager.Users;
+            var user = identityUserTask.Include(x => x.RefreshTokens).Include(x => x.Usuario)
+                .FirstOrDefault(x => x.Id == usuario.ApplicationUserID);
 
             if (user != null)
             {
@@ -410,14 +412,21 @@ namespace Infrastructure.Identity
 
                 _context.HistoricoUsuario.RemoveRange(historicoContext);
 
+                _context.HistoricoUsuario.RemoveRange(historicoContext);
+
                 // usuario
                 _context.Usuario.Remove(usuarioContext);
+
+                // Refresh Tokens
+                user.RefreshTokens.RemoveAll(x => x.UserId == usuario.ApplicationUserID);
 
                 // Apagar Usuário
                 var result = await _userManager.DeleteAsync(user);
 
                 if (result.Succeeded)
                 {
+                    _context.SaveChanges();
+
                     return new Response<string>("", message: $"User deleted successfully.");
                 }
                 else
