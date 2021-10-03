@@ -388,5 +388,45 @@ namespace Infrastructure.Identity
 
             return new Response<string>(message: $"This user was not registered.");
         }
+
+        public async Task<Response<string>> DeleteAsync(string UserId)
+        {
+            var usuario = _context.Usuario.Where(x => x.Id == UserId).FirstOrDefault();
+
+            var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
+
+            if (user != null)
+            {
+                // Apagar todos os seus dados
+                var usuarioContext = _context.Usuario.Where(x => x.Id == usuario.Id).FirstOrDefault();
+
+                // marcador
+                var marcadorContext = _context.Marcadores.Where(x => x.Usuario == usuarioContext);
+
+                _context.Marcadores.RemoveRange(marcadorContext);
+
+                // historico
+                var historicoContext = _context.HistoricoUsuario.Where(x => x.Usuario == usuarioContext);
+
+                _context.HistoricoUsuario.RemoveRange(historicoContext);
+
+                // usuario
+                _context.Usuario.Remove(usuarioContext);
+
+                // Apagar Usuário
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return new Response<string>("", message: $"User deleted successfully.");
+                }
+                else
+                {
+                    return new Response<string>(message: $"Failed to delete user.");
+                }
+            }
+
+            return new Response<string>(message: $"This user was not registered.");
+        }
     }
 }

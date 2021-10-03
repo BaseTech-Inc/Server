@@ -30,5 +30,7 @@ namespace Application.Common.Interfaces
         Task<Response<IDictionary<string, string>>> GetBasicProfile(string UserId);
 
         Task<Response<string>> UpdateBasicProfile(string UserId, string UserName, string TipoUsuario);
+
+        Task<Response<string>> DeleteAsync(string UserId);
     }
 }

@@ -200,5 +200,21 @@ namespace WebAPI.Controllers
 
             return Ok(updateBasicProfile);
         }
+
+        // DELETE: api/account/
+        [HttpDelete]
+        [Authorize]
+        public async Task<ActionResult<Response<string>>> Delete(
+            string UserId)
+        {
+            var deleteAccount = await _identityService.DeleteAsync(UserId);
+
+            if (!deleteAccount.Succeeded)
+            {
+                return BadRequest(deleteAccount);
+            }
+
+            return Ok(deleteAccount);
+        }
     }
 }
