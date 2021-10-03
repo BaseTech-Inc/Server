@@ -267,11 +267,20 @@ namespace Infrastructure.Identity
 
             if (user != null)
             {
-                var result = await _userManager.ResetPasswordAsync(user, token, password);
+                var passwordValidator = new PasswordValidator<ApplicationUser>();
+                var resultValidator = await passwordValidator.ValidateAsync(_userManager, null, password);
 
-                if (result.Succeeded)
+                if (resultValidator.Succeeded)
                 {
-                    return new Response<string>("", message: $"Success when changing password");
+                    var result = await _userManager.ResetPasswordAsync(user, token, password);
+
+                    if (result.Succeeded)
+                    {
+                        return new Response<string>("", message: $"Success when changing password");
+                    }
+                } else
+                {
+                    return new Response<string>(message: $"Password not valid.");
                 }
             }
 
@@ -291,16 +300,25 @@ namespace Infrastructure.Identity
 
                 if (checkPassword)
                 {
-                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var passwordValidator = new PasswordValidator<ApplicationUser>();
+                    var resultValidator = await passwordValidator.ValidateAsync(_userManager, null, newPassword);
 
-                    var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
-
-                    if (result.Succeeded)
+                    if (resultValidator.Succeeded)
                     {
-                        return new Response<string>("", message: $"Success when changing password");
-                    }
+                        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-                    return new Response<string>(message: $"Failed to change password.");
+                        var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+                        if (result.Succeeded)
+                        {
+                            return new Response<string>("", message: $"Success when changing password");
+                        }
+
+                        return new Response<string>(message: $"Failed to change password.");
+                    } else
+                    {
+                        return new Response<string>(message: $"Password not valid.");
+                    }
                 }
             }
 
