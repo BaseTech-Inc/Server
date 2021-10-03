@@ -36,24 +36,5 @@ namespace WebAPI.Controllers.v1
                 response
                 );
         }
-
-        // GET: api/v1/localidades/?
-        [HttpGet("coord")]
-        public async Task<ActionResult<Response<IList<NominatimDto>>>> GetCoord(
-            [FromServices] IGetLocalidadeByNameQueryHandler handler,
-            [FromQuery] GetLocalidadesByNameQuery command
-        )
-        {
-            var response = handler.Handle(command);
-
-            if (!response.Succeeded)
-            {
-                return NotFound(response);
-            }
-
-            return Ok(
-                response
-                );
-        }
     }
 }
