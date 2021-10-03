@@ -127,12 +127,18 @@ namespace Infrastructure.Identity
                         var tokenEmail = await _tokenService.GenerateTokenEmail(appUser.Id);
                         var url = $"https://tupaweb.azurewebsites.net/Login/Verfiy?userId=" + HttpUtility.UrlEncode(usuario.Id) + "&tokenEmail=" + HttpUtility.UrlEncode(tokenEmail);
 
+                        string subject = "Verificar Email";
+
                         await _emailService.SendEmailAsync(
                             appUser.Email,
-                            _emailService.templateBodyVerifyEmail(
+                            _emailService.templateEmail(
+                                subject,
                                 appUser.UserName,
-                                url),
-                            "Tupa - Verification");
+                                "Clique no botão abaixo para confirmar seu endereço de e-mail e ativar sua conta.",
+                                "Se você recebeu está mensagem por engano, simplesmente ignore este e-mail e não clique no botão.",
+                                url,
+                                "Verificar Email!"),
+                            subject);
 
                         return new Response<string>(usuario.Id, message: $"User Registered.");
                     }
@@ -248,12 +254,18 @@ namespace Infrastructure.Identity
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var url = $"https://tupaweb.azurewebsites.net/Login/Reset-Password?email=" + HttpUtility.UrlEncode(email) + "&token=" + HttpUtility.UrlEncode(token);
 
+                string subject = "Alterar Senha";
+
                 await _emailService.SendEmailAsync(
                     user.Email,
-                    _emailService.templateBodyChangePassoword(
-                            user.UserName,
-                            url),
-                    "Tupa - Change Password");
+                    _emailService.templateEmail(
+                        subject,
+                        user.UserName,
+                        "Clique no botão abaixo para resetar e trocar a sua senha.",
+                        "Se você recebeu está mensagem por engano, simplesmente ignore este e-mail e não clique no botão.",
+                        url,
+                        "Mudar senha!"),
+                    subject);
 
                 return new Response<string>("", message: $"Successfully generated token.");
             }

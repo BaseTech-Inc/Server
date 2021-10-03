@@ -9,12 +9,12 @@ namespace Application.Common.Interfaces
             string body,
             string subject);
 
-        string templateBodyVerifyEmail(
-            string username,
-            string url);
-
-        string templateBodyChangePassoword(
-            string username,
-            string url);
+        string templateEmail(
+            string Subject,
+            string Username,
+            string Body,
+            string Description,
+            string UrlAction,
+            string Action);
     }
 }
