@@ -7,6 +7,7 @@ using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Common.Security;
 using Domain.Enumerations;
+using Domain.Entities;
 
 namespace Infrastructure.Identity
 {
