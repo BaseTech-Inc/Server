@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Network;
@@ -24,32 +25,29 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
-import java.util.Calendar;
+import java.net.CookieManager;
+import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-    Button btnRegister, btnActivityLogin;
-    EditText txtUsername, txtEmail, txtPassword;
+    Button btnLogin;
+    EditText txtEmail, txtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
-        btnRegister = findViewById(R.id.btnRegister);
-        btnActivityLogin = findViewById(R.id.btnActivityLogin);
-        txtUsername = findViewById(R.id.txtRegisterUsername);
-        txtEmail = findViewById(R.id.txtRegisterEmail);
-        txtPassword = findViewById(R.id.txtRegisterPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        txtEmail = findViewById(R.id.txtLoginEmail);
+        txtPassword = findViewById(R.id.txtLoginPassword);
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = txtUsername.getText().toString();
                 String email = txtEmail.getText().toString();
                 String password = txtPassword.getText().toString();
 
@@ -68,29 +66,27 @@ public class MainActivity extends AppCompatActivity {
                 requestQueue.start();
 
                 String baseUrl = "https://tupaserver.azurewebsites.net";
-                String url = baseUrl + "/api/Account/register?username=" + username + "&email=" + email + "&password=" + password;
+                String url = baseUrl + "/api/Account/login?" + "email=" + email + "&password=" + password;
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                        (Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
-
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
                             @Override
-                            public void onResponse(JSONObject response) {
+                            public void onResponse(String response) {
                                 Context context = getApplicationContext();
-                                CharSequence text = response.toString();
+                                CharSequence text = response;
                                 int duration = Toast.LENGTH_SHORT;
 
                                 Toast toast = Toast.makeText(context, text, duration);
                                 toast.show();
-
-                                Intent intent = new Intent(context, LoginActivity.class);
-                                startActivity(intent);
                             }
-                        }, new Response.ErrorListener() {
-
+                        },
+                        new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 // TODO: Handle error
+
                                 NetworkResponse networkResponse = error.networkResponse;
+
                                 if (networkResponse != null && networkResponse.data != null) {
                                     String jsonError = new String(networkResponse.data);
 
@@ -102,23 +98,25 @@ public class MainActivity extends AppCompatActivity {
                                     toast.show();
                                 }
                             }
-                        });
+                        }){
 
-                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(0,
+                    @Override
+                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                        // since we don't know which of the two underlying network vehicles
+                        // will Volley use, we have to handle and store session cookies manually
+                        Log.i("response", response.headers.toString());
+                        Map<String, String> responseHeaders = response.headers;
+                        String rawCookies = responseHeaders.get("Set-Cookie");
+                        Log.i("cookies", rawCookies);
+                        return super.parseNetworkResponse(response);
+                    }
+                };
+
+                stringRequest.setRetryPolicy(new DefaultRetryPolicy(0,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
                 // Add the request to the RequestQueue.
-                requestQueue.add(jsonObjectRequest);
-            }
-        });
-
-        btnActivityLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = getApplicationContext();
-
-                Intent intent = new Intent(context, LoginActivity.class);
-                startActivity(intent);
+                requestQueue.add(stringRequest);
             }
         });
     }
