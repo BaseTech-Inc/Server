@@ -75,7 +75,8 @@ namespace Infrastructure.Identity
                             uid = usuario.Id,
                             access_token = token.tokenString,
                             token_type = "bearer",
-                            expiration = token.validTo
+                            expiration = token.validTo,
+                            refresh_token = token.refreshToken
                         };
 
                         return new Response<LoginResponse>(response, message: $"Authenticated { user.UserName }");
@@ -198,7 +199,8 @@ namespace Infrastructure.Identity
                 uid = identityUser.Usuario.FirstOrDefault().Id,
                 access_token = newToken.tokenString,
                 token_type = "bearer",
-                expiration = newToken.validTo
+                expiration = newToken.validTo,
+                refresh_token = newToken.refreshToken
             };
 
             return new Response<LoginResponse>(response, message: $"Success.");

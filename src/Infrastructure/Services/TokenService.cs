@@ -34,7 +34,7 @@ namespace Infrastructure.Services
             _context = context;
         }
 
-        public async Task<(string tokenString, DateTime validTo)> GenerateTokens(Usuario usuario, string userId, HttpContext httpContext)
+        public async Task<(string tokenString, string refreshToken, DateTime validTo)> GenerateTokens(Usuario usuario, string userId, HttpContext httpContext)
         {
             var identityUser = await _userManager.FindByIdAsync(userId);
 
@@ -62,7 +62,7 @@ namespace Infrastructure.Services
 
             identityUser.RefreshTokens.Add(refreshToken);
             _context.SaveChanges();
-            return accessToken;
+            return (accessToken.tokenString, refreshToken.Token, accessToken.validTo);
         }
 
         public async Task<(string tokenString, DateTime validTo)> GenerateTokenJWT(string usuarioId, string userId = null, string userName = null, string email = null)
