@@ -13,9 +13,6 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão voltada
 - [ ] Authentication
 	- [ ] Autenticação usando Facebook
 
-- [ ] Mensagens de erro customizadas usando StackOverflow
-
-
 ## Começando
 
 ### Instalando localmente projeto
