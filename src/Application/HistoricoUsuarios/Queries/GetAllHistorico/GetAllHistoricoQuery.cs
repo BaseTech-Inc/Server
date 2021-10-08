@@ -27,7 +27,8 @@ namespace Application.HistoricoUsuarios.Queries.GetAllHistorico
             try
             {
                 var entityUsuario = _context.Usuario
-                    .Where(x => x.Id == request.UserId).FirstOrDefault();
+                    .Where(x => x.Id == request.UserId)
+                        .FirstOrDefault();
 
                 var entity = _context.HistoricoUsuario
                     .Where(x => x.Usuario == entityUsuario)

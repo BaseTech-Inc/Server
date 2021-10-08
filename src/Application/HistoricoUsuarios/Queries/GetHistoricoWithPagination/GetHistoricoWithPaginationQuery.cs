@@ -13,7 +13,10 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination
     public class GetHistoricoWithPaginationQuery
     {
         public int PageNumber { get; set; } = 1;
+
         public int PageSize { get; set; } = 10;
+
+        public string UserId { get; set; }
     }
 
     public class GetHistoricoWithPaginationQueryHandler : IGetHistoricoWithPaginationQueryHandler
@@ -29,8 +32,13 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination
         {
             try
             {
+                var entityUsuario = _context.Usuario
+                    .Where(x => x.Id == request.UserId)
+                        .FirstOrDefault();
+
                 var entity = _context.HistoricoUsuario
-                    .OrderBy(x => x.TempoChegada);
+                    .Where(x => x.Usuario == entityUsuario)
+                        .OrderBy(x => x.TempoChegada);
 
                 var entityPagination = await PaginatedList<HistoricoUsuario>.CreateAsync(entity, request.PageNumber, request.PageSize);
 
