@@ -286,6 +286,22 @@ namespace Infrastructure.Flooding
             // Quantidade de pontos de alagamentos
             var count = 0;
 
+            // Alertas cadastrados no banco de dados
+            var request = new GetAlertasByDateQuery { date = date };
+
+            // Pega os alertas cadastrados no banco
+            var listAlertasDb = _context.Alerta
+                    .Where(x => x.TempoInicio.Date == request.date.Date)
+                        .Include(i => i.Ponto)
+                            .Include(e => e.Distrito)
+                                .Include(e => e.Distrito.Cidade.Estado)
+                                    .Include(e => e.Distrito.Cidade.Estado.Pais)
+                                        .ToList();
+
+            count += listAlertasDb.Count;
+
+            listAlertas.AddRange(listAlertasDb);
+
             foreach (var node in childNodesContent)
             {
                 // Tabela de cada bairro
@@ -395,25 +411,28 @@ namespace Infrastructure.Flooding
                             count++;
                         } 
                         else if ((rowTable.NodeType == HtmlNodeType.Element) && rowTable.ChildNodes[1].HasClass("bairro"))
-                        {    
-                            var bairro = rowTable.ChildNodes[1].InnerText.Trim();
+                        {
+                            if (count >= ((PageNumber * PageSize) - PageSize) && count < (PageNumber * PageSize))
+                            {
+                                var bairro = rowTable.ChildNodes[1].InnerText.Trim();
 
-                            var bairroList = bairro;
+                                var bairroList = bairro;
 
-                            if (bairro.Contains("/"))
-                                bairroList = bairro.Split("/ ")[0];
+                                if (bairro.Contains("/"))
+                                    bairroList = bairro.Split("/ ")[0];
 
-                            distrito = _context.Distrito
-                                .Where(x => EF.Functions.Like(x.Nome, "%" + bairroList + "%"))
-                                    .Where(x => EF.Functions.Like(x.Cidade.Nome, "São Paulo"))
-                                        .Where(x => EF.Functions.Like(x.Cidade.Estado.Nome, "São Paulo"))
-                                            .Where(x => EF.Functions.Like(x.Cidade.Estado.Pais.Nome, "Brasil"))
-                                                .Include(e => e.Cidade)
-                                                    .Include(e => e.Cidade.Estado)
-                                                        .Include(e => e.Cidade.Estado.Pais)
-                                                            .OrderBy(x => x.Nome)
-                                                                .ToList()
-                                                                    .FirstOrDefault();
+                                distrito = _context.Distrito
+                                    .Where(x => EF.Functions.Like(x.Nome, "%" + bairroList + "%"))
+                                        .Where(x => EF.Functions.Like(x.Cidade.Nome, "São Paulo"))
+                                            .Where(x => EF.Functions.Like(x.Cidade.Estado.Nome, "São Paulo"))
+                                                .Where(x => EF.Functions.Like(x.Cidade.Estado.Pais.Nome, "Brasil"))
+                                                    .Include(e => e.Cidade)
+                                                        .Include(e => e.Cidade.Estado)
+                                                            .Include(e => e.Cidade.Estado.Pais)
+                                                                .OrderBy(x => x.Nome)
+                                                                    .ToList()
+                                                                        .FirstOrDefault();
+                            }
                         }
                     }
                 }
