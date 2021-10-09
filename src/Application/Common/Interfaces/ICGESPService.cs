@@ -17,5 +17,10 @@ namespace Application.Common.Interfaces
             string city = "São Paulo",
             string state = "São Paulo",
             string country = "Brasil");
+
+        Task<Response<PaginatedList<Alerta>>> ProcessCGESPWithPagination(
+            DateTime date,
+            int PageNumber = 1,
+            int PageSize = 10);
     }
 }

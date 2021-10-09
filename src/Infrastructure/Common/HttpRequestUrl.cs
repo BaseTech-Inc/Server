@@ -70,9 +70,9 @@ namespace Infrastructure.Common
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue(mediaType));
 
-            var streamTask = client.GetStringAsync(url);
+            var streamTask = await client.GetStringAsync(url);
 
-            return await streamTask;
+            return streamTask;
         }
     }
 }

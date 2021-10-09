@@ -63,6 +63,27 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
+        // GET: api/v1/Alertas/Pagination?year=year&month=month&day=day&PageNumber=PageNumber
+        [HttpGet("Pagination")]
+        public async Task<ActionResult<Response<PaginatedList<Alerta>>>> GetWithPagination(
+            int year,
+            int month,
+            int day,
+            int PageNumber = 1,
+            int PageSize = 10)
+        {
+            var response = await _CGESPService.ProcessCGESPWithPagination(new DateTime(year, month, day), PageNumber, PageSize);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
         // POST: api/v1/Alertas?Latitude=Latitude&Longitude=Longitude&Distrito=Distrito&TempoInicio=TempoInicio&...
         [HttpPost]
         [Authorize(Policy = "ElevatedRights")]
