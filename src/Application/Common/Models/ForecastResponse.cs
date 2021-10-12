@@ -39,8 +39,21 @@ namespace Application.Common.Models
     {
         public int Dt { get; set; }
 
-        public float Feels_like { get; set; }
+        public PartDay Temp { get; set; }
+
+        public PartDay Feels_like { get; set; }
 
         public int Humidity { get; set; }
+    }
+
+    public class PartDay
+    {
+        public float Day { get; set; }
+
+        public float Night { get; set; }
+
+        public float Eve { get; set; }
+
+        public float Morn { get; set; }
     }
 }

@@ -37,5 +37,25 @@ namespace WebAPI.Controllers.v1
                 response
                 );
         }
+
+        // GET: api/v1/Forecast/name
+        [HttpGet("name")]
+        public async Task<ActionResult<Response<ForecastResponse>>> GetByName(
+            string street,
+            string district,
+            string city,
+            string state)
+        {
+            var response = await _openWeatherService.ProcessForecastByName(street, district, city, state);
+
+            if (!response.Succeeded)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
     }
 }

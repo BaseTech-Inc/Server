@@ -90,7 +90,7 @@ namespace Infrastructure.Forecast
 
                     var forecastResponse = new CurrentWeatherResponse()
                     {
-                        q = $"{ nominatimResult.address.suburb }, { nominatimResult.address.city } - { nominatimResult.address }",
+                        q = $"{ nominatimResult.address.suburb }, { nominatimResult.address.city }",
                         Coord = new CoordCurrent
                         {
                             Lat = openWeatherDto.Coord.Lat,
@@ -173,7 +173,7 @@ namespace Infrastructure.Forecast
 
                     var forecastResponse = new ForecastResponse()
                     {
-                        q = $"{ nominatimResult.address.suburb }, { nominatimResult.address.city } - { nominatimResult.address }",
+                        q = $"{ nominatimResult.address.suburb }, { nominatimResult.address.city }",
                         Coord = new CoordForecast
                         {
                             Lat = forecastDto.Lat,
@@ -194,6 +194,22 @@ namespace Infrastructure.Forecast
             {
                 return new Response<ForecastResponse>(message: $"An error occurred please try again later.");
             }
-        }        
+        }
+
+        public async Task<Response<ForecastResponse>> ProcessForecastByName(
+            string street,
+            string district,
+            string city = "São Paulo",
+            string state = "São Paulo")
+        {
+            var ponto = await GetLatitudeLongitude(street, district, city, state);
+
+            if (ponto != null)
+            {
+                return await ProcessForecastByCoord(ponto.Latitude, ponto.Longitude);
+            }
+
+            return new Response<ForecastResponse>(message: $"An error occurred please try again later.");
+        }
     }
 }

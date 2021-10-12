@@ -22,5 +22,11 @@ namespace Application.Common.Interfaces
         Task<Response<ForecastResponse>> ProcessForecastByCoord(
             double lat,
             double lon);
+
+        Task<Response<ForecastResponse>> ProcessForecastByName(
+            string street,
+            string district,
+            string city = "São Paulo",
+            string state = "São Paulo");
     }
 }
