@@ -26,27 +26,7 @@ namespace WebAPI.Controllers.v1
             float lat,
             float lon)
         {
-            var response = await _openWeatherService.ProcessCurrentByCoord(lat, lon);
-
-            if (!response.Succeeded)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(
-                response
-                );
-        }
-
-        // GET: api/v1/Forecast/name
-        [HttpGet("name")]
-        public async Task<ActionResult<Response<ForecastResponse>>> GetByName(
-            string street,
-            string district,
-            string city,
-            string state)
-        {
-            var response = await _openWeatherService.ProcessCurrentByName(street, district, city, state);
+            var response = await _openWeatherService.ProcessForecastByCoord(lat, lon);
 
             if (!response.Succeeded)
             {

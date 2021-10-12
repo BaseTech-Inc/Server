@@ -26,73 +26,11 @@ namespace Infrastructure.Forecast
 
         private static readonly string baseUrl = "https://api.openweathermap.org/data/2.5/";
 
-        public async Task<Response<ForecastResponse>> ProcessCurrentByCoord(
-            double lat,
-            double lon)
-        {
-            try
-            {
-                string url = baseUrl
-                    .AddPath("weather")
-                    .SetQueryParams(new
-                    {
-                        lat = lat,
-                        lon = lon,
-                        appid = _configuration["OpenWeather:appid"],
-                        lang = "pt_br",
-                        units = "metric"
-                    });
-
-                var streamTask = await HttpRequestUrl.ProcessHttpClient(url);
-
-                var openWeatherDto = JsonSerializer.Deserialize<OpenWeatherDto>(streamTask);
-
-                if (openWeatherDto != null)
-                {
-                    var nominatimService = new NominatimService();
-
-                    var nominatimResult = await nominatimService.ProcessNominatimByCoords(lat.ToString(), lon.ToString());
-
-                    var forecastResponse = new ForecastResponse()
-                    {
-                        q = $"{ nominatimResult.address.suburb }, { nominatimResult.address.city }",
-                        coord = new CoordForecast
-                        {
-                            lat = openWeatherDto.coord.lat,
-                            lon = openWeatherDto.coord.lon
-                        },
-                        main = new MainForecast
-                        {
-                            feels_like = openWeatherDto.main.feels_like,
-                            humidity = openWeatherDto.main.humidity,
-                            temp = openWeatherDto.main.temp,
-                            temp_max = openWeatherDto.main.temp_max,
-                            temp_min = openWeatherDto.main.temp_min,
-                        },
-                        weather = new WeatherForecast
-                        {
-                            description = openWeatherDto.weather.FirstOrDefault().description,
-                            icon = openWeatherDto.weather.FirstOrDefault().icon,
-                            main = openWeatherDto.weather.FirstOrDefault().main
-                        }                        
-                    };
-
-                    return new Response<ForecastResponse>(forecastResponse, message: $"Success.");
-                } else
-                {
-                    return new Response<ForecastResponse>(message: $"Could not find any place with that name.");
-                }                
-            } catch (Exception)
-            {
-                return new Response<ForecastResponse>(message: $"An error occurred please try again later.");
-            }
-        }
-
-        public async Task<Response<ForecastResponse>> ProcessCurrentByName(
+        private static async Task<Ponto> GetLatitudeLongitude(
             string street,
             string district,
-            string city = "São Paulo",
-            string state = "São Paulo")
+            string city,
+            string state)
         {
             var nominatimService = new NominatimService();
 
@@ -113,10 +51,149 @@ namespace Infrastructure.Forecast
                     Longitude = lon
                 };
 
+                return ponto;
+            }
+
+            return null;
+        }
+
+        public async Task<Response<CurrentWeatherResponse>> ProcessCurrentByCoord(
+            double lat,
+            double lon)
+        {
+            try
+            {
+                string url = baseUrl
+                    .AddPath("weather")
+                    .SetQueryParams(new
+                    {
+                        lat,
+                        lon,
+                        appid = _configuration["OpenWeather:appid"],
+                        lang = "pt_br",
+                        units = "metric"
+                    });
+
+                var streamTask = await HttpRequestUrl.ProcessHttpClient(url);
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var openWeatherDto = JsonSerializer.Deserialize<CurrentWeatherDto>(streamTask, options);
+
+                if (openWeatherDto != null)
+                {
+                    var nominatimService = new NominatimService();
+
+                    var nominatimResult = await nominatimService.ProcessNominatimByCoords(lat.ToString(), lon.ToString());
+
+                    var forecastResponse = new CurrentWeatherResponse()
+                    {
+                        q = $"{ nominatimResult.address.suburb }, { nominatimResult.address.city } - { nominatimResult.address }",
+                        Coord = new CoordCurrent
+                        {
+                            Lat = openWeatherDto.Coord.Lat,
+                            Lon = openWeatherDto.Coord.Lon
+                        },
+                        Main = new MainCurrentWeather
+                        {
+                            Feels_like = openWeatherDto.Main.Feels_like,
+                            Humidity = openWeatherDto.Main.Humidity,
+                            Temp = openWeatherDto.Main.Temp,
+                            Temp_max = openWeatherDto.Main.Temp_max,
+                            Temp_min = openWeatherDto.Main.Temp_min,
+                        },
+                        Weather = new WeatherCurrentWeather
+                        {
+                            Description = openWeatherDto.Weather.FirstOrDefault().Description,
+                            Icon = openWeatherDto.Weather.FirstOrDefault().Icon,
+                            Main = openWeatherDto.Weather.FirstOrDefault().Main
+                        }                        
+                    };
+
+                    return new Response<CurrentWeatherResponse>(forecastResponse, message: $"Success.");
+                } else
+                {
+                    return new Response<CurrentWeatherResponse>(message: $"Could not find any place with that name.");
+                }                
+            } catch (Exception)
+            {
+                return new Response<CurrentWeatherResponse>(message: $"An error occurred please try again later.");
+            }
+        }
+
+        public async Task<Response<CurrentWeatherResponse>> ProcessCurrentByName(
+            string street,
+            string district,
+            string city = "São Paulo",
+            string state = "São Paulo")
+        {
+            var ponto = await GetLatitudeLongitude(street, district, city, state);
+
+            if (ponto != null) 
+            { 
                 return await ProcessCurrentByCoord(ponto.Latitude, ponto.Longitude);
             }
 
-            return new Response<ForecastResponse>(message: $"An error occurred please try again later.");
+            return new Response<CurrentWeatherResponse>(message: $"An error occurred please try again later.");
         }
+
+        public async Task<Response<ForecastResponse>> ProcessForecastByCoord(
+            double lat,
+            double lon)
+        {
+            try
+            {
+                string url = baseUrl
+                    .AddPath("onecall")
+                    .SetQueryParams(new
+                    {
+                        lat,
+                        lon,
+                        exclude = "current,minutely,alerts",
+                        appid = _configuration["OpenWeather:appid"],
+                        lang = "pt_br",
+                        units = "metric"
+                    });
+
+                var streamTask = await HttpRequestUrl.ProcessHttpClient(url);
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var forecastDto = JsonSerializer.Deserialize<ForecastDto>(streamTask, options);
+
+                if (forecastDto != null)
+                {
+                    var nominatimService = new NominatimService();
+
+                    var nominatimResult = await nominatimService.ProcessNominatimByCoords(lat.ToString(), lon.ToString());
+
+                    var forecastResponse = new ForecastResponse()
+                    {
+                        q = $"{ nominatimResult.address.suburb }, { nominatimResult.address.city } - { nominatimResult.address }",
+                        Coord = new CoordForecast
+                        {
+                            Lat = forecastDto.Lat,
+                            Lon = forecastDto.Lon
+                        },
+                        Hourly = forecastDto.Hourly,
+                        Daily = forecastDto.Daily
+                    };
+
+                    return new Response<ForecastResponse>(forecastResponse, message: $"Success.");
+                }
+                else
+                {
+                    return new Response<ForecastResponse>(message: $"Could not find any place with that name.");
+                }
+            }
+            catch (Exception)
+            {
+                return new Response<ForecastResponse>(message: $"An error occurred please try again later.");
+            }
+        }        
     }
 }
