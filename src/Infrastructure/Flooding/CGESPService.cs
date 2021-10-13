@@ -412,27 +412,24 @@ namespace Infrastructure.Flooding
                         } 
                         else if ((rowTable.NodeType == HtmlNodeType.Element) && rowTable.ChildNodes[1].HasClass("bairro"))
                         {
-                            if (count >= ((PageNumber * PageSize) - PageSize) && count < (PageNumber * PageSize))
-                            {
-                                var bairro = rowTable.ChildNodes[1].InnerText.Trim();
+                            var bairro = rowTable.ChildNodes[1].InnerText.Trim();
 
-                                var bairroList = bairro;
+                            var bairroList = bairro;
 
-                                if (bairro.Contains("/"))
-                                    bairroList = bairro.Split("/ ")[0];
+                            if (bairro.Contains("/"))
+                                bairroList = bairro.Split("/ ")[0];
 
-                                distrito = _context.Distrito
-                                    .Where(x => EF.Functions.Like(x.Nome, "%" + bairroList + "%"))
-                                        .Where(x => EF.Functions.Like(x.Cidade.Nome, "São Paulo"))
-                                            .Where(x => EF.Functions.Like(x.Cidade.Estado.Nome, "São Paulo"))
-                                                .Where(x => EF.Functions.Like(x.Cidade.Estado.Pais.Nome, "Brasil"))
-                                                    .Include(e => e.Cidade)
-                                                        .Include(e => e.Cidade.Estado)
-                                                            .Include(e => e.Cidade.Estado.Pais)
-                                                                .OrderBy(x => x.Nome)
-                                                                    .ToList()
-                                                                        .FirstOrDefault();
-                            }
+                            distrito = _context.Distrito
+                                .Where(x => EF.Functions.Like(x.Nome, "%" + bairroList + "%"))
+                                    .Where(x => EF.Functions.Like(x.Cidade.Nome, "São Paulo"))
+                                        .Where(x => EF.Functions.Like(x.Cidade.Estado.Nome, "São Paulo"))
+                                            .Where(x => EF.Functions.Like(x.Cidade.Estado.Pais.Nome, "Brasil"))
+                                                .Include(e => e.Cidade)
+                                                    .Include(e => e.Cidade.Estado)
+                                                        .Include(e => e.Cidade.Estado.Pais)
+                                                            .OrderBy(x => x.Nome)
+                                                                .ToList()
+                                                                    .FirstOrDefault();
                         }
                     }
                 }
