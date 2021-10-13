@@ -38,7 +38,11 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination
 
                 var entity = _context.HistoricoUsuario
                     .Where(x => x.Usuario == entityUsuario)
-                        .OrderBy(x => x.TempoChegada);
+                        .Include(x => x.Distrito)
+                            .Include(x => x.Distrito.Cidade)
+                                .Include(x => x.Distrito.Cidade.Estado)
+                                    .Include(x => x.Distrito.Cidade.Estado.Pais)
+                                        .OrderBy(x => x.TempoChegada);
 
                 var entityPagination = await PaginatedList<HistoricoUsuario>.CreateAsync(entity, request.PageNumber, request.PageSize);
 

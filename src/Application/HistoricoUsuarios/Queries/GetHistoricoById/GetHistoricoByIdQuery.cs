@@ -36,8 +36,12 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoById
                 var entity = _context.HistoricoUsuario
                     .Where(x => x.Usuario == entityUsuario)
                         .Where(x => x.Id == request.Id)
-                            .ToList()
-                                .FirstOrDefault();
+                            .Include(x => x.Distrito)
+                                .Include(x => x.Distrito.Cidade)
+                                    .Include(x => x.Distrito.Cidade.Estado)
+                                        .Include(x => x.Distrito.Cidade.Estado.Pais)
+                                            .ToList()
+                                                .FirstOrDefault();
 
                 return new Response<HistoricoUsuario>(data: entity);
             }

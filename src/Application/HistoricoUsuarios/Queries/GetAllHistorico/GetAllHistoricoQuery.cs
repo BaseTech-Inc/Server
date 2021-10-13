@@ -32,7 +32,11 @@ namespace Application.HistoricoUsuarios.Queries.GetAllHistorico
 
                 var entity = _context.HistoricoUsuario
                     .Where(x => x.Usuario == entityUsuario)
-                        .ToList();
+                        .Include(x => x.Distrito)
+                            .Include(x => x.Distrito.Cidade)
+                                .Include(x => x.Distrito.Cidade.Estado)
+                                    .Include(x => x.Distrito.Cidade.Estado.Pais)
+                                        .ToList();
 
                 return new Response<IList<HistoricoUsuario>>(data: entity);
             }
