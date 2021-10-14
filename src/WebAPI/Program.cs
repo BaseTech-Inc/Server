@@ -35,7 +35,7 @@ namespace WebAPI
                         await context.Database.MigrateAsync();
                     }
 
-                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                   var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     var placesService = services.GetRequiredService<IPlacesService>();
                     var meshesService = services.GetRequiredService<IMeshesService>();

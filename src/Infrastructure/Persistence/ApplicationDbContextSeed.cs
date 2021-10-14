@@ -178,8 +178,11 @@ namespace Infrastructure.Persistence
                     }
                 };
 
-                context.PoligonoEstado.AddRange(listPoligonoEstado);
+                context.Estado.AddRange(listEntity);
                 await context.SaveChangesAsync();
+
+                //context.PoligonoEstado.AddRange(listPoligonoEstado);
+                //await context.SaveChangesAsync();
             }
 
             // Cidade
