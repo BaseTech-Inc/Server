@@ -54,8 +54,13 @@ namespace Infrastructure.Flooding
                     });
             }
 
-            var htmlText = await HttpRequestUrl.ProcessHttpClient<IList<NominatimDto>>(url);
+            IList<NominatimDto> htmlText = new List<NominatimDto>();
 
+            try
+            {
+                htmlText = await HttpRequestUrl.ProcessHttpClient<IList<NominatimDto>>(url);
+            } catch { }
+            
             return htmlText;
         }
 
@@ -75,7 +80,12 @@ namespace Infrastructure.Flooding
                 });
 
 
-            var htmlText = await HttpRequestUrl.ProcessHttpClient<NominatimDto>(url);
+            NominatimDto htmlText = new NominatimDto();
+
+            try
+            {
+                htmlText = await HttpRequestUrl.ProcessHttpClient<NominatimDto>(url);
+            } catch { }            
 
             return htmlText;
         }
