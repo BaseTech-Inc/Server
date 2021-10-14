@@ -4,6 +4,7 @@ using Application.HistoricoUsuarios.Commands.DeleteHistorico;
 using Application.HistoricoUsuarios.Queries.GetAllHistorico;
 using Application.HistoricoUsuarios.Queries.GetHistoricoByDate;
 using Application.HistoricoUsuarios.Queries.GetHistoricoById;
+using Application.HistoricoUsuarios.Queries.GetHistoricoByName;
 using Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -74,6 +75,25 @@ namespace WebAPI.Controllers.v1
         public async Task<ActionResult<Response<IList<HistoricoUsuario>>>> GetByDate(
             [FromServices] IGetHistoricoByDateQueryHandler handler,
             [FromQuery] GetHistoricoByDateQuery command
+        )
+        {
+            var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/HistoricoUsuario/name/
+        [HttpGet("name/")]
+        public async Task<ActionResult<Response<IList<HistoricoUsuario>>>> GetByName(
+            [FromServices] IGetHistoricoByNameQueryHandler handler,
+            [FromQuery] GetHistoricoByNameQuery command
         )
         {
             var response = handler.Handle(command);

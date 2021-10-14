@@ -21,6 +21,7 @@ using Application.HistoricoUsuarios.Commands.DeleteHistorico;
 using Application.HistoricoUsuarios.Queries.GetAllHistorico;
 using Application.HistoricoUsuarios.Queries.GetHistoricoByDate;
 using Application.HistoricoUsuarios.Queries.GetHistoricoById;
+using Application.HistoricoUsuarios.Queries.GetHistoricoByName;
 using Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination;
 using Application.Localidades.Queries.GetLocalidadesByNames;
 using Application.Marcador.Commands.CreateMarcadores;
@@ -125,7 +126,8 @@ namespace Application
                 .AddTransient<IGetAllHistoricoQueryHandler, GetAllHistoricoQueryHandler>()
                 .AddTransient<IGetHistoricoByIdQueryHandler, GetHistoricoByIdQueryHandler>()
                 .AddTransient<IGetHistoricoWithPaginationQueryHandler, GetHistoricoWithPaginationQueryHandler>()
-                .AddTransient<IGetHistoricoByDateQueryHandler, GetHistoricoByDateQueryHandler>();
+                .AddTransient<IGetHistoricoByDateQueryHandler, GetHistoricoByDateQueryHandler>()
+                .AddTransient<IGetHistoricoByNameQueryHandler, GetHistoricoByNameQueryHandler>();
 
             #endregion
 
