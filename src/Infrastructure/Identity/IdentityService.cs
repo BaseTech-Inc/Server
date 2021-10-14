@@ -342,7 +342,7 @@ namespace Infrastructure.Identity
     
         public async Task<Response<IDictionary<string, string>>> GetBasicProfile(string UserId)
         {
-            var usuario = _context.Usuario.Where(x => x.Id == UserId).Include(i => i.TipoUsuario).Include(i => i.FotoPerfil).FirstOrDefault();
+            var usuario = _context.Usuario.Where(x => x.Id == UserId).Include(i => i.TipoUsuario).FirstOrDefault();
 
             var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
 
@@ -353,7 +353,6 @@ namespace Infrastructure.Identity
                 response.Add("UserName", user.UserName);
                 response.Add("Nome", usuario.Nome);
                 response.Add("Email", user.Email);
-                response.Add("FotoPerfil", Convert.ToBase64String(usuario.FotoPerfil != null ? usuario.FotoPerfil.DataImagem : new byte[0]));
                 response.Add("EmailConfirmed", user.EmailConfirmed.ToString());
                 response.Add("TipoUsuario", (usuario.TipoUsuario != null) ? usuario.TipoUsuario.Descricao.ToString() : EnumTipoUsuario.Comum.ToString());
 
@@ -363,10 +362,7 @@ namespace Infrastructure.Identity
             return new Response<IDictionary<string, string>>(message: $"This user was not registered.");
         }
 
-        // 512Kb
-        private readonly int MAX_SIZE_IMAGE = 524288;
-
-        public async Task<Response<string>> UpdateBasicProfile(string UserId, string UserName, string TipoUsuario, string FotoPerfil)
+        public async Task<Response<string>> UpdateBasicProfile(string UserId, string UserName, string TipoUsuario)
         {
             try
             {
@@ -383,19 +379,8 @@ namespace Infrastructure.Identity
 
                     if (tipoUsuario != null)
                     {
-                        var byteArray = Convert.FromBase64String(FotoPerfil);
-
-                        if (byteArray.Length > MAX_SIZE_IMAGE)
-                        {
-                            return new Response<string>(message: $"Exceeded maximum image size");
-                        }
-
                         usuario.Nome = UserName;
                         usuario.TipoUsuario = tipoUsuario;
-                        usuario.FotoPerfil = new Imagem
-                        {
-                            DataImagem = Convert.FromBase64String(FotoPerfil)
-                        };
                         _context.SaveChanges();
 
                         return new Response<string>("", message: $"Success.");
@@ -460,6 +445,59 @@ namespace Infrastructure.Identity
             }
 
             return new Response<string>(message: $"This user was not registered.");
+        }
+
+        public async Task<Response<string>> GetProfileImage(string UserId)
+        {
+            var usuario = _context.Usuario.Include(i => i.FotoPerfil).FirstOrDefault();
+
+            var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
+
+            if (user != null)
+            {
+                var FotoPerfil = Convert.ToBase64String(usuario.FotoPerfil != null ? usuario.FotoPerfil.DataImagem : new byte[0]);
+
+                return new Response<string>(FotoPerfil, message: $"Success.");
+            }
+
+            return new Response<string>(message: $"This user was not registered.");
+        }
+
+        // 512Kb
+        private readonly int MAX_SIZE_IMAGE = 524288;
+
+        public async Task<Response<string>> UpdateProfileImage(string UserId, string base64Image)
+        {
+            try
+            {
+                var usuario = _context.Usuario.Where(x => x.Id == UserId).FirstOrDefault();
+
+                var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
+
+                if (user != null)
+                {
+                    var byteArray = Convert.FromBase64String(base64Image);
+
+                    if (byteArray.Length > MAX_SIZE_IMAGE)
+                    {
+                        return new Response<string>(message: $"Exceeded maximum image size.");
+                    }
+
+                    usuario.FotoPerfil = new Imagem
+                    {
+                        DataImagem = byteArray
+                    };
+                    _context.SaveChanges();
+
+                    return new Response<string>("", message: $"Success.");
+                }
+
+                return new Response<string>(message: $"This user was not registered.");
+            }
+            catch (Exception)
+            {
+                return new Response<string>(message: $"Error: ");
+            }
         }
     }
 }

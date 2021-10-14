@@ -189,10 +189,9 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<Response<IDictionary<string, string>>>> UpdateBasicProfile(
             string UserId, 
             string UserName,
-            string TipoUsuario,
-            [FromBody] string ImagemBase64)
+            string TipoUsuario)
         {
-            var updateBasicProfile = await _identityService.UpdateBasicProfile(UserId, UserName, TipoUsuario, ImagemBase64);
+            var updateBasicProfile = await _identityService.UpdateBasicProfile(UserId, UserName, TipoUsuario);
 
             if (!updateBasicProfile.Succeeded)
             {
@@ -200,6 +199,38 @@ namespace WebAPI.Controllers
             }
 
             return Ok(updateBasicProfile);
+        }
+
+        // GET: api/account/image-profile
+        [HttpGet("image-profile")]
+        [Authorize]
+        public async Task<ActionResult<Response<string>>> GetImageProfile(string UserId)
+        {
+            var getBasicProfile = await _identityService.GetProfileImage(UserId);
+
+            if (!getBasicProfile.Succeeded)
+            {
+                return BadRequest(getBasicProfile);
+            }
+
+            return Ok(getBasicProfile);
+        }
+
+        // PUT: api/account/image-profile
+        [HttpPut("image-profile")]
+        [Authorize]
+        public async Task<ActionResult<Response<IDictionary<string, string>>>> UpdateImageProfile(
+            string UserId,
+            [FromBody] string ImagemBase64)
+        {
+            var updateImageProfile = await _identityService.UpdateProfileImage(UserId, ImagemBase64);
+
+            if (!updateImageProfile.Succeeded)
+            {
+                return BadRequest(updateImageProfile);
+            }
+
+            return Ok(updateImageProfile);
         }
 
         // DELETE: api/account/
