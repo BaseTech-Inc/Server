@@ -14,6 +14,7 @@ using Domain.Enumerations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Text;
 
 namespace Infrastructure.Identity
 {
@@ -341,7 +342,7 @@ namespace Infrastructure.Identity
     
         public async Task<Response<IDictionary<string, string>>> GetBasicProfile(string UserId)
         {
-            var usuario = _context.Usuario.Where(x => x.Id == UserId).Include(i => i.TipoUsuario).FirstOrDefault();
+            var usuario = _context.Usuario.Where(x => x.Id == UserId).Include(i => i.TipoUsuario).Include(i => i.FotoPerfil).FirstOrDefault();
 
             var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
 
@@ -352,6 +353,7 @@ namespace Infrastructure.Identity
                 response.Add("UserName", user.UserName);
                 response.Add("Nome", usuario.Nome);
                 response.Add("Email", user.Email);
+                response.Add("FotoPerfil", Convert.ToBase64String(usuario.FotoPerfil != null ? usuario.FotoPerfil.DataImagem : new byte[0]));
                 response.Add("EmailConfirmed", user.EmailConfirmed.ToString());
                 response.Add("TipoUsuario", (usuario.TipoUsuario != null) ? usuario.TipoUsuario.Descricao.ToString() : EnumTipoUsuario.Comum.ToString());
 
@@ -361,34 +363,54 @@ namespace Infrastructure.Identity
             return new Response<IDictionary<string, string>>(message: $"This user was not registered.");
         }
 
-        public async Task<Response<string>> UpdateBasicProfile(string UserId, string UserName, string TipoUsuario)
+        // 512Kb
+        private readonly int MAX_SIZE_IMAGE = 524288;
+
+        public async Task<Response<string>> UpdateBasicProfile(string UserId, string UserName, string TipoUsuario, string FotoPerfil)
         {
-            var usuario = _context.Usuario.Where(x => x.Id == UserId).FirstOrDefault();
-
-            var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
-
-            if (user != null)
+            try
             {
-                EnumTipoUsuario enumTipoUsuario;
-                Enum.TryParse(TipoUsuario.ToString(), out enumTipoUsuario);
+                var usuario = _context.Usuario.Where(x => x.Id == UserId).FirstOrDefault();
 
-                var tipoUsuario = _context.TipoUsuario.Where(x => x.Descricao == enumTipoUsuario).FirstOrDefault();
+                var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
 
-                if (tipoUsuario != null)
+                if (user != null)
                 {
-                    usuario.Nome = UserName;
-                    usuario.TipoUsuario = tipoUsuario;
+                    EnumTipoUsuario enumTipoUsuario;
+                    Enum.TryParse(TipoUsuario.ToString(), out enumTipoUsuario);
 
-                    _context.SaveChanges();
+                    var tipoUsuario = _context.TipoUsuario.Where(x => x.Descricao == enumTipoUsuario).FirstOrDefault();
 
-                    return new Response<string>("", message: $"Success.");
-                } else
-                {
-                    return new Response<string>(message: $"Invalid user type.");
-                }                
+                    if (tipoUsuario != null)
+                    {
+                        var byteArray = Convert.FromBase64String(FotoPerfil);
+
+                        if (byteArray.Length > MAX_SIZE_IMAGE)
+                        {
+                            return new Response<string>(message: $"Exceeded maximum image size");
+                        }
+
+                        usuario.Nome = UserName;
+                        usuario.TipoUsuario = tipoUsuario;
+                        usuario.FotoPerfil = new Imagem
+                        {
+                            DataImagem = Convert.FromBase64String(FotoPerfil)
+                        };
+                        _context.SaveChanges();
+
+                        return new Response<string>("", message: $"Success.");
+                    }
+                    else
+                    {
+                        return new Response<string>(message: $"Invalid user type.");
+                    }
+                }
+
+                return new Response<string>(message: $"This user was not registered.");
+            } catch (Exception)
+            {
+                return new Response<string>(message: $"Error: ");
             }
-
-            return new Response<string>(message: $"This user was not registered.");
         }
 
         public async Task<Response<string>> DeleteAsync(string UserId)

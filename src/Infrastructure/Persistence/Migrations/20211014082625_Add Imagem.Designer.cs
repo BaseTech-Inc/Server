@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210924162734_Initial Create")]
-    partial class InitialCreate
+    [Migration("20211014082625_Add Imagem")]
+    partial class AddImagem
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -158,6 +158,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<double>("DistanciaPercurso")
                         .HasColumnType("double");
 
+                    b.Property<string>("DistritoId")
+                        .HasColumnType("varchar(767)");
+
                     b.Property<string>("Rota")
                         .HasColumnType("text");
 
@@ -172,9 +175,28 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DistritoId");
+
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("HistoricoUsuario");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Imagem", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<byte[]>("DataImagem")
+                        .HasColumnType("LONGBLOB");
+
+                    b.Property<string>("TituloImagem")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Imagem");
                 });
 
             modelBuilder.Entity("Domain.Entities.Marcadores", b =>
@@ -402,12 +424,20 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
+                    b.Property<string>("FotoPerfilId")
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("text");
+
                     b.Property<string>("TipoUsuarioId")
                         .HasColumnType("varchar(767)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserID");
+
+                    b.HasIndex("FotoPerfilId");
 
                     b.HasIndex("TipoUsuarioId");
 
@@ -478,6 +508,43 @@ namespace Infrastructure.Persistence.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Infrastructure.Identity.RefreshToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(85)");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("ExpiryOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("RevokedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RevokedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("RefreshToken");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -682,9 +749,15 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.HistoricoUsuario", b =>
                 {
+                    b.HasOne("Domain.Entities.Distrito", "Distrito")
+                        .WithMany()
+                        .HasForeignKey("DistritoId");
+
                     b.HasOne("Domain.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId");
+
+                    b.Navigation("Distrito");
 
                     b.Navigation("Usuario");
                 });
@@ -794,11 +867,24 @@ namespace Infrastructure.Persistence.Migrations
                         .WithMany("Usuario")
                         .HasForeignKey("ApplicationUserID");
 
+                    b.HasOne("Domain.Entities.Imagem", "FotoPerfil")
+                        .WithMany()
+                        .HasForeignKey("FotoPerfilId");
+
                     b.HasOne("Domain.Entities.TipoUsuario", "TipoUsuario")
                         .WithMany()
                         .HasForeignKey("TipoUsuarioId");
 
+                    b.Navigation("FotoPerfil");
+
                     b.Navigation("TipoUsuario");
+                });
+
+            modelBuilder.Entity("Infrastructure.Identity.RefreshToken", b =>
+                {
+                    b.HasOne("Infrastructure.Identity.ApplicationUser", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -854,6 +940,8 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Infrastructure.Identity.ApplicationUser", b =>
                 {
+                    b.Navigation("RefreshTokens");
+
                     b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618

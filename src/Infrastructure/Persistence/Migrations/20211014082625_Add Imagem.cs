@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Infrastructure.Persistence.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class AddImagem : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,6 +45,19 @@ namespace Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Imagem",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
+                    TituloImagem = table.Column<string>(type: "text", nullable: true),
+                    DataImagem = table.Column<byte[]>(type: "LONGBLOB", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Imagem", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -204,6 +217,31 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RefreshToken",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Token = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    ExpiryOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(type: "text", nullable: true),
+                    RevokedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    RevokedByIp = table.Column<string>(type: "text", nullable: true),
+                    ApplicationUserId = table.Column<string>(type: "varchar(85)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshToken_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Estado",
                 columns: table => new
                 {
@@ -298,6 +336,8 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(767)", nullable: false),
                     TipoUsuarioId = table.Column<string>(type: "varchar(767)", nullable: true),
+                    FotoPerfilId = table.Column<string>(type: "varchar(767)", nullable: true),
+                    Nome = table.Column<string>(type: "text", nullable: true),
                     ContaBancaria = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
                     ApplicationUserID = table.Column<string>(type: "varchar(85)", nullable: true)
@@ -309,6 +349,12 @@ namespace Infrastructure.Persistence.Migrations
                         name: "FK_Usuario_AspNetUsers_ApplicationUserID",
                         column: x => x.ApplicationUserID,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Usuario_Imagem_FotoPerfilId",
+                        column: x => x.FotoPerfilId,
+                        principalTable: "Imagem",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -359,28 +405,6 @@ namespace Infrastructure.Persistence.Migrations
                         name: "FK_PoligonoEstado_Poligono_PoligonoId",
                         column: x => x.PoligonoId,
                         principalTable: "Poligono",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "HistoricoUsuario",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
-                    UsuarioId = table.Column<string>(type: "varchar(767)", nullable: true),
-                    TempoChegada = table.Column<DateTime>(type: "datetime", nullable: false),
-                    TempoPartida = table.Column<DateTime>(type: "datetime", nullable: false),
-                    DistanciaPercurso = table.Column<double>(type: "double", nullable: false),
-                    Rota = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HistoricoUsuario", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_HistoricoUsuario_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -510,6 +534,35 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HistoricoUsuario",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
+                    UsuarioId = table.Column<string>(type: "varchar(767)", nullable: true),
+                    DistritoId = table.Column<string>(type: "varchar(767)", nullable: true),
+                    TempoChegada = table.Column<DateTime>(type: "datetime", nullable: false),
+                    TempoPartida = table.Column<DateTime>(type: "datetime", nullable: false),
+                    DistanciaPercurso = table.Column<double>(type: "double", nullable: false),
+                    Rota = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HistoricoUsuario", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HistoricoUsuario_Distrito_DistritoId",
+                        column: x => x.DistritoId,
+                        principalTable: "Distrito",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HistoricoUsuario_Usuario_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuario",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PoligonoDistrito",
                 columns: table => new
                 {
@@ -602,6 +655,11 @@ namespace Infrastructure.Persistence.Migrations
                 column: "DistritoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_HistoricoUsuario_DistritoId",
+                table: "HistoricoUsuario",
+                column: "DistritoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_HistoricoUsuario_UsuarioId",
                 table: "HistoricoUsuario",
                 column: "UsuarioId");
@@ -672,9 +730,19 @@ namespace Infrastructure.Persistence.Migrations
                 column: "PontoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RefreshToken_ApplicationUserId",
+                table: "RefreshToken",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Usuario_ApplicationUserID",
                 table: "Usuario",
                 column: "ApplicationUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuario_FotoPerfilId",
+                table: "Usuario",
+                column: "FotoPerfilId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuario_TipoUsuarioId",
@@ -730,6 +798,9 @@ namespace Infrastructure.Persistence.Migrations
                 name: "PontoRisco");
 
             migrationBuilder.DropTable(
+                name: "RefreshToken");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -746,6 +817,9 @@ namespace Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Imagem");
 
             migrationBuilder.DropTable(
                 name: "TipoUsuario");

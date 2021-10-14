@@ -84,6 +84,28 @@ namespace WebAPI.Controllers.v1
                 );
         }
 
+        // GET: api/v1/Alertas/Pagination?year=year&month=month&day=day&PageNumber=PageNumber
+        [HttpGet("Bairro/Pagination")]
+        public async Task<ActionResult<Response<PaginatedList<Alerta>>>> GetByDistrictWithPagination(
+            int year,
+            int month,
+            int day,
+            string district,
+            int PageNumber = 1,
+            int PageSize = 10)
+        {
+            var response = await _CGESPService.ProcessCGESByDistrictWithPagination(new DateTime(year, month, day), district, PageNumber: PageNumber, PageSize: PageSize);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
         // POST: api/v1/Alertas?Latitude=Latitude&Longitude=Longitude&Distrito=Distrito&TempoInicio=TempoInicio&...
         [HttpPost]
         [Authorize(Policy = "ElevatedRights")]

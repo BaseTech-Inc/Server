@@ -22,5 +22,14 @@ namespace Application.Common.Interfaces
             DateTime date,
             int PageNumber = 1,
             int PageSize = 10);
+
+        Task<Response<PaginatedList<Alerta>>> ProcessCGESByDistrictWithPagination(
+            DateTime date,
+            string district,
+            string city = "São Paulo",
+            string state = "São Paulo",
+            string country = "Brasil",
+            int PageNumber = 1,
+            int PageSize = 10);
     }
 }

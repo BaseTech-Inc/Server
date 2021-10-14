@@ -37,6 +37,7 @@ namespace Infrastructure.Persistence
         public DbSet<TipoUsuario> TipoUsuario { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<RefreshToken> RefreshToken { get; set; }
+        public DbSet<Imagem> Imagem { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -65,6 +66,8 @@ namespace Infrastructure.Persistence
             builder.Entity<IdentityUserClaim<string>>(entity => entity.Property(m => m.UserId).HasMaxLength(85));
             builder.Entity<IdentityRoleClaim<string>>(entity => entity.Property(m => m.Id).HasMaxLength(85));
             builder.Entity<IdentityRoleClaim<string>>(entity => entity.Property(m => m.RoleId).HasMaxLength(85));
+
+            builder.Entity<Imagem>(entity => entity.Property(m => m.DataImagem).HasColumnType("LONGBLOB"));
         }
     }
 }

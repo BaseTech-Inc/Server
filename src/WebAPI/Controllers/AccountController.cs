@@ -188,10 +188,11 @@ namespace WebAPI.Controllers
         [Authorize]
         public async Task<ActionResult<Response<IDictionary<string, string>>>> UpdateBasicProfile(
             string UserId, 
-            string UserName, 
-            string TipoUsuario)
+            string UserName,
+            string TipoUsuario,
+            [FromBody] string ImagemBase64)
         {
-            var updateBasicProfile = await _identityService.UpdateBasicProfile(UserId, UserName, TipoUsuario);
+            var updateBasicProfile = await _identityService.UpdateBasicProfile(UserId, UserName, TipoUsuario, ImagemBase64);
 
             if (!updateBasicProfile.Succeeded)
             {

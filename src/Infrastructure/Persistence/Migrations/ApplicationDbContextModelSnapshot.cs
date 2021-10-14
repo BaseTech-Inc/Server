@@ -180,6 +180,23 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("HistoricoUsuario");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Imagem", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(767)");
+
+                    b.Property<byte[]>("DataImagem")
+                        .HasColumnType("LONGBLOB");
+
+                    b.Property<string>("TituloImagem")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Imagem");
+                });
+
             modelBuilder.Entity("Domain.Entities.Marcadores", b =>
                 {
                     b.Property<string>("Id")
@@ -405,6 +422,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
+                    b.Property<string>("FotoPerfilId")
+                        .HasColumnType("varchar(767)");
+
                     b.Property<string>("Nome")
                         .HasColumnType("text");
 
@@ -414,6 +434,8 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserID");
+
+                    b.HasIndex("FotoPerfilId");
 
                     b.HasIndex("TipoUsuarioId");
 
@@ -843,9 +865,15 @@ namespace Infrastructure.Persistence.Migrations
                         .WithMany("Usuario")
                         .HasForeignKey("ApplicationUserID");
 
+                    b.HasOne("Domain.Entities.Imagem", "FotoPerfil")
+                        .WithMany()
+                        .HasForeignKey("FotoPerfilId");
+
                     b.HasOne("Domain.Entities.TipoUsuario", "TipoUsuario")
                         .WithMany()
                         .HasForeignKey("TipoUsuarioId");
+
+                    b.Navigation("FotoPerfil");
 
                     b.Navigation("TipoUsuario");
                 });

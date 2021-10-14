@@ -6,6 +6,8 @@
 
         public TipoUsuario TipoUsuario { get; set; }
 
+        public Imagem FotoPerfil { get; set; }
+
         public string Nome { get; set; }
 
         public string ContaBancaria { get; set; }
