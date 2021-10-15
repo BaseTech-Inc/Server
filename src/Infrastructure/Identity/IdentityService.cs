@@ -449,7 +449,7 @@ namespace Infrastructure.Identity
 
         public async Task<Response<string>> GetProfileImage(string UserId)
         {
-            var usuario = _context.Usuario.Include(i => i.FotoPerfil).FirstOrDefault();
+            var usuario = _context.Usuario.Where(x => x.Id == UserId).Include(i => i.FotoPerfil).FirstOrDefault();
 
             var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
 
