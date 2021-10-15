@@ -48,7 +48,7 @@ namespace Infrastructure.Services
             // Set Refresh Token Cookie
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = false,
+                HttpOnly = true,
                 Expires = DateTime.UtcNow.AddDays(30)
             };
 
