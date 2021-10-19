@@ -129,6 +129,7 @@ namespace Application
                 .AddTransient<IGetHistoricoWithPaginationQueryHandler, GetHistoricoWithPaginationQueryHandler>()
                 .AddTransient<IGetHistoricoByDateQueryHandler, GetHistoricoByDateQueryHandler>()
                 .AddTransient<IGetHistoricoByNameQueryHandler, GetHistoricoByNameQueryHandler>()
+                .AddTransient<IGetMaisPesquisadosWithPaginationQueryHandler, GetMaisPesquisadosWithPaginationQueryHandler>()
                 .AddTransient<IGetHistoricoByNameWithPaginationQueryHandler, GetHistoricoByNameWithPaginationQueryHandler>();
 
             #endregion

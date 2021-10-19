@@ -191,5 +191,27 @@ namespace WebAPI.Controllers.v1
                 response
                 );
         }
+
+        // GET: api/v1/HistoricoUsuario/more-search
+        /// <summary>
+        /// Não é para passar o userId
+        /// </summary>
+        [HttpGet("more-search/")]
+        public async Task<ActionResult<Response<PaginatedList<HistoricoUsuario>>>> GetMoreSearch(
+            [FromServices] IGetMaisPesquisadosWithPaginationQueryHandler handler,
+            [FromQuery] GetMaisPesquisadosWithPaginationQuery command
+        )
+        {
+            var response = await handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
     }
 }
