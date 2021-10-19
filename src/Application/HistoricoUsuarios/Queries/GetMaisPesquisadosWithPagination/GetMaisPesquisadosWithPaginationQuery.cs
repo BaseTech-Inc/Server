@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination
+namespace Application.HistoricoUsuarios.Queries.GetMaisPesquisadosWithPagination
 {
     public class GetMaisPesquisadosWithPaginationQuery
     {
@@ -28,7 +28,7 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination
             _context = context;
         }
 
-        public async Task<Response<PaginatedList<Distrito>>> Handle(GetMaisPesquisadosWithPaginationQuery request)
+        public async Task<Response<PaginatedList<MaisPesquisadosDto>>> Handle(GetMaisPesquisadosWithPaginationQuery request)
         {
             try
             {
@@ -36,23 +36,36 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination
                     .Where(x => x.Id == request.UserId)
                         .FirstOrDefault();
 
-                var entity = _context.HistoricoUsuario
+                var entities = _context.HistoricoUsuario
                     .Where(x => x.Usuario == entityUsuario)
                         .Include(x => x.Distrito)
-                            .Include(x => x.Distrito.Cidade)
-                                .Include(x => x.Distrito.Cidade.Estado)
-                                    .Include(x => x.Distrito.Cidade.Estado.Pais)
-                                        .Select(x => x.Distrito)
-                                            .Distinct()
-                                                .OrderBy(x => x);
+                            .Select(s => s.Distrito)
+                                .GroupBy(p => p.Id)
+                                    .Select(g => new { Id = g.Key, Count = g.Count() })
+                                        .ToList();
 
-                var entityPagination = await PaginatedList<Distrito>.CreateAsync(entity, request.PageNumber, request.PageSize);
+                var list = new List<MaisPesquisadosDto>();
 
-                return new Response<PaginatedList<Distrito>>(data: entityPagination);
+                foreach (var entity in entities)
+                {
+                    list.Add(new MaisPesquisadosDto
+                    {
+                        Distrito = _context.Distrito
+                            .Where(x => x.Id == entity.Id)
+                                .Include(x => x.Cidade)
+                                    .Include(x => x.Cidade.Estado)
+                                        .Include(x => x.Cidade.Estado.Pais).FirstOrDefault(),
+                        Count = entity.Count
+                        });
+                }
+
+                var entityPagination = PaginatedList<MaisPesquisadosDto>.Create(list, request.PageNumber, request.PageSize);
+
+                return new Response<PaginatedList<MaisPesquisadosDto>>(data: entityPagination);
             }
             catch
             {
-                return new Response<PaginatedList<Distrito>>(message: $"error to get");
+                return new Response<PaginatedList<MaisPesquisadosDto>>(message: $"error to get");
             }
         }
     }

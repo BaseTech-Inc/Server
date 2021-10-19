@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination
+namespace Application.HistoricoUsuarios.Queries.GetMaisPesquisadosWithPagination
 {
     public interface IGetMaisPesquisadosWithPaginationQueryHandler
     {
-        Task<Response<PaginatedList<Distrito>>> Handle(GetMaisPesquisadosWithPaginationQuery request);
+        Task<Response<PaginatedList<MaisPesquisadosDto>>> Handle(GetMaisPesquisadosWithPaginationQuery request);
     }
 }

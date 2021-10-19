@@ -7,6 +7,7 @@ using Application.HistoricoUsuarios.Queries.GetHistoricoById;
 using Application.HistoricoUsuarios.Queries.GetHistoricoByName;
 using Application.HistoricoUsuarios.Queries.GetHistoricoByNameWithPagination;
 using Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination;
+using Application.HistoricoUsuarios.Queries.GetMaisPesquisadosWithPagination;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -197,7 +198,7 @@ namespace WebAPI.Controllers.v1
         /// Não é para passar o userId
         /// </summary>
         [HttpGet("more-search/")]
-        public async Task<ActionResult<Response<PaginatedList<HistoricoUsuario>>>> GetMoreSearch(
+        public async Task<ActionResult<Response<PaginatedList<MaisPesquisadosDto>>>> GetMoreSearch(
             [FromServices] IGetMaisPesquisadosWithPaginationQueryHandler handler,
             [FromQuery] GetMaisPesquisadosWithPaginationQuery command
         )

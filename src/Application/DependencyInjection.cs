@@ -24,6 +24,7 @@ using Application.HistoricoUsuarios.Queries.GetHistoricoById;
 using Application.HistoricoUsuarios.Queries.GetHistoricoByName;
 using Application.HistoricoUsuarios.Queries.GetHistoricoByNameWithPagination;
 using Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination;
+using Application.HistoricoUsuarios.Queries.GetMaisPesquisadosWithPagination;
 using Application.Localidades.Queries.GetLocalidadesByNames;
 using Application.Marcador.Commands.CreateMarcadores;
 using Application.Marcador.Commands.DeleteMarcadores;
