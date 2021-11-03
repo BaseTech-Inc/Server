@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Text;
+using System.Net.Mail;
 
 namespace Infrastructure.Identity
 {
@@ -45,6 +46,15 @@ namespace Infrastructure.Identity
 
         public async Task<Response<LoginResponse>> AuthenticateAsync(string email, string password, HttpContext httpContext)
         {
+            try
+            {
+                var m = new MailAddress(email);
+            }
+            catch
+            {
+                return new Response<LoginResponse>(message: $"Email not valid.");
+            }
+
             // verifica se o usuário existe, para não gerar futuros erros
             var user = await _userManager.FindByEmailAsync(email);
 
@@ -101,6 +111,14 @@ namespace Infrastructure.Identity
 
                 if (result.Succeeded)
                 {
+                    try
+                    {
+                        var m = new MailAddress(email);
+                    } catch
+                    {
+                        return new Response<string>(message: $"Email not valid.");
+                    }
+
                     var listUsuario = new List<Usuario>();
 
                     var usuario = new Usuario
