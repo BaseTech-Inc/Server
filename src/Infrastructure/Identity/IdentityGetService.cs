@@ -8,6 +8,7 @@ using Application.Common.Models;
 using Application.Common.Security;
 using Domain.Enumerations;
 using Domain.Entities;
+using System;
 
 namespace Infrastructure.Identity
 {
@@ -29,26 +30,34 @@ namespace Infrastructure.Identity
 
         public async Task<Response<IList<UsuarioResponse>>> GetAllIdentity()
         {
-            var usuarios = _context.Usuario.ToList();
-            var usuarioDtoList = new List<UsuarioResponse>();
-
-            foreach (var usuario in usuarios)
+            try
             {
-                var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
+                var usuarios = _context.Usuario.ToList();
+                var usuarioDtoList = new List<UsuarioResponse>();
 
-                var usuarioDto = new UsuarioResponse
+                foreach (var usuario in usuarios)
                 {
-                    UserId = usuario.Id,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    EmailConfirmed = user.EmailConfirmed,
-                    TipoUsuario = (usuario.TipoUsuario != null) ? usuario.TipoUsuario.Descricao.ToString() : EnumTipoUsuario.Comum.ToString()
-                };
+                    var user = await _userManager.FindByIdAsync(usuario.ApplicationUserID);
 
-                usuarioDtoList.Add(usuarioDto);
+                    if (user != null)
+                    {
+                        usuarioDtoList.Add(new UsuarioResponse
+                        {
+                            UserId = usuario.Id,
+                            UserName = user.UserName,
+                            Email = user.Email,
+                            EmailConfirmed = user.EmailConfirmed,
+                            TipoUsuario = (usuario.TipoUsuario != null) ? usuario.TipoUsuario.Descricao.ToString() : EnumTipoUsuario.Comum.ToString()
+                        });
+                    }                    
+                }
+
+                return new Response<IList<UsuarioResponse>>(usuarioDtoList, message: $"");
+            } catch (Exception ex)
+            {
+                return new Response<IList<UsuarioResponse>>(message: $"Error to get" + ex);
             }
-
-            return new Response<IList<UsuarioResponse>>(usuarioDtoList, message: $"");
         }
+            
     }
 }
