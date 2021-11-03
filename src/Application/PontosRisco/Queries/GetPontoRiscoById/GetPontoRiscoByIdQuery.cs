@@ -31,8 +31,12 @@ namespace Application.PontosRisco.Queries.GetPontoRiscoById
                 var entity = _context.PontoRisco
                     .Where(x => x.Id == request.Id)
                         .Include(e => e.Ponto)
-                            .ToList()
-                                .FirstOrDefault();
+                            .Include(e => e.Distrito)
+                                .Include(e => e.Distrito.Cidade)
+                                    .Include(e => e.Distrito.Cidade.Estado)
+                                        .Include(e => e.Distrito.Cidade.Estado.Pais)
+                                            .ToList()
+                                                .FirstOrDefault();
 
                 return new Response<PontoRisco>(data: entity);
             }

@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,14 @@ namespace Application.PontosRisco.Commands.CreatePontoRisco
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }
+
+        public string Pais { get; set; }
+
+        public string Estado { get; set; }
+
+        public string Cidade { get; set; }
+
+        public string Distrito { get; set; }
     }
 
     public class CreatePontoRiscoCommandHandler : ICreatePontoRiscoCommandHandler
@@ -30,6 +39,18 @@ namespace Application.PontosRisco.Commands.CreatePontoRisco
 
         public async Task<Response<string>> Handle(CreatePontoRiscoCommand request)
         {
+            var entityDistrito = _context.Distrito
+                .Where(x => EF.Functions.Like(x.Nome, "%" + request.Distrito + "%"))
+                    .Where(x => EF.Functions.Like(x.Cidade.Nome, "%" + request.Cidade + "%"))
+                        .Where(x => EF.Functions.Like(x.Cidade.Estado.Nome, "%" + request.Estado + "%"))
+                            .Where(x => EF.Functions.Like(x.Cidade.Estado.Pais.Nome, "%" + request.Pais + "%"))
+                                .Include(e => e.Cidade)
+                                    .Include(e => e.Cidade.Estado)
+                                        .Include(e => e.Cidade.Estado.Pais)
+                                            .OrderByDescending(o => o.Nome)
+                                                .ToList()
+                                                    .FirstOrDefault();
+
             var entityPonto = new Ponto
             {
                 Latitude = request.Latitude,
@@ -39,7 +60,8 @@ namespace Application.PontosRisco.Commands.CreatePontoRisco
             var entityPontoRisco = new PontoRisco
             {
                 Descricao = request.Descricao,
-                Ponto = entityPonto
+                Ponto = entityPonto,
+                Distrito = entityDistrito
             };
 
             try
@@ -53,9 +75,8 @@ namespace Application.PontosRisco.Commands.CreatePontoRisco
             catch
             {
                 return new Response<string>(message: $"error while creating: ${ entityPontoRisco.Id }");
-            }
 
-            return null;
-        }
+            }
+        }   
     }
 }

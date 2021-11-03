@@ -26,7 +26,7 @@ namespace Application.PontosRisco.Queries.GetAllPontoRisco
         {
             try
             {
-                return new Response<IList<PontoRisco>>(data: _context.PontoRisco.Include(e => e.Ponto).ToList());
+                return new Response<IList<PontoRisco>>(data: _context.PontoRisco.Include(e => e.Ponto).Include(e => e.Distrito).Include(e => e.Distrito.Cidade).Include(e => e.Distrito.Cidade.Estado).Include(e => e.Distrito.Cidade.Estado.Pais).ToList());
             }
             catch
             {

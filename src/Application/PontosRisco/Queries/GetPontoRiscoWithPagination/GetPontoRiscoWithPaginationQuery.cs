@@ -29,7 +29,12 @@ namespace Application.PontosRisco.Queries.GetPontoRiscoWithPagination
         {
             try
             {
-                var entity = _context.PontoRisco.Include(e => e.Ponto);
+                var entity = _context.PontoRisco
+                    .Include(e => e.Ponto)
+                        .Include(e => e.Distrito)
+                            .Include(e => e.Distrito.Cidade)
+                                .Include(e => e.Distrito.Cidade.Estado)
+                                    .Include(e => e.Distrito.Cidade.Estado.Pais);
 
                 var entityPagination = await PaginatedList<PontoRisco>.CreateAsync(entity, request.PageNumber, request.PageSize);
 

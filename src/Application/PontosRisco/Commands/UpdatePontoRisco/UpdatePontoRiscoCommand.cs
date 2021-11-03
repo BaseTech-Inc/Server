@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,14 @@ namespace Application.PontosRisco.Commands.UpdatePontoRisco
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }
+
+        public string Pais { get; set; }
+
+        public string Estado { get; set; }
+
+        public string Cidade { get; set; }
+
+        public string Distrito { get; set; }
     }
 
     public class UpdatePontoRiscoCommandHandler : IUpdatePontoRiscoCommandHandler
@@ -39,6 +48,18 @@ namespace Application.PontosRisco.Commands.UpdatePontoRisco
             {
                 try
                 {
+                    var entityDistrito = _context.Distrito
+                       .Where(x => EF.Functions.Like(x.Nome, "%" + request.Distrito + "%"))
+                           .Where(x => EF.Functions.Like(x.Cidade.Nome, "%" + request.Cidade + "%"))
+                               .Where(x => EF.Functions.Like(x.Cidade.Estado.Nome, "%" + request.Estado + "%"))
+                                   .Where(x => EF.Functions.Like(x.Cidade.Estado.Pais.Nome, "%" + request.Pais + "%"))
+                                       .Include(e => e.Cidade)
+                                           .Include(e => e.Cidade.Estado)
+                                               .Include(e => e.Cidade.Estado.Pais)
+                                                   .OrderByDescending(o => o.Nome)
+                                                       .ToList()
+                                                           .FirstOrDefault();
+
                     entity.Descricao = request.Descricao;
 
                     entity.Ponto = new Ponto()
@@ -46,6 +67,8 @@ namespace Application.PontosRisco.Commands.UpdatePontoRisco
                         Latitude = request.Latitude,
                         Longitude = request.Longitude
                     };
+
+                    entity.Distrito = entityDistrito;
 
                     _context.SaveChanges();
 
