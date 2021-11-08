@@ -26,6 +26,7 @@ using Application.HistoricoUsuarios.Queries.GetHistoricoByNameWithPagination;
 using Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination;
 using Application.HistoricoUsuarios.Queries.GetMaisPesquisadosWithPagination;
 using Application.Localidades.Queries.GetLocalidadesByNames;
+using Application.Localidades.Queries.GetLocalidadesWithPagination;
 using Application.Marcador.Commands.CreateMarcadores;
 using Application.Marcador.Commands.DeleteMarcadores;
 using Application.Marcador.Commands.UpdateMarcadores;
@@ -107,7 +108,8 @@ namespace Application
             #region Localidade
 
             services
-                .AddTransient<IGetLocalidadeByNameQueryHandler, GetLocalidadeByNameQueryHandler>();
+                .AddTransient<IGetLocalidadeByNameQueryHandler, GetLocalidadeByNameQueryHandler>()
+                .AddTransient<IGetLocalidadesWithPaginationQueryHandler, GetLocalidadesWithPaginationQueryHandler>();
 
             #endregion
 

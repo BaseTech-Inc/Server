@@ -1,5 +1,6 @@
 ﻿using Application.Common.Models;
 using Application.Localidades.Queries.GetLocalidadesByNames;
+using Application.Localidades.Queries.GetLocalidadesWithPagination;
 using Domain.Entities;
 using Infrastructure.Flooding;
 using Microsoft.AspNetCore.Authorization;
@@ -23,6 +24,25 @@ namespace WebAPI.Controllers.v1
         public async Task<ActionResult<Response<IList<Distrito>>>> Get(
             [FromServices] IGetLocalidadeByNameQueryHandler handler,
             [FromQuery] GetLocalidadesByNameQuery command
+        )
+        {
+            var response = handler.Handle(command);
+
+            if (!response.Succeeded)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(
+                response
+                );
+        }
+
+        // GET: api/v1/localidades/pagination
+        [HttpGet("pagination/")]
+        public async Task<ActionResult<Response<PaginatedList<Distrito>>>> GetWithPagination(
+            [FromServices] IGetLocalidadesWithPaginationQueryHandler handler,
+            [FromQuery] GetLocalidadesWithPaginationQuery command
         )
         {
             var response = handler.Handle(command);
