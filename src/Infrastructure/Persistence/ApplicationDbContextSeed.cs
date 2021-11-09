@@ -39,9 +39,10 @@ namespace Infrastructure.Persistence
                 await roleManager.CreateAsync(employeeRole);
             }
 
-            var listUsuario = new List<Usuario>();
+            #region usuario manager
+            var listUsuarioManager = new List<Usuario>();
 
-            var usuario = new Usuario
+            var usuarioManager = new Usuario
             {
                 Email = "manager@localhost",
                 TipoUsuario = new TipoUsuario
@@ -51,12 +52,12 @@ namespace Infrastructure.Persistence
                 Nome = "manager@localhost"
             };
 
-            listUsuario.Add(usuario);
+            listUsuarioManager.Add(usuarioManager);
 
             var manager = new ApplicationUser { 
                 UserName = "manager@localhost", 
                 Email = "manager@localhost",
-                Usuario = listUsuario
+                Usuario = listUsuarioManager
             };
 
             if (
@@ -69,6 +70,41 @@ namespace Infrastructure.Persistence
                 var token = await userManager.GenerateEmailConfirmationTokenAsync(manager);
                 await userManager.ConfirmEmailAsync(manager, token);
             }
+            #endregion
+
+            #region usuario discord
+            var listUsuarioDiscord = new List<Usuario>();
+
+            var usuarioDiscord = new Usuario
+            {
+                Email = "discord@localhost",
+                TipoUsuario = new TipoUsuario
+                {
+                    Descricao = EnumTipoUsuario.Premium
+                },
+                Nome = "discord@localhost"
+            };
+
+            listUsuarioDiscord.Add(usuarioDiscord);
+
+            var discord = new ApplicationUser
+            {
+                UserName = "discord@localhost",
+                Email = "discord@localhost",
+                Usuario = listUsuarioDiscord
+            };
+
+            if (
+                userManager.Users.All(u => u.UserName != discord.UserName) &&
+                userManager.Users.All(u => u.Email != discord.Email))
+            {
+                await userManager.CreateAsync(discord, "P@assw0rd");
+                await userManager.AddToRolesAsync(discord, new[] { employeeRole.Name });
+
+                var token = await userManager.GenerateEmailConfirmationTokenAsync(discord);
+                await userManager.ConfirmEmailAsync(discord, token);
+            }
+            #endregion
         }
 
         public static async Task SeedDefaultPontosRiscoAsync(
