@@ -76,7 +76,7 @@ namespace Application.HistoricoUsuarios.Commands.CreateHistorico
             }
             catch
             {
-                return new Response<string>(message: $"error while creating: ${ entityHistorico.Id }");
+                return new Response<string>(message: $"erro para criar: ${ entityHistorico.Id }");
             }
         }
     }

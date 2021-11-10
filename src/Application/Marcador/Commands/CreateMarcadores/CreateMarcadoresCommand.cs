@@ -55,7 +55,7 @@ namespace Application.Marcador.Commands.CreateMarcadores
             }
             catch
             {
-                return new Response<string>(message: $"error while creating: ${ entityMarcador.Id }");
+                return new Response<string>(message: $"erro para criar: ${ entityMarcador.Id }");
             }
 
             return null;

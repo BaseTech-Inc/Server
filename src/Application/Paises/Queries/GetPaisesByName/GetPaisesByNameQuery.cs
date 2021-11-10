@@ -32,7 +32,7 @@ namespace Application.Paises.Queries.GetPaisesByName
             }
             catch
             {
-                return new Response<IList<Pais>>(message: $"error to get");
+                return new Response<IList<Pais>>(message: $"erro para obter");
             }
         }
     }

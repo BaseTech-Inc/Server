@@ -32,7 +32,7 @@ namespace Application.Distritos.Queries.GetDistritosByName
             }
             catch
             {
-                return new Response<IList<Distrito>>(message: $"error to get");
+                return new Response<IList<Distrito>>(message: $"erro para obter");
             }
         }
     }

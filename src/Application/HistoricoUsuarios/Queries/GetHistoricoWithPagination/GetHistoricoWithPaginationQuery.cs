@@ -50,7 +50,7 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoWithPagination
             }
             catch
             {
-                return new Response<PaginatedList<HistoricoUsuario>>(message: $"error to get");
+                return new Response<PaginatedList<HistoricoUsuario>>(message: $"erro para obter");
             }
         }
     }

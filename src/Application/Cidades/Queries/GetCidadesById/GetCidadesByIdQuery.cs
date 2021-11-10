@@ -39,7 +39,7 @@ namespace Application.Cidades.Queries.GetCidadesById
             }
             catch
             {
-                return new Response<Cidade>(message: $"error to get");
+                return new Response<Cidade>(message: $"erro para obter");
             }
         }
     }

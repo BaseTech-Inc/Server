@@ -34,7 +34,7 @@ namespace Application.Marcador.Queries.GetAllMarcadores
             }
             catch
             {
-                return new Response<IList<Marcadores>>(message: $"error to get");
+                return new Response<IList<Marcadores>>(message: $"erro para obter");
             }
         }
     }

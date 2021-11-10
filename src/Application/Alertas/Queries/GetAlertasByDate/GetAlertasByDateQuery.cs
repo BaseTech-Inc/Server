@@ -36,7 +36,7 @@ namespace Application.Alertas.Queries.GetAlertasByDate
             }
             catch
             {
-                return new Response<IList<Alerta>>(message: $"error to get");
+                return new Response<IList<Alerta>>(message: $"erro para obter");
             }
         }
     }

@@ -37,7 +37,7 @@ namespace Application.Paises.Queries.GetPaisesById
             }
             catch
             {
-                return new Response<Pais>(message: $"error to get");
+                return new Response<Pais>(message: $"erro para obter");
             }
         }
     }

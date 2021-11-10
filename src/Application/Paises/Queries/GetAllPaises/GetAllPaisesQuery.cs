@@ -27,7 +27,7 @@ namespace Application.Paises.Queries.GetAllPaises
             }
             catch
             {
-                return new Response<IList<Pais>>(message: $"error to get");
+                return new Response<IList<Pais>>(message: $"erro para obter");
             }
         }
     }

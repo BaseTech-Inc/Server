@@ -27,7 +27,7 @@ namespace Application.Cidades.Queries.GetAllCidades
             }
             catch
             {
-                return new Response<IList<Cidade>>(message: $"error to get");
+                return new Response<IList<Cidade>>(message: $"erro para obter");
             }
         }
     }

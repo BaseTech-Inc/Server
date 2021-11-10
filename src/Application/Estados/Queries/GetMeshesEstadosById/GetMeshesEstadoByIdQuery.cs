@@ -72,7 +72,7 @@ namespace Application.Estados.Queries.GetMeshesEstadosById
             }
             catch
             {
-                return new Response<EstadoVm>(message: $"error to get");
+                return new Response<EstadoVm>(message: $"erro para obter");
             }
         }
     }

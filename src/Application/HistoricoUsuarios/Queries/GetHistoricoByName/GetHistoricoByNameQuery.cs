@@ -55,7 +55,7 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoByName
             }
             catch
             {
-                return new Response<IList<HistoricoUsuario>>(message: $"error to get");
+                return new Response<IList<HistoricoUsuario>>(message: $"erro para obter");
             }
         }
     }

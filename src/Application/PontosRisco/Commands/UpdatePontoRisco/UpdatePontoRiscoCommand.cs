@@ -76,12 +76,12 @@ namespace Application.PontosRisco.Commands.UpdatePontoRisco
                 }
                 catch
                 {
-                    return new Response<string>(message: $"error while updating: ${ entity.Id }");
+                    return new Response<string>(message: $"erro para atualizar: ${ entity.Id }");
                 }
             }
             else
             {
-                return new Response<string>(message: $"no ${ entity.Id } was found ");
+                return new Response<string>(message: $"nenhum ${ entity.Id } foi encontrado");
             }
         }
     }

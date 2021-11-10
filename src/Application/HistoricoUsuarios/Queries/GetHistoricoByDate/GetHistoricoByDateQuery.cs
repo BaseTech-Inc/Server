@@ -47,7 +47,7 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoByDate
             }
             catch
             {
-                return new Response<IList<HistoricoUsuario>>(message: $"error to get");
+                return new Response<IList<HistoricoUsuario>>(message: $"erro para obter");
             }
         }
     }

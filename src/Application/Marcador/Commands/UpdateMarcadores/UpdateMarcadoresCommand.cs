@@ -52,12 +52,12 @@ namespace Application.Marcador.Commands.UpdateMarcadores
                 }
                 catch
                 {
-                    return new Response<Marcadores>(message: $"error while updating: ${ entity.Id }");
+                    return new Response<Marcadores>(message: $"erro para atualizar: ${ entity.Id }");
                 }
             }
             else
             {
-                return new Response<Marcadores>(message: $"no ${ entity.Id } was found ");
+                return new Response<Marcadores>(message: $"nenhum ${ entity.Id } foi encontrado ");
             }
         }
     }

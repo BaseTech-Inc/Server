@@ -47,7 +47,7 @@ namespace Application.HistoricoUsuarios.Queries.GetHistoricoById
             }
             catch
             {
-                return new Response<HistoricoUsuario>(message: $"error to get");
+                return new Response<HistoricoUsuario>(message: $"erro para obter");
             }
         }
     }

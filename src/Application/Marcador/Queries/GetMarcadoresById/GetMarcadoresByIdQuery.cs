@@ -44,7 +44,7 @@ namespace Application.Marcador.Queries.GetMarcadoresById
             }
             catch
             {
-                return new Response<Marcadores>(message: $"error to get");
+                return new Response<Marcadores>(message: $"erro para obter");
             }
         }
     }

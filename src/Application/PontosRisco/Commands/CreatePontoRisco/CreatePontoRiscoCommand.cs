@@ -74,7 +74,7 @@ namespace Application.PontosRisco.Commands.CreatePontoRisco
             }
             catch
             {
-                return new Response<string>(message: $"error while creating: ${ entityPontoRisco.Id }");
+                return new Response<string>(message: $"erro para criar: ${ entityPontoRisco.Id }");
 
             }
         }   

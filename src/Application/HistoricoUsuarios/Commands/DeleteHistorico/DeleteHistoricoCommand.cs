@@ -38,7 +38,7 @@ namespace Application.HistoricoUsuarios.Commands.DeleteHistorico
             }
             catch
             {
-                return new Response<string>(message: $"error while deleting: ${ entity.Id }");
+                return new Response<string>(message: $"erro para apagar: ${ entity.Id }");
             }
         }
     }

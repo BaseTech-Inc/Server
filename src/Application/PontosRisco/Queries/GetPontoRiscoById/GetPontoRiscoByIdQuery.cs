@@ -42,7 +42,7 @@ namespace Application.PontosRisco.Queries.GetPontoRiscoById
             }
             catch
             {
-                return new Response<PontoRisco>(message: $"error to get");
+                return new Response<PontoRisco>(message: $"erro para obter");
             }
         }
     }

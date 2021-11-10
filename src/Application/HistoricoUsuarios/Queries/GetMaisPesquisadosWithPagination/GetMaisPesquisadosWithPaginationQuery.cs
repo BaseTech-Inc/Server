@@ -65,7 +65,7 @@ namespace Application.HistoricoUsuarios.Queries.GetMaisPesquisadosWithPagination
             }
             catch
             {
-                return new Response<PaginatedList<MaisPesquisadosDto>>(message: $"error to get");
+                return new Response<PaginatedList<MaisPesquisadosDto>>(message: $"erro para obter");
             }
         }
     }

@@ -30,7 +30,7 @@ namespace Application.PontosRisco.Queries.GetAllPontoRisco
             }
             catch
             {
-                return new Response<IList<PontoRisco>>(message: $"error to get");
+                return new Response<IList<PontoRisco>>(message: $"erro para obter");
             }
         }
     }

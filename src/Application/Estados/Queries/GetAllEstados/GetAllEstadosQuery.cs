@@ -28,7 +28,7 @@ namespace Application.Estados.Queries.GetAllEstados
             }
             catch
             {
-                return new Response<IList<Estado>>(message: $"error to get");
+                return new Response<IList<Estado>>(message: $"erro para obter");
             }
         }
     }

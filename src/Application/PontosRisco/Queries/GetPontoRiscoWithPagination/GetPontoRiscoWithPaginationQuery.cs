@@ -42,7 +42,7 @@ namespace Application.PontosRisco.Queries.GetPontoRiscoWithPagination
             }
             catch
             {
-                return new Response<PaginatedList<PontoRisco>>(message: $"error to get");
+                return new Response<PaginatedList<PontoRisco>>(message: $"erro para obter");
             }
         }
     }

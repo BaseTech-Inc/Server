@@ -38,7 +38,7 @@ namespace Application.Estados.Queries.GetEstadosById
             }
             catch
             {
-                return new Response<Estado>(message: $"error to get");
+                return new Response<Estado>(message: $"erro para obter");
             }
         }
     }

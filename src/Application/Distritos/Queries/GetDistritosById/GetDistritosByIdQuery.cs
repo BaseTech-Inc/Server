@@ -40,7 +40,7 @@ namespace Application.Distritos.Queries.GetDistritosById
             }
             catch
             {
-                return new Response<Distrito>(message: $"error to get");
+                return new Response<Distrito>(message: $"erro para obter");
             }
         }
     }

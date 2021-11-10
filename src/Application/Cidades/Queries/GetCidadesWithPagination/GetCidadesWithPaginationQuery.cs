@@ -40,7 +40,7 @@ namespace Application.Cidades.Queries.GetCidadesWithPagination
             }
             catch
             {
-                return new Response<PaginatedList<Cidade>>(message: $"error to get");
+                return new Response<PaginatedList<Cidade>>(message: $"erro para obter");
             }
         }
     }

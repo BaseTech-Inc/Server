@@ -39,7 +39,7 @@ namespace Application.Estados.Queries.GetEstadosWithPagination
             }
             catch
             {
-                return new Response<PaginatedList<Estado>>(message: $"error to get");
+                return new Response<PaginatedList<Estado>>(message: $"erro para obter");
             }
         }
     }

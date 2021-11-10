@@ -72,7 +72,7 @@ namespace Application.Paises.Queries.GetMeshesPaisesById
             }
             catch
             {
-                return new Response<PaisesVm>(message: $"error to get");
+                return new Response<PaisesVm>(message: $"erro para obter");
             }
         }
     }

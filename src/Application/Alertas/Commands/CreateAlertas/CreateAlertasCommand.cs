@@ -85,7 +85,7 @@ namespace Application.Alertas.Commands.CreateAlertas
             }
             catch
             {
-                return new Response<string>(message: $"error while creating: ${ entityAlertas.Id }");
+                return new Response<string>(message: $"erro para criar: ${ entityAlertas.Id }");
             }
         }
     }

@@ -68,11 +68,11 @@ namespace Application.Cidades.Queries.GetMeshesCidadeById
 
                 return new Response<CidadeVm>(
                     data: cidadeVm,
-                    message: "See https://developers.google.com/maps/documentation/utilities/polylinealgorithm");
+                    message: "Veja https://developers.google.com/maps/documentation/utilities/polylinealgorithm");
             }
             catch
             {
-                return new Response<CidadeVm>(message: $"error to get");
+                return new Response<CidadeVm>(message: $"erro para obter");
             }
         }
     }

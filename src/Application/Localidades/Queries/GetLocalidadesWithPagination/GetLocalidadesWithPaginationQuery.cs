@@ -54,7 +54,7 @@ namespace Application.Localidades.Queries.GetLocalidadesWithPagination
             }
             catch
             {
-                return new Response<PaginatedList<Distrito>>(message: $"error to get");
+                return new Response<PaginatedList<Distrito>>(message: $"erro para obter");
             }
         }
     }

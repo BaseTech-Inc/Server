@@ -37,7 +37,7 @@ namespace Application.Paises.Queries.GetPaisesWithPagination
             }
             catch
             {
-                return new Response<PaginatedList<Pais>>(message: $"error to get");
+                return new Response<PaginatedList<Pais>>(message: $"erro para obter");
             }
         }
     }
