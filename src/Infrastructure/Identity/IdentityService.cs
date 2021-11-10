@@ -52,7 +52,7 @@ namespace Infrastructure.Identity
             }
             catch
             {
-                return new Response<LoginResponse>(message: $"Email not valid.");
+                return new Response<LoginResponse>(message: $"Email inválido.");
             }
 
             // verifica se o usuário existe, para não gerar futuros erros
@@ -90,12 +90,12 @@ namespace Infrastructure.Identity
                             refresh_token = token.refreshToken
                         };
 
-                        return new Response<LoginResponse>(response, message: $"Authenticated { user.UserName }");
+                        return new Response<LoginResponse>(response, message: $"Autenticado { user.UserName }");
                     }
                 }
             }
 
-            return new Response<LoginResponse>(message: $"An error occurred while authenticating user.");
+            return new Response<LoginResponse>(message: $"Ocorreu um erro ao autenticar o usuário.");
         }
 
         public async Task<Response<string>> RegisterAsync(string username, string email, string password)
@@ -116,7 +116,7 @@ namespace Infrastructure.Identity
                         var m = new MailAddress(email);
                     } catch
                     {
-                        return new Response<string>(message: $"Email not valid.");
+                        return new Response<string>(message: $"Email inválido.");
                     }
 
                     var listUsuario = new List<Usuario>();
@@ -160,7 +160,7 @@ namespace Infrastructure.Identity
                                 "Verificar Email!"),
                             subject);
 
-                        return new Response<string>(usuario.Id, message: $"User Registered.");
+                        return new Response<string>(usuario.Id, message: $"Usuário registrado.");
                     }
                 } else
                 {
@@ -169,10 +169,10 @@ namespace Infrastructure.Identity
             } 
             else
             {
-                return new Response<string>(message: $"You already have a registered user with this credential.");
+                return new Response<string>(message: $"Você já tem um usuário registrado com esta credencial.");
             }
 
-            return new Response<string>(message: $"Error during registration.");
+            return new Response<string>(message: $"Erro durante o registro.");
         }
 
         public async Task<Response<LoginResponse>> RefreshToken(HttpContext httpContext)
@@ -204,7 +204,7 @@ namespace Infrastructure.Identity
 
             if (!IsRefreshTokenValid(existingRefreshToken))
             {
-                return new Response<LoginResponse>(message: $"Failed.");
+                return new Response<LoginResponse>(message: $"Fracassado.");
             }
 
             existingRefreshToken.RevokedByIp = httpContext.Connection.RemoteIpAddress.ToString();
@@ -222,7 +222,7 @@ namespace Infrastructure.Identity
                 refresh_token = newToken.refreshToken
             };
 
-            return new Response<LoginResponse>(response, message: $"Success.");
+            return new Response<LoginResponse>(response, message: $"Sucesso.");
         }
 
         public async Task<Response<string>> RevokeToken(HttpContext httpContext, string token)
@@ -232,11 +232,11 @@ namespace Infrastructure.Identity
             // If user found, then revoke
             if (result)
             {
-                return new Response<string>("", message: $"Success.");
+                return new Response<string>("", message: $"Sucesso.");
             }
 
             // Otherwise, return error
-            return new Response<string>(message: $"Failed.");
+            return new Response<string>(message: $"Fracassado.");
         }
 
         public async Task<Response<string>> LogoutAsync(HttpContext httpContext)
@@ -244,7 +244,7 @@ namespace Infrastructure.Identity
             // Revoke Refresh Token 
             await _tokenService.RevokeRefreshToken(httpContext);
 
-            return new Response<string>("", message: $"Logged Out.");
+            return new Response<string>("", message: $"Desconectado.");
         }
 
         public async Task<Response<string>> VerifyEmailAsync(string userId, string tokenEmail)
@@ -259,11 +259,11 @@ namespace Infrastructure.Identity
 
                 if (resultConfirmEmail.Succeeded)
                 {
-                    return new Response<string>(usuario.Id, message: $"Email confirmed successfully.");
+                    return new Response<string>(usuario.Id, message: $"Email confirmado com sucesso.");
                 }
             }
 
-            return new Response<string>(message: $"Failed to verify email.");
+            return new Response<string>(message: $"Falha ao verificar o e-mail.");
         }
 
         public async Task<Response<string>> GeneretPasswordResetAsync(string email)
@@ -288,10 +288,10 @@ namespace Infrastructure.Identity
                         "Mudar senha!"),
                     subject);
 
-                return new Response<string>("", message: $"Successfully generated token.");
+                return new Response<string>("", message: $"Token gerado com sucesso.");
             }
 
-            return new Response<string>(message: $"This email was not registered.");
+            return new Response<string>(message: $"Este email não foi cadastrado.");
         }
 
         public async Task<Response<string>> ChangePasswordAsync(string email, string token, string password)
@@ -309,15 +309,15 @@ namespace Infrastructure.Identity
 
                     if (result.Succeeded)
                     {
-                        return new Response<string>("", message: $"Success when changing password");
+                        return new Response<string>("", message: $"Sucesso ao alterar a senha.");
                     }
                 } else
                 {
-                    return new Response<string>(message: $"Password not valid.");
+                    return new Response<string>(message: $"Senha inválida.");
                 }
             }
 
-            return new Response<string>(message: $"Failed to change password.");
+            return new Response<string>(message: $"Falha ao alterar a senha.");
         }
 
         public async Task<Response<string>> ChangePasswordWithIdAsync(string UserId, string oldPassword, string newPassword)
@@ -344,18 +344,18 @@ namespace Infrastructure.Identity
 
                         if (result.Succeeded)
                         {
-                            return new Response<string>("", message: $"Success when changing password");
+                            return new Response<string>("", message: $"Sucesso ao alterar a senha");
                         }
 
-                        return new Response<string>(message: $"Failed to change password.");
+                        return new Response<string>(message: $"Falha ao alterar a senha.");
                     } else
                     {
-                        return new Response<string>(message: $"Password not valid.");
+                        return new Response<string>(message: $"Senha inválida.");
                     }
                 }
             }
 
-            return new Response<string>(message: $"This user was not registered.");
+            return new Response<string>(message: $"Este usuário não foi registrado.");
         }
     
         public async Task<Response<IDictionary<string, string>>> GetBasicProfile(string UserId)
@@ -374,10 +374,10 @@ namespace Infrastructure.Identity
                 response.Add("EmailConfirmed", user.EmailConfirmed.ToString());
                 response.Add("TipoUsuario", (usuario.TipoUsuario != null) ? usuario.TipoUsuario.Descricao.ToString() : EnumTipoUsuario.Comum.ToString());
 
-                return new Response<IDictionary<string, string>>(response, message: $"Success.");
+                return new Response<IDictionary<string, string>>(response, message: $"Sucesso.");
             }
 
-            return new Response<IDictionary<string, string>>(message: $"This user was not registered.");
+            return new Response<IDictionary<string, string>>(message: $"Este usuário não foi registrado.");
         }
 
         public async Task<Response<string>> UpdateBasicProfile(string UserId, string UserName, string TipoUsuario)
@@ -401,18 +401,18 @@ namespace Infrastructure.Identity
                         usuario.TipoUsuario = tipoUsuario;
                         _context.SaveChanges();
 
-                        return new Response<string>("", message: $"Success.");
+                        return new Response<string>("", message: $"Sucesso.");
                     }
                     else
                     {
-                        return new Response<string>(message: $"Invalid user type.");
+                        return new Response<string>(message: $"Tipo de usuário inválido.");
                     }
                 }
 
-                return new Response<string>(message: $"This user was not registered.");
+                return new Response<string>(message: $"Este usuário não foi registrado.");
             } catch (Exception)
             {
-                return new Response<string>(message: $"Error: ");
+                return new Response<string>(message: $"Erro.");
             }
         }
 
@@ -454,15 +454,15 @@ namespace Infrastructure.Identity
                 {
                     _context.SaveChanges();
 
-                    return new Response<string>("", message: $"User deleted successfully.");
+                    return new Response<string>("", message: $"Usuário excluído com sucesso.");
                 }
                 else
                 {
-                    return new Response<string>(message: $"Failed to delete user.");
+                    return new Response<string>(message: $"Falha ao excluir usuário.");
                 }
             }
 
-            return new Response<string>(message: $"This user was not registered.");
+            return new Response<string>(message: $"Este usuário não foi registrado.");
         }
 
         public async Task<Response<string>> GetProfileImage(string UserId)
@@ -475,10 +475,10 @@ namespace Infrastructure.Identity
             {
                 var FotoPerfil = Convert.ToBase64String(usuario.FotoPerfil != null ? usuario.FotoPerfil.DataImagem : new byte[0]);
 
-                return new Response<string>(FotoPerfil, message: $"Success.");
+                return new Response<string>(FotoPerfil, message: $"Sucesso.");
             }
 
-            return new Response<string>(message: $"This user was not registered.");
+            return new Response<string>(message: $"Este usuário não foi registrado.");
         }
 
         // 512Kb
@@ -498,7 +498,7 @@ namespace Infrastructure.Identity
 
                     if (byteArray.Length > MAX_SIZE_IMAGE)
                     {
-                        return new Response<string>(message: $"Exceeded maximum image size.");
+                        return new Response<string>(message: $"Excedeu o tamanho máximo da imagem.");
                     }
 
                     usuario.FotoPerfil = new Imagem
@@ -507,14 +507,14 @@ namespace Infrastructure.Identity
                     };
                     _context.SaveChanges();
 
-                    return new Response<string>("", message: $"Success.");
+                    return new Response<string>("", message: $"Sucesso.");
                 }
 
-                return new Response<string>(message: $"This user was not registered.");
+                return new Response<string>(message: $"Este usuário não foi registrado.");
             }
             catch (Exception)
             {
-                return new Response<string>(message: $"Error: ");
+                return new Response<string>(message: $"Erro");
             }
         }
     }

@@ -112,14 +112,14 @@ namespace Infrastructure.Forecast
                         }                        
                     };
 
-                    return new Response<CurrentWeatherResponse>(forecastResponse, message: $"Success.");
+                    return new Response<CurrentWeatherResponse>(forecastResponse, message: $"Sucesso.");
                 } else
                 {
-                    return new Response<CurrentWeatherResponse>(message: $"Could not find any place with that name.");
+                    return new Response<CurrentWeatherResponse>(message: $"Não foi possível encontrar nenhum lugar com esse nome.");
                 }                
             } catch (Exception)
             {
-                return new Response<CurrentWeatherResponse>(message: $"An error occurred please try again later.");
+                return new Response<CurrentWeatherResponse>(message: $"Ocorreu um erro. Por favor tente novamente mais tarde.");
             }
         }
 
@@ -136,7 +136,7 @@ namespace Infrastructure.Forecast
                 return await ProcessCurrentByCoord(ponto.Latitude, ponto.Longitude);
             }
 
-            return new Response<CurrentWeatherResponse>(message: $"An error occurred please try again later.");
+            return new Response<CurrentWeatherResponse>(message: $"Ocorreu um erro. Por favor tente novamente mais tarde.");
         }
 
         public async Task<Response<ForecastResponse>> ProcessForecastByCoord(
@@ -183,16 +183,16 @@ namespace Infrastructure.Forecast
                         Daily = forecastDto.Daily
                     };
 
-                    return new Response<ForecastResponse>(forecastResponse, message: $"Success.");
+                    return new Response<ForecastResponse>(forecastResponse, message: $"Sucesso.");
                 }
                 else
                 {
-                    return new Response<ForecastResponse>(message: $"Could not find any place with that name.");
+                    return new Response<ForecastResponse>(message: $"Não foi possível encontrar nenhum lugar com esse nome.");
                 }
             }
             catch (Exception)
             {
-                return new Response<ForecastResponse>(message: $"An error occurred please try again later.");
+                return new Response<ForecastResponse>(message: $"Ocorreu um erro. Por favor tente novamente mais tarde.");
             }
         }
 
@@ -209,7 +209,7 @@ namespace Infrastructure.Forecast
                 return await ProcessForecastByCoord(ponto.Latitude, ponto.Longitude);
             }
 
-            return new Response<ForecastResponse>(message: $"An error occurred please try again later.");
+            return new Response<ForecastResponse>(message: $"Ocorreu um erro. Por favor tente novamente mais tarde");
         }
     }
 }

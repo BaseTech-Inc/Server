@@ -55,7 +55,7 @@ namespace Infrastructure.Identity
                 return new Response<IList<UsuarioResponse>>(usuarioDtoList, message: $"");
             } catch (Exception ex)
             {
-                return new Response<IList<UsuarioResponse>>(message: $"Error to get" + ex);
+                return new Response<IList<UsuarioResponse>>(message: $"erro para obter: " + ex);
             }
         }
             

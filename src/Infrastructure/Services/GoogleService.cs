@@ -83,11 +83,11 @@ namespace Infrastructure.Services
                         expiration = token.validTo
                     };
 
-                    return new Response<LoginResponse>(response, message: $"Authenticated { payload.Name }");
+                    return new Response<LoginResponse>(response, message: $"Autenticado { payload.Name }");
                 }
             }
 
-            return new Response<LoginResponse>(message: $"An error occurred while authenticating user.");
+            return new Response<LoginResponse>(message: $"Ocorreu um erro ao autenticar o usuário.");
         }
     }
 }
