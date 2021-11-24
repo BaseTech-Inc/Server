@@ -133,7 +133,7 @@ namespace Infrastructure.Identity
                         Nome = username,
                         FotoPerfil = new Imagem
                         {
-                            DataImagem = Encoding.ASCII.GetBytes(imgBase64),
+                            DataImagem = Convert.FromBase64String(imgBase64),
                             TituloImagem = "PerfilPhoto"
                         }
                     };
