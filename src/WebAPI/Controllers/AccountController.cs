@@ -168,7 +168,7 @@ namespace WebAPI.Controllers
             return Ok(changePasswordResult);
         }
 
-        // GET: api/account/get-basic-profile
+        // GET: api/account/basic-profile
         [HttpGet("basic-profile")]
         [Authorize]
         public async Task<ActionResult<Response<IDictionary<string, string>>>> GetBasicProfile(string UserId)
@@ -183,10 +183,10 @@ namespace WebAPI.Controllers
             return Ok(getBasicProfile);
         }
 
-        // PUT: api/account/get-basic-profile
+        // PUT: api/account/basic-profile
         [HttpPut("basic-profile")]
         [Authorize]
-        public async Task<ActionResult<Response<IDictionary<string, string>>>> UpdateBasicProfile(
+        public async Task<ActionResult<Response<string>>> UpdateBasicProfile(
             string UserId, 
             string UserName,
             string TipoUsuario)
@@ -219,7 +219,7 @@ namespace WebAPI.Controllers
         // PUT: api/account/image-profile
         [HttpPut("image-profile")]
         [Authorize]
-        public async Task<ActionResult<Response<IDictionary<string, string>>>> UpdateImageProfile(
+        public async Task<ActionResult<Response<string>>> UpdateImageProfile(
             string UserId,
             [FromBody] string ImagemBase64)
         {
