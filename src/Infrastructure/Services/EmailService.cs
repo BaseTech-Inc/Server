@@ -36,7 +36,7 @@ namespace Infrastructure.Services
             // Replace smtp_password with your SMTP password.
             String SMTP_PASSWORD = _configuration["smtp:password"];
 
-            String HOST = "smtp.gmail.com";
+            String HOST = _configuration["smtp:host"];
 
             // The port you will connect to on the SMTP endpoint. We
             // are choosing port 587 because we will use STARTTLS to encrypt
@@ -62,9 +62,6 @@ namespace Infrastructure.Services
                 // Pass SMTP credentials
                 client.Credentials =
                     new NetworkCredential(SMTP_USERNAME, SMTP_PASSWORD);
-
-                // Enable SSL encryption
-                client.EnableSsl = true;
 
                 // Try to send the message. Show status in console.
                 try

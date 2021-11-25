@@ -97,10 +97,10 @@ namespace WebAPI
                 app.UseCors("AllowJavascriptDevClient");
             } else
             {
-                app.UseCors("AllowCSharpProductionClient");
+                //app.UseCors("AllowCSharpProductionClient");
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

@@ -152,7 +152,7 @@ namespace Infrastructure.Identity
                     if (resultCreateAppUser.Succeeded)
                     {
                         var tokenEmail = await _tokenService.GenerateTokenEmail(appUser.Id);
-                        var url = $"https://tupaweb.azurewebsites.net/Login/Verfiy?userId=" + HttpUtility.UrlEncode(usuario.Id) + "&tokenEmail=" + HttpUtility.UrlEncode(tokenEmail);
+                        var url = $"http://tupa.tech/Login/Verfiy?userId=" + HttpUtility.UrlEncode(usuario.Id) + "&tokenEmail=" + HttpUtility.UrlEncode(tokenEmail);
 
                         string subject = "Verificar Email";
 
@@ -280,7 +280,7 @@ namespace Infrastructure.Identity
             if (user != null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var url = $"https://tupaweb.azurewebsites.net/Login/Reset-Password?email=" + HttpUtility.UrlEncode(email) + "&token=" + HttpUtility.UrlEncode(token);
+                var url = $"http://tupa.tech/Login/Reset-Password?email=" + HttpUtility.UrlEncode(email) + "&token=" + HttpUtility.UrlEncode(token);
 
                 string subject = "Alterar Senha";
 

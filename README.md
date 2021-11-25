@@ -49,6 +49,8 @@ $ git clone https://github.com/BaseTech-Inc/Tupa-Server.git
         # O fromAdress é usado para ser o rementente do e-mail
         $ dotnet user-secrets set "smtp:fromAdress" "fromAdress"
 
+        $ dotnet user-secrets set "smtp:host" "host"
+
         # O appid é para fazer requisições na API OpenWeather
         $ dotnet user-secrets set "OpenWeather:appid" "appid"
     ```
