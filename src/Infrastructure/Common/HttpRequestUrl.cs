@@ -53,7 +53,7 @@ namespace Infrastructure.Common
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue(mediaType));
-            client.DefaultRequestHeaders.Add("Referer", "http://localhost:5001");
+            client.DefaultRequestHeaders.Add("Referer", "http://api.tupa.tech");
 
             var streamTask = client.GetStreamAsync(url);
             var objectResult = await JsonSerializer.DeserializeAsync<T>(await streamTask);
