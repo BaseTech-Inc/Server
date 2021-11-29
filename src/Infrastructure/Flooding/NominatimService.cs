@@ -58,7 +58,7 @@ namespace Infrastructure.Flooding
 
             try
             {
-                htmlText = await HttpRequestUrl.ProcessHttpClient<IList<NominatimDto>>(url);
+                htmlText = await HttpRequestUrl.ProcessHttpClient<IList<NominatimDto>>(url, referer: true);
             } catch { }
             
             return htmlText;
@@ -84,7 +84,7 @@ namespace Infrastructure.Flooding
 
             try
             {
-                htmlText = await HttpRequestUrl.ProcessHttpClient<NominatimDto>(url);
+                htmlText = await HttpRequestUrl.ProcessHttpClient<NominatimDto>(url, referer: true);
             } catch { }            
 
             return htmlText;

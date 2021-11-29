@@ -47,13 +47,16 @@ namespace Infrastructure.Common
         public static async Task<T> ProcessHttpClient<T>(
             string url, 
             JsonSerializerOptions options = null, 
-            string mediaType = "application/json")
+            string mediaType = "application/json",
+            bool referer = false)
         {
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue(mediaType));
-            client.DefaultRequestHeaders.Add("Referer", "http://api.tupa.tech");
+
+            if (referer)
+                client.DefaultRequestHeaders.Add("User-Agent", "Microsoft-IIS/10.0");
 
             var streamTask = client.GetStreamAsync(url);
             var objectResult = await JsonSerializer.DeserializeAsync<T>(await streamTask);
