@@ -488,8 +488,8 @@ namespace Infrastructure.Identity
             return new Response<string>(message: $"Este usuário não foi registrado.");
         }
 
-        // 512Kb
-        private readonly int MAX_SIZE_IMAGE = 524288;
+        // 40mb
+        private readonly int MAX_SIZE_IMAGE = 41943040;
 
         public async Task<Response<string>> UpdateProfileImage(string UserId, string base64Image)
         {
